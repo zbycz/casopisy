@@ -185,6 +185,7 @@ a.del:hover {background: #fd4239; color: #fff;}
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
+.stranky .lightbox:hover span {-webkit-transition: opacity 0.5s ease-out; opacity:0}
 .stranky input.tags {border: 0;margin-top:3px; box-shadow: none; }
 .stranky label {display: block; float:left; line-height: 2; width: 4em}
 .stranky .btn-group {position:relative; top:-1px;}
@@ -255,6 +256,7 @@ footer a:hover img {background: #ccc}
 .casopislink:hover span {display: inline;text-decoration: none;}
 .casopislink.svetylko b {color: #fec210;}
 .casopislink.skaut b {color: #819d37;}
-.casopislink.skauting b {color: #0b2c65; font-style: italic;}
+.casopislink.skauting b {color: #0b2c65; font-style:italic}
+.casopislink.kmen b {color: #d50e40;}
 .adminModule .casopislink:hover span {display:none;}
 .poutac .casopislink {display: block;margin:-15px;padding:15px}

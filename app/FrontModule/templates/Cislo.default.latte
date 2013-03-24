@@ -10,8 +10,11 @@
 
 <h1 n:block=title>{$cislo->casopis} {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
 
-<img src="{$cislo->getCoverLink(400)}" class="pull-right">
-
+{if !$cislo->priloha}
+	<a href="{$cislo->page->getLink(1)}" class="lightbox pull-right">
+	<img src="{$cislo->getCoverLink(400)}" alt="Titulní strana">
+	</a>
+{/if}
 
 <p>{$cislo->popis}</p>
 
@@ -19,10 +22,13 @@
 {* ------------------------------ *}
 <table class="table table-condensed" style="width:auto">
 {foreach $cislo->getObsah() as $r}
+	{var $tags = $r->getTags()}
+	{continueIf in_array('reklama', $tags)}
+
 <tr onclick="window.location.href='#p{!$r->strana}'" title="{$r->popis}" n:class="pointer, $r->strana==1 ? noborder">
 	<td><a href="#p{$r->strana}">{$r->stranaOdDo}</a>
 	<td>{$r->nazev}
-	<td><span class="label label-info" n:foreach="$r->getTags() as $t">{$t}</span>
+	<td><span class="label label-info" n:foreach="$tags as $t">{$t}</span>
 </tr>
 {/foreach}
 </table>
@@ -32,7 +38,7 @@
 <table class="stranky">
 {foreach $cislo->getObsah() as $r}
     {var $p = $r->strana}
-    <tr n:class="$iterator->odd ? odd" id="p{$p}" n:if="$p>1">
+    <tr n:class="$iterator->odd ? odd" id="p{$p}" n:if="$cislo->priloha OR $p>1">
     <th>
         {foreach $r->getStrany() as $s}<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, 200)}"></a>{/foreach}
     </th>

@@ -77,6 +77,11 @@ Presenter::extensionMethod('isAdminModule', function (Presenter $that) {
       return strpos($that->getName(), "Admin:") === 0;
     });
 
+Nette\Templating\FileTemplate::extensionMethod('modified', function ($that, $s) {
+			return $s . "?". dechex(filemtime(WWW_DIR.$s));
+		});
+
+
 // Configure and run the application!
 //$container->application->catchExceptions = true;
 $container->application->run();

@@ -16,7 +16,7 @@
 <title>{block title|striptags}Skautské časopisy{/block}</title>
 
 <link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/static/bootstrap.css">
-<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/static/screen.css">
+<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}{!'/static/screen.css'|modified}">
 <link rel="shortcut icon" href="{$basePath}/favicon.ico">
 
 <script src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
@@ -153,7 +153,7 @@
 				<b>{$c|firstUpper}</b>
 			</a>
 	</div><!--/.well -->
-	{breakIf !$user->loggedIn}
+	{* breakIf !$user->loggedIn *}
 {/foreach}
 
 <div class="well sidebar-nav poutac" n:if="!$presenter->isAdminModule()">

@@ -17,7 +17,9 @@ class CasopisPresenter extends BasePresenter {
 
     public function startup() {
         parent::startup();
-        $this->tagy = $this->template->tagy = CasopisModel::getAllTags();
+        $this->tagy = CasopisModel::getAllTags();
+        unset($this->tagy['reklama']);
+        $this->template->tagy = $this->tagy;
 
         if($t = $this->getParam("id")){
             $this->template->tag = $this->tagy[$t];

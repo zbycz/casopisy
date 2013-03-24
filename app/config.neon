@@ -29,7 +29,7 @@ common:
 	services:
 	factories:
 	parameters:
-		casopisy: ['Světýlko', 'Skaut', 'skauting']
+		casopisy: ['Světýlko', 'Skaut', 'Skauting', 'Kmen']
 		staticDir: %wwwDir%/static
 		dataDir:   %wwwDir%/data
 		users:
