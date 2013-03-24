@@ -1,0 +1,55 @@
+#
+# SECURITY WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+#
+# If you don't protect this directory from direct web access, anybody will be able to see your passwords.
+# http://nette.org/security-warning
+#
+common:
+	php:
+		date.timezone: Europe/Prague
+		# zlib.output_compression: yes
+
+	nette:
+		application:
+			errorPresenter: Front:Error
+
+		session:
+			expiration: 1 month
+
+		security:
+			debugger: true  # panel v Debugger baru
+			users: %users%
+
+		#database:
+		#	dsn: 'mysql:host=localhost;dbname=casopisy'
+		#	user: 'root'
+		#	password:
+
+
+	services:
+	factories:
+	parameters:
+		casopisy: ['Světýlko', 'Skaut', 'skauting']
+		staticDir: %wwwDir%/static
+		dataDir:   %wwwDir%/data
+		users:
+
+
+		database:
+			host: localhost
+			driver: mysqli
+			database: casopisy
+			username: root
+			password:
+			profiler:
+				run: false
+				file: %appDir%/log/dibi.log
+
+
+production < common:
+
+
+development < common:
+	parameters:
+		database:
+			profiler: true

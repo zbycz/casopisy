@@ -1,0 +1,79 @@
+
+{block content}
+<a n:href=":Front:Cislo: $cislo[id]" class="btn pull-right margin1"><i class="icon-globe"></i> Zobrazit na webu</a>
+<h1 n:block=title>{$cislo->casopis} {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
+
+<a n:href="edit $cislo[id]" class="btn btn-success btn-mini pull-right margin1">Upravit detaily</a>
+
+<table class="table table-noborder" style="width: 80%;">
+<tr><td style="width:10em">Popis: <td>{$cislo->popis}
+<tr><td>Vnitřní poznámka: <td>{$cislo->poznamka}
+<tr><td>Zveřejněno: <td><img src="{$basePath}/static/images/iconEyeNo.png" alt="neveřejné" n:if="!$cislo->verejne" style="vertical-align: text-bottom">
+                        {$cislo->verejne?"ano":"ne"}
+<tr><td>Počet stran: <td>{$cislo->pocet_stran}
+</table>
+
+{* ------------------------------ *}
+<p>Obsah čísla:</p>
+<table class="table table-condensed">
+{foreach $cislo->getObsah() as $r}
+    <tr onclick="window.location.href='#p{!$r->strana}'" style="cursor:pointer" title="{$r->popis}">
+        <td><a href="#p{$r->strana}">{$r->stranaOdDo}</a>
+        <td>{$r->nazev}
+        <td><span class="label label-info" n:foreach="$r->getTags() as $t">{$t}</span>
+{/foreach}
+</table>
+
+
+{* ------------------------------ *}
+<form action="{link strankyForm!}" method="post" id="editaceCislaForm">
+<p class="pull-right">velikost náhledů: <a n:href="velikost! 200">malé</a>, <a n:href="velikost! 300">střední</a>, <a n:href="velikost! 400">velké</a></p>
+<input type="submit" value="Uložit úpravy stránek" class="btn btn-primary margin2">
+
+<table class="stranky">
+{foreach $cislo->getObsah() as $r}
+    {var $p = $r->strana}
+    <tr n:class="$iterator->odd ? odd" id="p{$p}">
+    <th>
+        {foreach $r->getStrany() as $s}<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, $presenter->velikost)}"></a>{/foreach}
+    </th>
+    <td>
+        <div class="btn-group pull-right">
+            <input type="submit" name="sloucit_{$p}" class="btn " value="Přibrat další stránku" n:if="$p!=$cislo->pocet_stran">
+            <input type="submit" name="odloucit_{$p}" class="btn " value="Odebrat" n:if="$r->strany_navic">
+        </div>
+
+        <label for="nazev_{$p}">Název:</label>
+        <input type="text" name="nazev[{$p}]" id="nazev_{$p}" value="{$r->nazev}"><br>
+
+        <label for="popis_{$p}">Popis:</label>
+        <input type="text" name="popis[{$p}]" id="popis_{$p}" value="{$r->popis}" class="input-xlarge"><br>
+
+        <input type="text" name="tags[{$p}]" placeholder="+ přidat tag" class="tags" value="{implode(",", $r->getTags())}">
+    </td>
+    </tr>
+{/foreach}
+</table>
+<input type="submit" value="Uložit úpravy stránek" class="btn btn-primary margin2">
+
+</form>
+
+<script>
+    $('.tags').tagsInput({
+            width: 'auto',
+            height: 'auto',
+            defaultText: '+ přidat tag',
+            autocomplete: { minLength: 0 },
+            autocomplete_url: {array_keys(\Casopisy\CasopisModel::getAllTags())}
+            //autocomplete_url: {link autocomplete!} //jquery.autocomplete (not jquery ui)
+            //autocomplete_url:'test/fake_json_endpoint.html' // jquery ui autocomplete requires a json endpoint
+    })
+    .each(function(){
+        var id = $( this ).attr('id');
+        $('#'+id+'_tag').focus(function(){
+            $(this).autocomplete("search", "");
+        });
+     });
+</script>
+
+

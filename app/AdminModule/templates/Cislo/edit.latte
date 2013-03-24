@@ -1,0 +1,43 @@
+
+{block content}
+
+<h1>Úprava detailů</h1>
+<p><a n:href="default $cislo->id">zpět</a>
+
+{control editForm}
+
+<button class="btn" onclick="var s=$('#frmeditForm-poznamka').val();
+            if(m=s.match(/svetylko_(20\d\d)_(\d\d)(_)?/i)){
+                $('#frmeditForm-rok').val(m[1]);
+                $('#frmeditForm-mesic').val(parseInt(m[2]));
+                x={ 9:1,12:2,2:3,4:4,6:5 };
+                $('#frmeditForm-cislo').val(x[parseInt(m[2])]);
+                
+                if(m[3]) $('#frmeditForm-priloha').prop('checked',1);
+            }
+            else if(m=s.match(/svetylko_(\d+)_(\d+)(.pdf)?/i)){
+                $('#frmeditForm-rocnik').val(m[1]);
+                $('#frmeditForm-cislo').val(parseInt(m[2]));
+                if(m[2] <= 4){ //do prosince
+                  $('#frmeditForm-rok').val(parseInt(m[1])+1993);
+                  $('#frmeditForm-mesic').val(parseInt(m[2])+8);
+                }else { //od ledna
+                  $('#frmeditForm-rok').val(parseInt(m[1])+1994);
+                  $('#frmeditForm-mesic').val(parseInt(m[2])-4);
+                }
+                if(!m[3]) $('#frmeditForm-priloha').prop('checked',1);
+            }
+            $('#frmeditForm-verejne').prop('checked',1);
+                ">Načíst z vnitřní poznámky</button>
+    
+    
+<p><br>
+    
+<p><img src="{$cislo->getCoverLink()}">
+
+<p class="spacer">Záznam zpracování:
+<textarea>
+{if file_exists($cislo->getLogFile())}
+{file_get_contents($cislo->getLogFile())}
+{/if}
+</textarea>

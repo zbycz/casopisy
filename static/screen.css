@@ -1,0 +1,260 @@
+
+body {
+    padding-bottom: 40px;
+}
+.spacer {margin-top: 9px;}
+.spacer2 {margin-top: 18px;}
+.spacer3 {margin-top: 27px;}
+.spacer4 {margin-top: 36px;}
+.spacerr {margin-right: 9px;}
+.spacerl {margin-left: 9px; }
+.spacerl5 {margin-left: 5em; }
+.sidebar-nav {
+    padding: 0 0 9px 0;
+}
+small i {opacity: 0.5}
+.aright {text-align:right}
+
+body.adminModule {
+    padding-top: 60px;
+}
+.navbar {position: static; margin-bottom: 20px}
+.adminModule .navbar {position: fixed;}
+.noborder, .noborder * {border:0 !important}
+.pointer {cursor:pointer}
+
+h1 {
+  padding-bottom: 17px;
+  margin: 18px 0;
+  border-bottom: 1px solid #eeeeee;
+}
+
+
+
+/* --------------  header -------------- */
+.npresslogo{color: #888 !important; font-variant: small-caps; font-size: 90%;}
+.npresslogo span {color: #485dc5; font-variant: normal; font-weight: bold; font-size: 110%;} /*a.npresslogo:hover {text-decoration: underline !important;}*/
+
+.brand small {font-size: 70%}
+
+.navbar i {
+    margin-top: -2px;
+    vertical-align: middle;
+}
+.dropdown-menu .inline {padding-left: 12px;}
+.dropdown-menu .inline a {display: inline;}
+input.xxl {font-size: 200%; height: 200%; width: 450px;}
+input.likeprep {width: 235px;}
+.add-on input {margin-top: -3px;}
+a.del {padding: 0 0.2em;}
+a.del:hover {background: #fd4239; color: #fff;}
+
+#js-published-helper {padding-left: 24px; background: url(images/iconEyeNo.png) no-repeat 3px center;}
+
+
+#flashes {
+    overflow:hidden;
+    position:relative;
+}
+#flashes .box {
+    clear:left;
+    float:left;
+    position:relative;
+    left:50%;
+}
+#flashes .box .flash {
+    display:block;
+    position:relative;
+    right:50%;
+
+    margin: 0 1em; padding: 0 1em;
+    border: 0;
+    background: #ffff66;
+    color: #000;
+}
+
+
+.menu {padding-top: 10px}
+.menu ul {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+.menu ul ul {margin-left: 10px;}
+
+.menu ul a {
+    display: block;
+    text-decoration: none;
+    padding: 3px 20px 3px 18px;
+}
+.menu ul a:before, .menu ul .placeholder:before {
+    content: url(images/dot.gif); position:absolute; left:7px; margin-top:-4px;
+}
+.menu ul a:hover {cursor: move; background: url(images/handle.gif) no-repeat right center;}
+.menu ul.ui-sortable-disabled a:hover {cursor: pointer; background-image: none;}
+.menu .ui-sortable-helper a {background: none;}
+
+
+.menu ul .foldable span {
+    left: 7px;
+    position: absolute;
+    margin: 4px 0 0 -5px;
+    padding: 3px 3px;
+    color: #b41313;
+    font-size: 10px;
+    height: 12px;
+    line-height: 10px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.menu ul .foldable span:hover {background: #685de7; color: #fff;cursor:pointer;}
+.menu ul .foldable a:before {content: ''}
+
+
+.menu .rocnikmenu a {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #999999;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;}
+.menu .rocnikmenu.current a {color:#fff}
+
+.menu .current > a,
+.menu .current > a:hover {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+    background-color: #0088cc;
+}
+
+.menu .unpublished a {color: #888; }
+.menu .unpublished a:hover {color: #555; }
+.menu .unpublished.current a {color: #fff; }
+.menu .unpublished:before {content: url(images/iconEyeNo.png); position:absolute; right:12px; margin-top: 3px;}
+.menu ul a:hover {background-color: #eeeeee;}
+
+
+
+.nav-header {
+    display: block;
+    padding: 3px 15px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #999999;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+
+
+#content {position:relative}
+
+#deletedOverlay {
+    position: absolute;
+    width: 101%;
+    height: 101%;
+    background: #000;
+    border-left: 10px #000 solid;
+    margin: -5px 0 0 -3px;
+    opacity: 0.3;
+    z-index: 1000;
+}
+
+
+.stranky { width: 100%}
+.stranky tr {
+    border-bottom: 1em #fafafa solid;
+}
+.stranky th {padding: 1em; width: 330px;}
+.stranky td {padding: 1em; vertical-align: top}
+.stranky .lightbox {position: relative; display:block; float:left}
+.stranky .lightbox img {max-width: none; vertical-align: top;}
+.stranky .lightbox:hover {opacity: 0.8}
+.stranky .lightbox span {
+    display:block;
+    position: absolute;
+    left:0;top:0;
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #999999;
+    padding: 1px 4px 2px;
+    opacity: 0.7;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.stranky input.tags {border: 0;margin-top:3px; box-shadow: none; }
+.stranky label {display: block; float:left; line-height: 2; width: 4em}
+.stranky .btn-group {position:relative; top:-1px;}
+
+.margin1 {margin:1em}
+.margin2 {margin:2em}
+.table-noborder td, .table-noborder {border: 0;}
+
+
+.rocnik {margin-left: -20px !important;}
+.rocnik .span3:first-child {margin-left: 20px;}
+.rocnik a {text-align: center;  color: #000;}
+.rocnik a:hover {text-decoration: none; color:#000;}
+
+
+footer {
+  margin-top: -15px;
+  padding-top: 15px;
+  height: 50px;
+	padding-right: 55px;
+	background: url(images/vls-logo.png) no-repeat right top;
+}
+footer img {vertical-align: bottom; padding:5px; border-radius: 4px}
+footer a:hover img {background: #ccc}
+.brand {
+	background: url(images/skaut-logo.png) no-repeat 8px 5px;
+  padding-left: 45px !important;
+}
+.loginlink a {color: #777;}
+
+.tagy {
+    -moz-column-count:5; /* Firefox */
+    -webkit-column-count:5; /* Safari and Chrome */
+    column-count:5;
+}
+
+.noheader td {
+    border:0;
+    border-bottom: 1px solid #dddddd;
+}
+
+.autor {
+  margin: 27px 5em 0 5em;
+  min-height: 101px;
+  background: url(images/pif.jpg) no-repeat right top;
+}
+
+.poutac {
+  padding: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #555;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  text-align: center;
+
+}
+.poutac b {font-size: 220%; line-height: 1.3; color: #819d37;}
+
+.casopislink {
+	text-transform: none;
+	font-size: 220%;
+	line-height: 1.3;
+}
+.casopislink span {display:none; font-size: 40%; color: #999999; text-transform: uppercase}
+.casopislink:hover {text-decoration: none;}
+.casopislink:hover b {text-decoration: underline;}
+.casopislink:hover span {display: inline;text-decoration: none;}
+.casopislink.svetylko b {color: #fec210;}
+.casopislink.skaut b {color: #819d37;}
+.casopislink.skauting b {color: #0b2c65; font-style: italic;}
+.adminModule .casopislink:hover span {display:none;}
+.poutac .casopislink {display: block;margin:-15px;padding:15px}

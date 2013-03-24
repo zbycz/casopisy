@@ -1,0 +1,46 @@
+
+{block content}
+<h1 n:block=title>Časopis {\Casopisy\CasopisModel::getCasopis()}</h1>
+
+<p class="tagy">
+{foreach $tagy as $t}
+    <a n:href="Casopis: id=>$t" n:class="label,isset($tag)&&$t==$tag?label-info">{$t}</a> <small>({$t->pocet})</small>
+    <br>
+{/foreach}
+</p>
+
+
+
+{if isset($tag)}
+
+    <table class="table table-condensed noheader spacer4">
+    {foreach $tag->getObsah() as $r}
+        <tr onclick="window.location.href='#p{!$r->cislo_id}-{!$r->strana}'" style="cursor:pointer" title="{$r->popis}">
+            <td>{$r->cislo->casopis} {$r->cislo->mesicrok}
+            <td><a href="#p{$r->cislo_id}-{$r->strana}">{$r->stranaOdDo}</a>
+            <td>{$r->nazev}
+            <td>{foreach $r->getTags() as $t}
+                <span class="label label-info">{$t}</span>
+                {/foreach}
+
+    {/foreach}
+    </table>
+
+    <table class="stranky spacer3">
+    {foreach $tag->getObsah() as $r}
+        {var $p = $r->strana}
+        <tr n:class="$iterator->odd ? odd" id="p{$r->cislo_id}-{$p}">
+        <th>
+            {foreach $r->getStrany() as $s}<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, 200)}"></a>{/foreach}
+        </th>
+        <td>
+            <a n:href=":Admin:Cislo:#p$p $r->cislo->id" class="btn btn-mini pull-right margin1" n:if="$presenter->user->loggedIn"><i class="icon-pencil"></i></a>
+            <h3>{$r->nazev?$r->nazev:"strana $r->stranaOdDo"} &mdash; <a n:href="Cislo:#p$r->strana $r->cislo->id">{$r->cislo->casopis} {$r->cislo->mesicrok}</a></h3>
+            <p>{$r->popis}
+            <p>{foreach $r->getTags() as $t} <span class="label label-info">{$t}</span> {/foreach}
+        </td>
+        </tr>
+    {/foreach}
+    </table>
+
+{/if}

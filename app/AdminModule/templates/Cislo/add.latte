@@ -1,0 +1,26 @@
+
+{block content}
+
+<h1 n:block=title>Přidat časopis</h1>
+
+{control addForm}
+Maximální velikost uploadu: {ini_get("upload_max_filesize")}B
+
+
+<h3 class="spacer2">Vložit hromadně ze složky na FTP</h3>
+<ul>
+{foreach \Casopisy\CisloModel::bulkFiles() as $file=>$info}
+    <li>{$file}
+{/foreach}
+{if !$iterations}<li class="text-success">žádné PDF nenalezeno v /bulkinsert{/if}
+</ul>
+<a n:href="bulkInsert!" class="btn btn-danger">Vložit do aktuálního časopisu</a> Ročník bude 0
+
+{ifset $bulklog}
+    <ul>
+    {foreach $bulklog as $file}
+        <li class="text-error">{$file}
+    {/foreach}
+    {if !$iterations}<li class="text-success">žádné chyby{/if}
+    </ul>    
+{/ifset}

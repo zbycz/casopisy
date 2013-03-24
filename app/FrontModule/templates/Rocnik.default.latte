@@ -1,0 +1,16 @@
+
+{block content}
+<h1 n:block=title>{$rocnik->casopis} ročník {$rocnik->rocnik} <small>({$rocnik->roky})</small> </h1>
+
+
+<ul class="thumbnails rocnik">
+{foreach $rocnik->getCisla() as $c}
+  <li class="span3">
+    <a n:href="Cislo: $c->id" class="thumbnail">
+      <img src="{$c->getCoverLink(200)}">
+      {$c->mesicrok}
+    </a>
+  </li>
+
+{/foreach}
+</ul>

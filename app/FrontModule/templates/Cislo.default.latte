@@ -1,0 +1,51 @@
+
+{block content}
+<p class="pull-right margin1">
+	<a n:href=":Admin:Cislo: $cislo->id" class="btn" n:if="$presenter->user->loggedIn"><i class="icon-pencil"></i> Editovat</a>
+	<a href="{$cislo->getPdfLink()}" class="btn btn-primary"><i class="icon-download-alt icon-white"></i> Stáhnout kompletní PDF</a>
+	<small n:if="$cislo->pdfSize">({$cislo->pdfSize})</small>
+	<small n:if="!$cislo->pdfSize">PDF chybí :(</small>
+</p>
+
+
+<h1 n:block=title>{$cislo->casopis} {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
+
+<img src="{$cislo->getCoverLink(400)}" class="pull-right">
+
+
+<p>{$cislo->popis}</p>
+
+
+{* ------------------------------ *}
+<table class="table table-condensed" style="width:auto">
+{foreach $cislo->getObsah() as $r}
+<tr onclick="window.location.href='#p{!$r->strana}'" title="{$r->popis}" n:class="pointer, $r->strana==1 ? noborder">
+	<td><a href="#p{$r->strana}">{$r->stranaOdDo}</a>
+	<td>{$r->nazev}
+	<td><span class="label label-info" n:foreach="$r->getTags() as $t">{$t}</span>
+</tr>
+{/foreach}
+</table>
+
+
+{* ------------------------------ *}
+<table class="stranky">
+{foreach $cislo->getObsah() as $r}
+    {var $p = $r->strana}
+    <tr n:class="$iterator->odd ? odd" id="p{$p}" n:if="$p>1">
+    <th>
+        {foreach $r->getStrany() as $s}<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, 200)}"></a>{/foreach}
+    </th>
+    <td>
+        <a n:href=":Admin:Cislo:#p$p $cislo->id" class="btn btn-mini pull-right margin1" n:if="$presenter->user->loggedIn"><i class="icon-pencil"></i></a>
+        <h3>{$r->nazev}</h3>
+        <p>{$r->popis}
+
+        <p>
+        {foreach $r->getTags() as $t}
+            <span class="label label-info">{$t}</span>
+        {/foreach}
+    </td>
+    </tr>
+{/foreach}
+</table>
