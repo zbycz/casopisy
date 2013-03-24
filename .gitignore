@@ -1,4 +1,5 @@
 
+/app/config-server.neon
 /app/log/
 /app/temp/cache/
 /nbproject

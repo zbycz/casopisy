@@ -15,6 +15,7 @@ use \dibi;
   `rok` smallint(4) NOT NULL,
   `mesic` tinyint(2) NOT NULL,
   `verejne` tinyint(1) NOT NULL,
+  `priloha` tinyint(1) NOT NULL,
   `poznamka` text COLLATE utf8_czech_ci NOT NULL,
   `popis` text COLLATE utf8_czech_ci NOT NULL,
   `pocet_stran` int(11) NOT NULL,
@@ -58,7 +59,7 @@ class Cislo extends Entity {
         return $result;
     }
 
-    /** WARNING: NOT CONNECTED WITH DATABASE
+    /** WARNING: NOT FILLED FROM DATABASE (only for linking purposes)
      * @return \Casopisy\Obsah
      */
     function getPage($strana = 1) {

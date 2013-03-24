@@ -33,6 +33,8 @@ $configurator->createRobotLoader()
 
 // Create Dependency Injection container from config.neon file
 $configurator->addConfig(__DIR__ . '/config.neon');
+if(file_exists(__DIR__ . '/config-server.neon'))
+	$configurator->addConfig(__DIR__ . '/config-server.neon');
 $container = $configurator->createContainer();
 
 // Connect to the database

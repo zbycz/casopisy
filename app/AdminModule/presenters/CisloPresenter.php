@@ -61,15 +61,15 @@ class CisloPresenter extends BasePresenter {
         $form->addSelect('casopis_id', 'Časopis', CasopisModel::getCasopisy());
         $form->addText('rocnik', 'Ročník')->controlPrototype->class("input-mini");
         $form->addText('cislo', 'Číslo')->controlPrototype->class("input-mini");
-        $form->addSelect('mesic', 'Měsíc', CasopisModel::$months)
-                ->setPrompt("-vyberte-");
+        $form->addSelect('mesic', '_Měsíc', CasopisModel::$months)
+                ->setPrompt("-vyberte-")->controlPrototype->accesskey('m');
         $form->addText('rok', 'Rok')->controlPrototype->class("input-mini");
         $form->addText('popis', 'Popis');
         $form->addCheckbox('verejne', 'Zveřejněno');
         $form->addCheckbox('priloha', 'Příloha k časopisu (přiřazuje se dle ročníku a čísla)');
-        $form->addText('poznamka', 'Vnitřní poznámka')->controlPrototype->class("input-xxlarge");;
+        $form->addText('poznamka', 'Vnitřní poznámka')->controlPrototype->class("input-xxlarge");
         $form->addSubmit('submit1', 'Uložit úpravy')->controlPrototype->class("btn btn-primary");
-        $form->addSubmit('gonext', 'Uložit & přejít +1')->controlPrototype->class("btn");
+        $form->addSubmit('gonext', '_Uložit & přejít +1')->controlPrototype->class("btn")->accesskey('u');
         $form->onSuccess[] = $this->editFormSubmitted;
         return $form;
     }
