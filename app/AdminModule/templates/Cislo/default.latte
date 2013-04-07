@@ -1,7 +1,7 @@
 
 {block content}
 <a n:href=":Front:Cislo: $cislo[id]" class="btn pull-right margin1"><i class="icon-globe"></i> Zobrazit na webu</a>
-<h1 n:block=title>{$cislo->casopis} {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
+<h1 n:block=title><span class="muted">{$cislo->casopis}</span> {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
 
 <a n:href="edit $cislo[id]" class="btn btn-success btn-mini pull-right margin1">Upravit detaily</a>
 

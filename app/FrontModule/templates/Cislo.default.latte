@@ -8,7 +8,7 @@
 </p>
 
 
-<h1 n:block=title>{$cislo->casopis} {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
+<h1 n:block=title><span class="muted">{$cislo->casopis}</span> {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
 
 {if !$cislo->priloha}
 	<a href="{$cislo->page->getLink(1)}" class="lightbox pull-right">

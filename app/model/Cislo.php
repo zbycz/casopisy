@@ -96,7 +96,7 @@ class Cislo extends Entity {
     }
 
     function getCasopis() {
-        return CasopisModel::getCasopisById($this->casopis_id);
+        return CasopisModel::getCasopisLongById($this->casopis_id);
     }
 
     function getMesicTxt() {

@@ -8,12 +8,15 @@ use \dibi;
 class CasopisModel {
 
     private static $casopisy;
+    private static $casopisyLong;
     public static $showUnpublished = false;
     public static $casopis_id;
 
     static function getCasopisy() {
-        if (!self::$casopisy)
+        if (!self::$casopisy){
             self::$casopisy = \Nette\Environment::getVariable("casopisy");
+            self::$casopisyLong = \Nette\Environment::getVariable("casopisyLong");
+		}
         return self::$casopisy;
     }
 
@@ -31,35 +34,48 @@ class CasopisModel {
             return self::$casopisy[$id];
         return false;
     }
-    
+
+    static function getCasopisLongById($id) {
+        if (!self::$casopisy)
+            self::getCasopisy();
+        if (isset(self::$casopisyLong[$id]))
+            return self::$casopisyLong[$id];
+        return false;
+    }
+
+
     static function getCasopis(){
         return self::getCasopisById(self::$casopis_id);
     }
 
+    static function getCasopisLong(){
+        return self::$casopisyLong[self::$casopis_id];
+    }
+
     static function getRocnik($rocnik) {
         $rocnik = dibi::fetch("
-            SELECT rocnik, casopis_id, min(rok) od, max(rok) do, count(1) pocet 
-            FROM cislo 
-            WHERE casopis_id=%i", self::$casopis_id, " 
+            SELECT rocnik, casopis_id, min(rok) od, max(rok) do, count(1) pocet
+            FROM cislo
+            WHERE casopis_id=%i", self::$casopis_id, "
                 AND rocnik = %i", $rocnik, "
                 AND priloha=0
                 %if", !self::$showUnpublished, " AND verejne = 1 %end
-            GROUP BY rocnik 
+            GROUP BY rocnik
             ORDER BY rocnik DESC
           ");
         if($rocnik)
             return new Rocnik($rocnik);
         return false;
     }
-    
+
     static function getRocniky() {
         $rocniky = dibi::query("
-            SELECT rocnik, casopis_id, min(rok) od, max(rok) do, count(1) pocet 
-            FROM cislo 
-            WHERE casopis_id=%i", self::$casopis_id, " 
+            SELECT rocnik, casopis_id, min(rok) od, max(rok) do, count(1) pocet
+            FROM cislo
+            WHERE casopis_id=%i", self::$casopis_id, "
                 AND priloha=0
                 %if", !self::$showUnpublished, " AND verejne = 1 %end
-            GROUP BY rocnik 
+            GROUP BY rocnik
             ORDER BY rocnik DESC
           ");
         $result = array();
@@ -85,8 +101,8 @@ class CasopisModel {
 
         return $result;
     }
-    
-    
+
+
     public static $months = array(
         1 => 'leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'
     );
