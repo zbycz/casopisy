@@ -72,11 +72,6 @@
 
 
 
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
       <div class="navbar-text pull-left span">
 		{if $presenter->isAdminModule()}
             <a n:href=":Front:Casopis:" class="brand">Skautské časopisy <small>web &raquo;</small></a>
@@ -114,7 +109,7 @@
 <div class="row-fluid">
 <div class="span3">
 <div class="well sidebar-nav" n:if="isset($casopis)">
-    <a n:href=":Admin:Cislo:add" class="btn btn-mini btn-info pull-right spacer spacerr" n:if="$presenter->isAdminModule()"><i class="icon-upload icon-white"></i> nahrát</a>
+    <a n:href=":Admin:Cislo:add" class="btn btn-mini btn-info pull-right spacer spacerr" n:if="$presenter->isAdminModule() && $presenter->user->identity->admin"><i class="icon-upload icon-white"></i> nahrát</a>
     <div class="nav-header spacer">
 		<a n:href="Casopis:" class="casopislink {$casopis|webalize}">
 			<b>{$casopis}</b>

@@ -46,12 +46,18 @@ class CisloPresenter extends BasePresenter {
     }
 
     public function addFormSubmitted(Nette\Application\UI\Form $form) {
-        $id = CisloModel::upload($this->casopis, $form['file']->value);
+		if(!$this->user->identity->admin)
+			throw new \Nette\Application\ForbiddenRequestException("Only admin can add");
+
+		$id = CisloModel::upload($this->casopis, $form['file']->value);
         $this->flashMessage('Číslo úspěšně nahráno.');
         $this->redirect('edit', $id);
     }
     function handleBulkInsert(){
-        $this->template->bulklog = CisloModel::bulkInsert($this->casopis);
+		if(!$this->user->identity->admin)
+			throw new \Nette\Application\ForbiddenRequestException("Only admin can add");
+
+		$this->template->bulklog = CisloModel::bulkInsert($this->casopis);
         $this->flashMessage('Úspěšně vloženo');
         $this->redirect('add');
     }
