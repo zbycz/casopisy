@@ -156,11 +156,7 @@
 	{* breakIf !$user->loggedIn *}
 {/foreach}
 
-<div class="well sidebar-nav poutac" n:if="!$presenter->isAdminModule()">
-		Pomůžeš mi prosím s tagováním časopisu<br>
-		<b>Skaut-Junák?</b><br>
-		Piš na mail: pif&#64;skaut.cz
-</div><!--/.well -->
+{!dibi::fetchSingle('SELECT text FROM pages WHERE id="leftmenu"')}
 
 </div><!--/span-->
 <div class="span9">
