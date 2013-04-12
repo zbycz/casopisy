@@ -10,9 +10,10 @@
 </p>
 
 
+{if !isset($tag)}
+	{!dibi::fetchSingle('SELECT text FROM pages WHERE id=%s', $casopis)}
 
-{if isset($tag)}
-
+{else}
     <table class="table table-condensed noheader spacer4">
     {foreach $tag->getObsah() as $r}
         <tr onclick="window.location.href='#p{!$r->cislo_id}-{!$r->strana}'" style="cursor:pointer" title="{$r->popis}">

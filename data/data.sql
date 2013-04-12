@@ -56,6 +56,12 @@ INSERT INTO `tag` (`cislo_id`, `strana`, `tag`) VALUES
 (6,	4,	'vlèek/svìtýlko'),
 (6,	4,	'bžunda');
 
+DROP TABLE IF EXISTS `pages`;
+CREATE TABLE `pages` (
+  `id` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `text` text COLLATE utf8_czech_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
