@@ -48,6 +48,18 @@ $('#frmeditForm-mesic').val(parseInt(m[4]));
 void(0);
 
 
+///r52/skaut_2009_prosinec_final_nahled_150.pdf
+///2009-10,r.52/SJ_5_2010_06cerven_web.pdf
+
+javascript:var s=$('#frmeditForm-poznamka').val();
+m=s.match(/r[^0-9]*(\d+)[^_]+_(\d+)/i);
+
+$('#frmeditForm-verejne').prop('checked',1);
+$('#frmeditForm-rocnik').val(parseInt(m[1]));
+$('#frmeditForm-rok').val(parseInt(m[2]));
+
+void(0);
+
 
 
 
