@@ -73,7 +73,7 @@ $frontRouter[] = new Route('<casopis svetylko|kmen|skaut|skauting>/<presenter>[/
             'action' => 'default',
         ));
 
-$frontRouter[] = new Route('<presenter>/<action>[/<id>]', "Homepage:default");
+$frontRouter[] = new Route('<presenter>/<action>[.php][/<id>]', "Homepage:default");
 
 Presenter::extensionMethod('isAdminModule', function (Presenter $that) {
       return strpos($that->getName(), "Admin:") === 0;

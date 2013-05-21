@@ -30,6 +30,7 @@ class UserModel
 			dibi::query("UPDATE user SET", $data, " WHERE id=%i",$id);
 		}
 		else {
+			$data['firstlogin%sql'] = 'NOW()';
 			dibi::query("INSERT INTO user", $data);
 		}
 
