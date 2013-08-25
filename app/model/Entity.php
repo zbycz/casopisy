@@ -73,5 +73,3 @@ class Entity extends \Nette\Object implements \IteratorAggregate, \ArrayAccess {
     }
 
 }
-
-?>

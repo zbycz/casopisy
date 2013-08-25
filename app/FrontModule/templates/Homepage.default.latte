@@ -1,4 +1,17 @@
 {block title}Skautské časopisy on-line{/block}
 
 {block content}
-{!dibi::fetchSingle('SELECT text FROM pages WHERE id="homepage"')}
+
+{capture $cisla}
+<ul class="thumbnails poslednicisla">
+<li class="span6" n:foreach="\Casopisy\CasopisModel::getPosledniCisla() as $c">
+	<a n:href="Cislo: $c->id, casopis=>$c->casopis_id" class="thumbnail">
+		<img src="{$c->getCoverLink(200)}" alt="">
+		<span>{$c->mesicrok}</span>
+	</a>
+</li>
+</ul>
+{/capture}
+
+{var $text = dibi::fetchSingle('SELECT text FROM pages WHERE id="homepage"')}
+{!str_replace('__POSLEDNICISLA__', $cisla, $text)}

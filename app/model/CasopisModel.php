@@ -12,6 +12,7 @@ class CasopisModel {
     public static $showUnpublished = false;
     public static $casopis_id;
 
+    /** @return array of idx => txt */
     static function getCasopisy() {
         if (!self::$casopisy){
             self::$casopisy = \Nette\Environment::getVariable("casopisy");
@@ -51,6 +52,20 @@ class CasopisModel {
     static function getCasopisLong(){
         return self::$casopisyLong[self::$casopis_id];
     }
+
+	static function getPosledniCisla(){
+		$cisla = array();
+		foreach (self::getCasopisy() as $idx => $txt) {
+			$data = dibi::fetch("
+				SELECT *
+				FROM cislo
+				WHERE casopis_id = %i",$idx," AND verejne=1 AND priloha=0
+				ORDER BY rok DESC, mesic DESC
+				LIMIT 1");
+			$cisla[] = new Cislo($data);
+		}
+		return $cisla;
+	}
 
     static function getRocnik($rocnik) {
         $rocnik = dibi::fetch("
@@ -108,5 +123,3 @@ class CasopisModel {
     );
 
 }
-
-?>
