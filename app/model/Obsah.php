@@ -86,6 +86,22 @@ class Obsah extends Entity {
             dibi::query("INSERT INTO tag %ex", $data);
     }
 
+	public function addTag($tag) {
+		$tags = $this->getTags();
+		if (!in_array($tag, $tags)) {
+			$data = array("cislo_id" => $this->cislo_id, "strana" => $this->strana, "tag" => trim($tag));
+			dibi::query("INSERT INTO tag", $data);
+		}
+	}
+
+	public function removeTag($tag) {
+        dibi::query("
+			DELETE FROM tag
+			WHERE cislo_id=%i", $this->cislo_id, "
+				AND strana=%i", $this->strana,"
+				AND tag=%s", $tag);
+	}
+
     /** Response for Files:preview
      */
     public function getPreviewHttpResponse($o = null) {
