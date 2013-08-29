@@ -24,6 +24,8 @@ class CisloPresenter extends BasePresenter {
 
 	public function handlePribrat($p)
 	{
+		// TODO permission!!!
+
 		$obsah = $this->cislo->getPage($p);
 		$dalsi = $this->cislo->getPage($p + $obsah->strany_navic + 1);
 
@@ -39,18 +41,24 @@ class CisloPresenter extends BasePresenter {
 			$this->flashMessage('CHYBA: Nelze přibrat další stránku, dokud nemá vše prázdné.');
 		}
 		$this->invalidateControl('flashes');
+
+		if (!$this->isAjax())
+			$this->redirect("this#p$p");
 	}
 
 	public function handleOdebrat($p)
 	{
+		// TODO permission!!!
+
 		$obsah = $this->cislo->getPage($p);
-		if ($obsah->strany_navic > 1) {
+		if ($obsah->strany_navic >= 1) {
 			$obsah->strany_navic -= 1;
 			$obsah->save();
-			$this->flashMessage('Stránka odpojit.');
+			$this->flashMessage('Stránka odpojena.');
 		}
 		else {
 			$this->flashMessage('CHYBA: Nelze odebrat stránku, již je jen jedna.');
 		}
+		$this->redirect("this#p$p");
 	}
 }
