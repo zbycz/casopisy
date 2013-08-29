@@ -35,23 +35,143 @@
 
 
 {* ------------------------------ *}
-<table class="stranky">
+<table class="stranky" id="strankyTable" data-cid="{$cislo->id}">
 {foreach $cislo->getObsah() as $r}
     {var $p = $r->strana}
-    <tr n:class="$iterator->odd ? odd" id="p{$p}" n:if="$cislo->priloha OR $p>1">
+    <tr n:class="$iterator->odd ? odd" id="p{$p}" n:if="$p>1 OR $cislo->priloha">
     <th>
-        {foreach $r->getStrany() as $s}<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, 200)}"></a>{/foreach}
+        {foreach $r->getStrany() as $s}
+			<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, 200)}"></a>
+		{/foreach}
     </th>
     <td>
         <a n:href=":Admin:Cislo:#p$p $cislo->id" class="btn btn-mini pull-right margin1" n:if="$presenter->user->loggedIn"><i class="icon-pencil"></i></a>
-        <h3>{$r->nazev}</h3>
-        <p>{$r->popis}
+        <h3 class="cedit" data-ph="# Pojmenuj článek">{$r->nazev}</h3>
+        <p class="cedit" data-ph="# přidej popis">{$r->popis}</p>
 
         <p>
         {foreach $r->getTags() as $t}
             <span class="label label-info">{$t}</span>
         {/foreach}
+			<input type="text" class="addTag" placeholder="přidat štítek [enter]">
     </td>
     </tr>
 {/foreach}
 </table>
+
+<script>
+	var cid = $('#strankyTable').attr('data-cid');
+
+	// add tag
+	function addTag($obj) {
+		var page = $obj.parents('tr').attr('id').substr(1);
+		var tag = $obj.val();
+		$obj.after('<small>ukládám...</small>')
+		$.get({link Ajax:addTag}, { cid: cid, p: page, tag: tag}, function(){
+			$obj.before('<span class="label label-info">'+tag+'</span> ');
+			$obj.next().hide(500);
+			$obj.val("");
+		});
+		$('.addTag').autocomplete("close");
+	}
+
+	$('.addTag').autocomplete({
+		minLength: 0,
+		select: function(){
+			var $obj = $(this);
+			setTimeout(function(){
+				addTag($obj);
+			}, 20);
+		},
+		source: {array_keys(\Casopisy\CasopisModel::getAllTags())}
+	}).on('focus click', function(){
+		$(this).autocomplete("search", $(this).val());
+    }).keypress(function(e) {
+		if(e.which == 13) { // enter key
+			addTag($(this));
+		}
+	});
+
+	// remove tag
+	$('.label').attr('title', 'smazat štítek')
+	$('#strankyTable').on('click', '.label', function(){
+		var $obj = $(this);
+		var page = $obj.parents('tr').attr('id').substr(1);
+		var tag = $obj.text();
+
+		$.get({link Ajax:removeTag}, { cid: cid, p: page, tag: tag }, function(){
+			var undo = $('<a href="#">vzít zpět "'+tag+'"</a>').click(function(){ alert(1);});
+			$obj.replaceWith(undo)
+		});
+
+	});
+
+
+	// edit fields
+	$('.cedit').each(function(){
+			$(this).data('orig-value', $(this).text()).attr('contenteditable', 'true');
+		}).blur(function(){
+			var $obj = $(this);
+			var page = $obj.parents('tr').attr('id').substr(1);
+			var field = this.tagName == 'H3' ? 'nazev' : 'popis';
+			var origValue = $obj.data('orig-value');
+			var newValue = $obj.text();
+
+			if (newValue == "") {  // strip <br> after edit and delete chars
+				$obj.text("");
+			}
+
+			// sending changed data
+			if(origValue != newValue){
+				$obj.removeAttr('contenteditable').removeClass('cedit');
+				$obj.append(' <small>ukládám...</small>');
+
+				$.get({link Ajax:editField}, { cid: cid, p: page, field: field, value: newValue }, function(){
+					$obj.find('small').hide(400);
+					$obj.append('<small>ok (<a href=#>vzít zpět?</a>)</small>');
+
+					// undo link
+					$obj.find('a').click(function(){
+						$obj.append(' <small>chybami se člověk učí...</small>');
+						$.get({link Ajax:editField}, { cid: cid, p: page, field: field, value: origValue }, function(){
+							$obj.text(origValue);
+							$obj.attr('contenteditable', 'true').addClass('cedit');
+						});
+						return false;
+					});
+				});
+			}
+
+		});
+
+	$( document ).ajaxError(function() { alert("Nepovedlo se uložit poslední změnu - obnovte, prosím, stránku či zkontrolujte připojení.") });
+
+
+</script>
+
+
+<style n:syntax="off">
+    #strankyTable td .cedit:empty:not(:focus):before {
+        content:attr(data-ph);
+		color: #ddd;
+		font-style: italic;
+
+    }
+	.cedit { cursor: pointer; }
+	.cedit:hover:not(:focus):after { content: url(/static/images/inline-edit.png); }
+	p.cedit { min-height: 19px }
+
+	#strankyTable small { font-size: 12px }
+
+	.label:hover {text-decoration: line-through; background: #aaa; cursor: pointer;}
+
+	#strankyTable .addTag {
+		font-size: 10.998px;
+		line-height: 14px;
+		color: #555;
+		cursor: pointer;
+		position: relative; top: 5px;
+		border: 0;
+		box-shadow: none;
+	}
+</style>
