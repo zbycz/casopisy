@@ -17,7 +17,7 @@ class CisloPresenter extends BasePresenter {
 
     public function actionDefault($id) {
         $this->cislo = $this->template->cislo = CisloModel::getById($id);
-		$this->cislo->getObsah();
+		$this->cislo->getObsah(); // cache
         if (!$this->cislo)
 			throw new \Nette\Application\BadRequestException("Cislo '$id' neexistuje");
     }
@@ -31,25 +31,32 @@ class CisloPresenter extends BasePresenter {
 	public function handlePribrat($p)
 	{
 		$obsah = $this->cislo->getPage($p);
-		$obsah->strany_navic += 1;
-		$obsah->save();
+		$dalsi = $this->cislo->getPage($p + $obsah->strany_navic + 1);
 
-		$dalsi = $p + $obsah->strany_navic;
-
-		$dalsiObsah = $this->cislo->getPage($dalsi);
-		if ($dalsiObsah->strany_navic > 0) {
-			$this->redirect('this');
+		// umoznit přibrání další ?
+		if (!$dalsi->nazev AND !$dalsi->popis AND !$dalsi->strany_navic AND !count($dalsi->getTags())) {
+			$obsah->strany_navic += 1;
+			$obsah->save();
+			$this->payload->result = 'ok';
+			$this->flashMessage('Stránka přidána.');
 		}
-
-		$this->cislo->deleteObsah($dalsi);
+		else {
+			$this->payload->result = 'error';
+			$this->flashMessage('CHYBA: Nelze přibrat další stránku, dokud nemá vše prázdné.');
+		}
+		$this->invalidateControl('flashes');
 	}
 
 	public function handleOdebrat($p)
 	{
-            if (isset($post["odloucit_$p"])){
-                $data["strany_navic"] = $obsah->strany_navic - 1;
-                $pagejump = $p;
-            }
-
+		$obsah = $this->cislo->getPage($p);
+		if ($obsah->strany_navic > 1) {
+			$obsah->strany_navic -= 1;
+			$obsah->save();
+			$this->flashMessage('Stránka odpojit.');
+		}
+		else {
+			$this->flashMessage('CHYBA: Nelze odebrat stránku, již je jen jedna.');
+		}
 	}
 }

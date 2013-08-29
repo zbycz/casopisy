@@ -73,9 +73,13 @@
 	$('#strankyTable').on('click', '.addPage', function(){
 		var $tr = $(this).parents('tr');
 		var $a = $tr.next().find('th > a:first');
-		$tr.find('th').append($a);
-		$tr.next().remove();
-		$.get($(this).attr('href'));
+		$.get($(this).attr('href'), function(payload){
+			$.nette.success(payload);
+			if (payload.result == 'ok') {
+				$tr.find('th').append($a);
+				$tr.next().remove();
+			}
+		});
 		return false;
 	});
 
