@@ -22,11 +22,15 @@ use \dibi;
   PRIMARY KEY (`id`) */
 class Cislo extends Entity {
 
+	private $obsah = array();
+
     /**
      * @return Obsah[]
      */
     function getObsah() {
-        $result = array();
+		if (count($this->obsah))
+			return $this->obsah;
+
         $stranky = dibi::query("SELECT * FROM obsah WHERE cislo_id=%i", $this->id)->fetchAssoc('strana');
 
         for ($pagenum = 1; $pagenum <= $this->pocet_stran; $pagenum++) {
@@ -35,11 +39,11 @@ class Cislo extends Entity {
             else
                 $obsah = new Obsah(array("cislo_id" => $this->id, "strana" => $pagenum));
 
-            $result[] = $obsah;
+			$this->obsah[$pagenum] = $obsah;
             $pagenum += $obsah->strany_navic;
         }
 
-        return $result;
+        return $this->obsah;
     }
 
     function getPrilohy() {
@@ -63,6 +67,8 @@ class Cislo extends Entity {
      * @return \Casopisy\Obsah
      */
     function getPage($strana = 1) {
+		if (isset($this->obsah[$strana]))
+			return $this->obsah[$strana];
         return new Obsah(array("cislo_id" => $this->id, "strana" => $strana));
     }
 
