@@ -22,12 +22,6 @@ class CisloPresenter extends BasePresenter {
 			throw new \Nette\Application\BadRequestException("Cislo '$id' neexistuje");
     }
 
-
-	public function handleRozdvojit($p)
-	{
-
-	}
-
 	public function handlePribrat($p)
 	{
 		$obsah = $this->cislo->getPage($p);
