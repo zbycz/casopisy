@@ -45,7 +45,6 @@
 		{/foreach}
     </th>
     <td>
-        <a n:href=":Admin:Cislo:#p$p $cislo->id" class="btn btn-mini pull-right margin1" n:if="$presenter->user->loggedIn"><i class="icon-pencil"></i></a>
         <h3 class="cedit" data-ph="# Pojmenuj článek">{$r->nazev}</h3>
         <p class="cedit" data-ph="# přidej popis">{$r->popis}</p>
 
@@ -54,6 +53,14 @@
             <span class="label label-info">{$t}</span>
         {/foreach}
 			<input type="text" class="addTag" placeholder="přidat štítek [enter]">
+		</p>
+
+		<div class="bottom">
+			{if !$r->strany_navic}<a n:href="rozdvojit! $p">Rozdvojit</a>{if $p!=$cislo->pocet_stran} / {/if}{/if}
+			<a n:href="pribrat! $p" n:if="$p!=$cislo->pocet_stran" class="addPage">Přibrat další stránku</a>
+			{if $r->strany_navic} / <a n:href="odebrat! $p">odebrat</a>{/if}
+		</div>
+
     </td>
     </tr>
 {/foreach}
@@ -61,6 +68,16 @@
 
 <script>
 	var cid = $('#strankyTable').attr('data-cid');
+
+	// add next page
+	$('#strankyTable').on('click', '.addPage', function(){
+		var $tr = $(this).parents('tr');
+		var $a = $tr.next().find('th > a:first');
+		$tr.find('th').append($a);
+		$tr.next().remove();
+		$.get($(this).attr('href'));
+		return false;
+	});
 
 	// add tag
 	function addTag($obj) {
@@ -174,4 +191,9 @@
 		border: 0;
 		box-shadow: none;
 	}
+
+	#strankyTable td {position: relative;}
+	#strankyTable .bottom {position: absolute; bottom: 1em; right: 1em; color: #ccc; font-size: 10px}
+	#strankyTable .bottom a {color: #ccc}
+
 </style>
