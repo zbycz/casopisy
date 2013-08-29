@@ -54,7 +54,11 @@ a.del:hover {background: #fd4239; color: #fff;}
 
 #flashes {
     overflow:hidden;
-    position:relative;
+    /*position:relative;*/
+	position: fixed;
+	left: 300px;
+	right: 100px;
+	z-index: 100;
 }
 #flashes .box {
     clear:left;
