@@ -6,6 +6,14 @@ use Casopisy\CisloModel;
 
 class AjaxPresenter extends \Nette\Application\UI\Presenter
 {
+	public function startup()
+	{
+		if (!$this->user->loggedIn) {
+			throw new \Nette\Application\ForbiddenRequestException("Nepřihlášený uživatel");
+		}
+		parent::startup();
+	}
+
     public function actionEditField($cid, $p, $field, $value)
 	{
 		$cislo = CisloModel::getById($cid);

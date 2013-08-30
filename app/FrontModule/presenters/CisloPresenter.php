@@ -20,6 +20,8 @@ class CisloPresenter extends BasePresenter {
 		$this->cislo->getObsah(); // cache
         if (!$this->cislo)
 			throw new \Nette\Application\BadRequestException("Cislo '$id' neexistuje");
+		if (!$this->cislo->verejne AND !$this->user->isInRole('admin'))
+			throw new \Nette\Application\ForbiddenRequestException("Číslo '$id' není veřejné");
     }
 
 	public function handlePribrat($p)

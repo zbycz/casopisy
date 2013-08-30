@@ -3,7 +3,7 @@
 <a n:href=":Front:Cislo: $cislo[id]" class="btn pull-right margin1"><i class="icon-globe"></i> Zobrazit na webu</a>
 <h1 n:block=title><span class="muted">{$cislo->casopis}</span> {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
 
-<a n:href="edit $cislo[id]" class="btn btn-success btn-mini pull-right margin1" n:if="$presenter->user->identity->admin">Upravit detaily</a>
+<a n:href="edit $cislo[id]" class="btn btn-success btn-mini pull-right margin1" n:if="$presenter->user->isInRole(user)">Upravit detaily</a>
 
 <table class="table table-noborder" style="width: 80%;">
 <tr><td style="width:10em">Popis: <td>{$cislo->popis}

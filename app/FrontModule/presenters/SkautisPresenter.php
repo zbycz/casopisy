@@ -10,7 +10,9 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 {
 	public function actionDefault()
 	{
-		$this->redirectUrl(loginFormAddres);
+		if (!$this->user->loggedIn) {
+			$this->redirectUrl(loginFormAddres);
+		}
 	}
 
 	public function actionToken()
@@ -24,23 +26,36 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 		$login_ok = $skautis->loginHelper->doLogin();
 
 		if(!$login_ok){
-			$this->flashMessage("Přihlášení přes SkautIS se nezdařilo, kontaktuj správce");
+			$this->flashMessage("CHYBA: Přihlášení přes SkautIS se nezdařilo, zkus to znovu a kontaktuj správce");
 			$this->redirect(':Front:Homepage:');
 		}
 
-
+		// get info from skautis
 		$p = $skautis->getLoggedPerson();
-		$data = \Casopisy\UserModel::login(array(
+		// $p->ID_PersonType = junak  // vždy
+		$row = \Casopisy\UserModel::login(array(
 			'id' => $p->ID,
 			'name' => $p->NickName ?: "$p->FirstName {$p->LastName[0]}.",
 			'fullname' => $p->DisplayName . ($p->City ? ", $p->City" : ""),
-			'type' => $p->ID_PersonType,
+			'yearfrom' => $p->YearFrom,
 			'email' => $p->Email,
 			'birthday' => $p->Birthday,
 			));
 
-		$this->user->login(new \Nette\Security\Identity($data->id, array('user'), $data));
-		$this->redirect(':Admin:Casopis:');
+		// banned user
+		if ($row->role == 'ban') {
+			$this->flashMessage("CHYBA: Přístup byl odepřen, kontaktuj správce");
+			$this->redirect(':Front:Homepage:');
+		}
+
+		// admin role
+		$role = array('user');
+		if ($row->role == 'admin')
+			$role[] = 'admin';
+
+		$this->user->login(new \Nette\Security\Identity($row->id, $role, $row));
+		$this->flashMessage("Přihlášení úspěšné");
+		$this->redirect(':Front:Homepage:');
 	}
 
 	public function actionMotd()
@@ -55,7 +70,12 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 		$token = $skautis->loginHelper->getLoginId();
 		$skautis->loginHelper->logout();
 
-		$this->redirectUrl(applicationAdress."login/LogOut.aspx?AppID=".appId."&token=".$token);
+		if ($token) {
+			$this->redirectUrl(applicationAdress."login/LogOut.aspx?AppID=".appId."&token=".$token);
+		}
+		else {
+			$this->redirectUrl(loginFormAddres);
+		}
 	}
 
 }

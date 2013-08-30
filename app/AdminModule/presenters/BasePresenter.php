@@ -13,9 +13,9 @@ abstract class BasePresenter extends \CommonBasePresenter {
         parent::startup();
 
         //check permission
-        if (!$this->user->isLoggedIn()) {
-            $backlink = $this->application->storeRequest();
-            $this->redirect(':Front:Login:', array('backlink' => $backlink));
+        if (!$this->user->isInRole('admin')) {
+            $this->flashMessage('Nemáte dostatečná práva');
+            $this->redirect(':Front:Homepage:');
         }
 
         //admin things

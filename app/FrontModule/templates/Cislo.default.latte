@@ -52,10 +52,10 @@
         {foreach $r->getTags() as $t}
             <span class="label label-info">{$t}</span>
         {/foreach}
-			<input type="text" class="addTag" placeholder="přidat štítek [enter]">
+			<input type="text" class="addTag" placeholder="přidat štítek [enter]" n:if="$user->loggedIn">
 		</p>
 
-		<div class="bottom">
+		<div class="bottom" n:if="$user->loggedIn">
 			<a n:href="pribrat! $p" n:if="$p!=$cislo->pocet_stran" class="addPage">Přibrat další stránku</a>
 			{if $r->strany_navic} / <a n:href="odebrat! $p">odebrat</a>{/if}
 		</div>
@@ -64,6 +64,8 @@
     </tr>
 {/foreach}
 </table>
+
+{if $user->loggedIn}
 
 <script>
 	var cid = $('#strankyTable').attr('data-cid');
@@ -200,3 +202,5 @@
 	#strankyTable .bottom a {color: #ccc}
 
 </style>
+
+{/if}
