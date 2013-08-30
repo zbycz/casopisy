@@ -65,7 +65,7 @@
                       <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
-                  <li><a n:href=":Admin:Casopis:"><i class="icon-pencil"></i> administrace</a></li>
+                  <li n:if="$user->isInRole(admin)"><a n:href=":Admin:Casopis:"><i class="icon-pencil"></i> administrace</a></li>
                   <li><a n:href=":Front:Login:logout"><i class="icon-off"></i> odhlásit</a></li>
               </ul>
         </div>

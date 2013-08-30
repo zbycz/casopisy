@@ -22,6 +22,20 @@ CREATE TABLE `cislo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
+DROP TABLE IF EXISTS `log`;
+CREATE TABLE `log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `cislo_id` int(11) NOT NULL,
+  `strana` int(11) NOT NULL,
+  `typ` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  `puvodni` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  `nova` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+
 DROP TABLE IF EXISTS `obsah`;
 CREATE TABLE `obsah` (
   `cislo_id` int(11) NOT NULL,
@@ -75,4 +89,4 @@ CREATE TABLE `user` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
--- 2013-08-30 16:22:02
+-- 2013-08-30 17:00:56

@@ -3,6 +3,7 @@
 namespace FrontModule;
 
 use Casopisy\CisloModel;
+use Casopisy\LogModel;
 
 class AjaxPresenter extends \Nette\Application\UI\Presenter
 {
@@ -19,11 +20,18 @@ class AjaxPresenter extends \Nette\Application\UI\Presenter
 		$cislo = CisloModel::getById($cid);
 		$cislo->getObsah(); // cache
 		$obsah = $cislo->getPage($p);
-		if ($field == 'nazev')
+		if ($field == 'nazev') {
+			$puvodni = $obsah->nazev;
 			$obsah->nazev = $value;
-		else
+			$obsah->save();
+		}
+		else {
+			$puvodni = $obsah->popis;
 			$obsah->popis = $value;
-		$obsah->save();
+			$obsah->save();
+		}
+
+		LogModel::add($cid, $p, "editField-$field", $value, $puvodni);
 		$this->terminate();
 	}
 
@@ -33,6 +41,8 @@ class AjaxPresenter extends \Nette\Application\UI\Presenter
 		$cislo->getObsah(); // cache
 		$obsah = $cislo->getPage($p);
 		$obsah->addTag($tag);
+
+		LogModel::add($cid, $p, 'addTag', $tag);
 		$this->terminate();
 	}
 
@@ -42,6 +52,8 @@ class AjaxPresenter extends \Nette\Application\UI\Presenter
 		$cislo->getObsah(); // cache
 		$obsah = $cislo->getPage($p);
 		$obsah->removeTag($tag);
+
+		LogModel::add($cid, $p, 'removeTag', $tag);
 		$this->terminate();
 	}
 
