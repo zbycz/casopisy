@@ -1,8 +1,8 @@
--- Adminer 3.6.3 MySQL dump
+-- Adminer 3.7.1 MySQL dump
 
 SET NAMES utf8;
 SET foreign_key_checks = 0;
-SET time_zone = 'SYSTEM';
+SET time_zone = '+02:00';
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 DROP TABLE IF EXISTS `cislo`;
@@ -36,7 +36,8 @@ CREATE TABLE `obsah` (
 DROP TABLE IF EXISTS `pages`;
 CREATE TABLE `pages` (
   `id` varchar(50) COLLATE utf8_czech_ci NOT NULL,
-  `text` text COLLATE utf8_czech_ci NOT NULL
+  `text` text COLLATE utf8_czech_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
@@ -45,29 +46,33 @@ CREATE TABLE `tag` (
   `cislo_id` int(11) NOT NULL,
   `strana` int(11) NOT NULL,
   `tag` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `cislo_id_strana` (`cislo_id`,`strana`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
-DROP TABLE IF EXISTS `pages`;
-CREATE TABLE `pages` (
-  `id` varchar(50) COLLATE utf8_czech_ci NOT NULL,
-  `text` text COLLATE utf8_czech_ci NOT NULL
+DROP TABLE IF EXISTS `taginfo`;
+CREATE TABLE `taginfo` (
+  `tag` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `barva` varchar(10) COLLATE utf8_czech_ci NOT NULL,
+  `sekce` varchar(100) COLLATE utf8_czech_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_czech_ci NOT NULL,
   `fullname` varchar(255) COLLATE utf8_czech_ci NOT NULL,
-  `type` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  `yearfrom` smallint(6) NOT NULL,
   `email` varchar(255) COLLATE utf8_czech_ci NOT NULL,
-  `birthday` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  `birthday` date NOT NULL,
   `firstlogin` datetime NOT NULL,
   `lastlogin` datetime NOT NULL,
-  `admin` tinyint(4) NOT NULL,
+  `role` varchar(50) COLLATE utf8_czech_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
--- 2013-05-22 01:21:27
+-- 2013-08-30 16:22:02

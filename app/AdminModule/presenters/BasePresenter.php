@@ -17,10 +17,6 @@ abstract class BasePresenter extends \CommonBasePresenter {
             $this->flashMessage('Nemáte dostatečná práva');
             $this->redirect(':Front:Homepage:');
         }
-
-        //admin things
-        \Casopisy\CasopisModel::$showUnpublished = true;
-
     }
 
 }

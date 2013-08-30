@@ -22,6 +22,10 @@ abstract class CommonBasePresenter extends Nette\Application\UI\Presenter {
         CasopisModel::$casopis_id = $this->casopis;
 		$this->template->casopis = \Casopisy\CasopisModel::getCasopis();
 		$this->template->casopisLong = \Casopisy\CasopisModel::getCasopisLong();
-    }
 
+		// admin vidí i nepublikované
+		if ($this->user->isInRole('admin')) {
+	        CasopisModel::$showUnpublished = true;
+		}
+    }
 }

@@ -16,27 +16,7 @@ class CisloPresenter extends BasePresenter {
      */
     private $cislo;
 
-	/**
-	 * @persistent
-	 */
-	public $velikost = 200;
-
-	public function handleVelikost($px){
-		$this->velikost = (int)$px;
-	}
-
-    public function actionDefault($id) {
-        $this->cislo = $this->template->cislo = CisloModel::getById($id);
-        if (!$this->cislo)
-			throw new \Nette\Application\BadRequestException("Cislo '$id' neexistuje");
-    }
-
-    public function actionEdit($id) {
-        $this->actionDefault($id);
-        if (!$this['editForm']->submitted)
-            $this['editForm']->setValues($this->cislo);
-    }
-
+	// přidání čísla a bulkinsert
     protected function createComponentAddForm() {
         $form = new Nette\Application\UI\Form;
         $form->addUpload("file", "Časopis PDF");
@@ -60,6 +40,15 @@ class CisloPresenter extends BasePresenter {
 		$this->template->bulklog = CisloModel::bulkInsert($this->casopis);
         $this->flashMessage('Úspěšně vloženo');
         $this->redirect('add');
+    }
+
+	// zobrazení čísla a formuláře
+    public function actionDefault($id) {
+        $this->cislo = $this->template->cislo = CisloModel::getById($id);
+        if (!$this->cislo)
+			throw new \Nette\Application\BadRequestException("Cislo '$id' neexistuje");
+        if (!$this['editForm']->submitted)
+            $this['editForm']->setValues($this->cislo);
     }
 
     protected function createComponentEditForm() {
@@ -92,48 +81,4 @@ class CisloPresenter extends BasePresenter {
         else
             $this->redirect('default', $this->cislo->id);
     }
-
-    public function handleStrankyForm() {
-        $id = $this->getParam("id");
-        $post = $this->request->post;
-        $preskocit = false; //tato strana se nebude zpracovávat
-        $pagejump = false;
-
-        foreach ($this->cislo->getObsah() as $obsah) {
-            $p = $obsah->strana;
-            if($p == $preskocit) continue;
-
-            $data = array();
-            if (isset($post["nazev"][$p]) AND $post["nazev"][$p] != $obsah->nazev)
-                $data["nazev"] = $post["nazev"][$p];
-            if (isset($post["popis"][$p]) AND $post["popis"][$p] != $obsah->popis)
-                $data["popis"] = $post["popis"][$p];
-            if (isset($post["sloucit_$p"])) {
-                $data["strany_navic"] = $obsah->strany_navic + 1;
-                $preskocit = $p + $obsah->strany_navic + 1;
-                $this->cislo->deleteObsah($preskocit);
-                $pagejump = $p;
-            }
-            if (isset($post["odloucit_$p"])){
-                $data["strany_navic"] = $obsah->strany_navic - 1;
-                $pagejump = $p;
-            }
-
-            if (count($data))
-                $obsah->save($data);
-
-            if (isset($post["tags"][$p]))
-                $obsah->saveTags(explode(",", $post["tags"][$p]));
-        }
-
-        $this->flashMessage("Podrobnosti uloženy");
-        $this->redirect('default'.($pagejump?"#p$pagejump":""), $this->cislo->id);
-    }
-
-    function handleAutocomplete() {
-        $tags = $this->cislo->getTagsStarting($this->getParam('term'), $this->getParam('limit'));
-        $response = new Nette\Application\Responses\TextResponse(implode("\n", $tags));
-        $this->sendResponse($response);
-    }
-
 }

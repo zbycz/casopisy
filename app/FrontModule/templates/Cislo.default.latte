@@ -1,7 +1,7 @@
 
 {block content}
 <p class="pull-right margin1">
-	<a n:href=":Admin:Cislo: $cislo->id" class="btn" n:if="$presenter->user->loggedIn"><i class="icon-pencil"></i> Editovat</a>
+	<a n:href=":Admin:Cislo: $cislo->id" class="btn" n:if="$user->isInRole(admin)"><i class="icon-pencil"></i> Administrovat</a>
 	<a href="{$cislo->getPdfLink()}" class="btn btn-primary"><i class="icon-download-alt icon-white"></i> Stáhnout kompletní PDF</a>
 	<small n:if="$cislo->pdfSize">({$cislo->pdfSize})</small>
 	<small n:if="!$cislo->pdfSize">PDF chybí :(</small>
@@ -16,10 +16,15 @@
 	</a>
 {/if}
 
+{* -------------- meta informace ---------------- *}
 <p>{$cislo->popis}</p>
 
+{if $user->isInRole(admin)}
+	<p><i>Vnitřní poznámka:</i> {$cislo->poznamka}</p>
+	<div class="alert" n:if="!$cislo->verejne">POZOR: Toto číslo není zatím veřejné, vidí ho pouze administrátor!</div>
+{/if}
 
-{* ------------------------------ *}
+{* -------------- tabulka OBSAH čísla ---------------- *}
 <table class="table table-condensed" style="width:auto">
 {foreach $cislo->getObsah() as $r}
 	{var $tags = $r->getTags()}
@@ -34,7 +39,7 @@
 </table>
 
 
-{* ------------------------------ *}
+{* -------------- editace/prohlížení ---------------- *}
 <table class="stranky" id="strankyTable" data-cid="{$cislo->id}">
 {foreach $cislo->getObsah() as $r}
     {var $p = $r->strana}
@@ -49,9 +54,9 @@
         <p class="cedit" data-ph="# přidej popis">{$r->popis}</p>
 
         <p>
-        {foreach $r->getTags() as $t}
-            <span class="label label-info">{$t}</span>
-        {/foreach}
+			{foreach $r->getTags() as $t}
+				<span class="label label-info">{$t}</span>
+			{/foreach}
 			<input type="text" class="addTag" placeholder="přidat štítek [enter]" n:if="$user->loggedIn">
 		</p>
 

@@ -44,4 +44,10 @@ class AjaxPresenter extends \Nette\Application\UI\Presenter
 		$obsah->removeTag($tag);
 		$this->terminate();
 	}
+
+    /*function actionAutocomplete() {
+        $tags = $this->cislo->getTagsStarting($this->getParam('term'), $this->getParam('limit'));
+        $response = new Nette\Application\Responses\TextResponse(implode("\n", $tags));
+        $this->sendResponse($response);
+    }*/
 }
