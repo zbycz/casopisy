@@ -115,19 +115,22 @@
 	});
 
 	// remove tag
-	$('.label').attr('title', 'smazat štítek')
+	$('#strankyTable .label').attr('title', 'smazat štítek');
 	$('#strankyTable').on('click', '.label', function(){
 		var $obj = $(this);
 		var page = $obj.parents('tr').attr('id').substr(1);
 		var tag = $obj.text();
 
 		$.get({link Ajax:removeTag}, { cid: cid, p: page, tag: tag }, function(){
-			var undo = $('<a href="#">vzít zpět "'+tag+'"</a>').click(function(){ alert(1);});
-			$obj.replaceWith(undo)
+			var undo = $('<a href="#">vzít zpět "'+tag+'"</a>').click(function(){
+				var $input = $(this).parents('td').find('input');
+				addTag($input.val(tag));
+				undo.remove();
+				return false;
+			});
+			$obj.replaceWith(undo);
 		});
-
 	});
-
 
 	// edit fields
 	$('.cedit').each(function(){
@@ -185,7 +188,7 @@
 
 	#strankyTable small { font-size: 12px }
 
-	.label:hover {text-decoration: line-through; background: #aaa; cursor: pointer;}
+	#strankyTable .label:hover {text-decoration: line-through; background: #aaa; cursor: pointer;}
 
 	#strankyTable .addTag {
 		font-size: 10.998px;
