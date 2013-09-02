@@ -49,7 +49,7 @@
 			<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, 200)}"></a>
 		{/foreach}
     </th>
-    <td>
+    <td><div>
         <h3 class="cedit" data-ph="# Pojmenuj článek">{$r->nazev}</h3>
         <p class="cedit" data-ph="# přidej popis">{$r->popis}</p>
 
@@ -65,7 +65,7 @@
 			{if $r->strany_navic} / <a n:href="odebrat! $p">odebrat</a>{/if}
 		</div>
 
-    </td>
+	</div></td>
     </tr>
 {/foreach}
 </table>
@@ -205,8 +205,7 @@
 		box-shadow: none;
 	}
 
-	#strankyTable td {position: relative;}
-	#strankyTable .bottom {position: absolute; bottom: 1em; right: 1em; color: #ccc; font-size: 10px}
+	#strankyTable .bottom {margin: 5em 1em 0 0; text-align:right; color: #ccc; font-size: 10px}
 	#strankyTable .bottom a {color: #ccc}
 
 </style>
