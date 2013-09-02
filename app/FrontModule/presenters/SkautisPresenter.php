@@ -15,12 +15,14 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 		}
 	}
 
-	public function actionToken()
+	public function actionToken($token = false)
 	{
-
-		$_POST["skautIS_Token"] = "86fa159c-969a-46df-9506-d36fcaa46edf";
-		$_POST["skautIS_IDRole"] = "3780";
-		$_POST["skautIS_IDUnit"] = "24218";
+		// debug only
+		if ($token) {
+			$_POST["skautIS_Token"] = $token;
+			$_POST["skautIS_IDRole"] = "3780";
+			$_POST["skautIS_IDUnit"] = "24218";
+		}
 
 		$skautis = SkautIS::getInstance();
 		$login_ok = $skautis->loginHelper->doLogin();
