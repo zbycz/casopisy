@@ -586,7 +586,7 @@ $(function(){
     });
 
 
-	/* visibly remove flash id and backlink parameters from URI * /
+	/* visibly remove flash id and backlink parameters from URI */
 	if(history.replaceState) {
 		l = location.toString();
 		r = [['_fid',4],['backlink',5]];
@@ -600,7 +600,7 @@ $(function(){
 				history.replaceState('', '', uri);
 			}
 		}
-	}*/
+	}
 
         $('.lightbox').lightBox({
                     overlayBgColor: '#000',
