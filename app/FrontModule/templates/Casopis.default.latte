@@ -11,7 +11,22 @@
 
 
 {if !isset($tag)}
-	{!dibi::fetchSingle('SELECT text FROM pages WHERE id=%s', $casopis)}
+	<div class="spacer4">
+		<ul class="thumbnails pull-right poslednicisla">
+		<li class="" n:foreach="\Casopisy\CasopisModel::getPosledniCisla() as $c">
+			{continueIf $c->casopis != $casopisLong}
+			<a n:href="Cislo: $c->id, casopis=>$c->casopis_id" class="thumbnail">
+				<img src="{$c->getCoverLink(200)}" alt="">
+				<span>{$c->mesicrok}</span>
+			</a>
+		</li>
+		</ul>
+
+		{!dibi::fetchSingle('SELECT text FROM pages WHERE id=%s', $casopis)}
+	</div>
+
+
+
 
 {else}
     <table class="table table-condensed noheader spacer4">
