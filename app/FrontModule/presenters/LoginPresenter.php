@@ -51,7 +51,8 @@ class LoginPresenter extends Nette\Application\UI\Presenter
 			//}
 			//TODO expiration(0) breaks uploadify
 
-			$this->user->login($values['username'], $values['password']);
+			$this->user->getAuthenticator()->authenticate(array($values['username'], $values['password']));
+			$this->user->login(new \Nette\Security\Identity(0, array('user','admin'), array('name' => $values['username'])));
 
 			if(isset($values['backlink']))
 				$this->application->restoreRequest($values['backlink']);
