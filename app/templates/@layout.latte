@@ -55,8 +55,8 @@
       <span id='ajax-spinner pull-right'></span>
 
         {if !$presenter->user->loggedIn}
-        <div class="navbar-text pull-right loginlink">
-              <a n:href=":Front:Skautis:">přihlásit</a>
+        <div class="pull-right">
+              <a n:href=":Front:Skautis:" class="btn btn-primary">přihlásit přes SkautIS</a>
         </div>
         {else}
         <div class="btn-group pull-right">
@@ -66,7 +66,7 @@
               </a>
               <ul class="dropdown-menu">
                   <li n:if="$user->isInRole(admin)"><a n:href=":Admin:Casopis:"><i class="icon-pencil"></i> administrace</a></li>
-                  <li><a n:href=":Front:Login:logout"><i class="icon-off"></i> odhlásit</a></li>
+                  <li><a n:href=":Front:Skautis:logout"><i class="icon-off"></i> odhlásit</a></li>
               </ul>
         </div>
         {/if}

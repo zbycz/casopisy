@@ -15,7 +15,7 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 		}
 	}
 
-	public function actionToken($token = false)
+	public function actionToken($token = "")
 	{
 		// debug only
 		if ($token) {
@@ -68,6 +68,8 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 
 	public function actionLogout()
 	{
+		$this->user->logout();
+
 		$skautis = SkautIS::getInstance();
 		$token = $skautis->loginHelper->getLoginId();
 		$skautis->loginHelper->logout();
