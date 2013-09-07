@@ -62,6 +62,7 @@ class CisloPresenter extends BasePresenter {
         $form->addText('popis', 'Popis');
         $form->addCheckbox('verejne', 'Zveřejněno');
         $form->addCheckbox('priloha', 'Příloha k časopisu (přiřazuje se dle ročníku a čísla)');
+        $form->addCheckbox('hotovo', 'Štítkování HOTOVO (nenabízet editorům)');
         $form->addText('poznamka', 'Vnitřní poznámka')->controlPrototype->class("input-xxlarge");
         $form->addSubmit('submit1', 'Uložit úpravy')->controlPrototype->class("btn btn-primary");
         $form->addSubmit('gonext', '_Uložit & přejít +1')->controlPrototype->class("btn")->accesskey('u');

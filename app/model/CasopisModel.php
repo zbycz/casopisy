@@ -67,6 +67,26 @@ class CasopisModel {
 		return $cisla;
 	}
 
+	static function getCislaTodo()
+	{
+		$query = dibi::query("
+				SELECT c.*,
+					IFNULL((SELECT SUM(o.nazev!='') FROM obsah o WHERE o.cislo_id = c.id),0) AS pocet_nazvu,
+					(SELECT COUNT(DISTINCT strana) FROM tag t WHERE t.cislo_id = c.id) AS pocet_tagu,
+					pocet_stran - IFNULL((SELECT SUM(o.strany_navic) FROM obsah o WHERE o.cislo_id = c.id),0) AS pocet_obsahu
+				FROM cislo c
+				WHERE casopis_id = %i",self::$casopis_id," AND verejne=1 AND priloha=0 AND hotovo=0
+				ORDER BY (pocet_nazvu + pocet_tagu)/2/pocet_obsahu DESC
+			");
+		$cisla = array();
+		foreach ($query as $r) {
+			$c = new Cislo($r);
+			if ($c->percentDone <= 99)
+				$cisla[] = $c;
+		}
+		return $cisla;
+	}
+
     static function getRocnik($rocnik) {
         $rocnik = dibi::fetch("
             SELECT rocnik, casopis_id, min(rok) od, max(rok) do, count(1) pocet

@@ -15,6 +15,7 @@ CREATE TABLE `cislo` (
   `mesic` tinyint(2) NOT NULL,
   `verejne` tinyint(1) NOT NULL,
   `priloha` tinyint(1) NOT NULL,
+  `hotovo` tinyint(1) NOT NULL,
   `poznamka` text COLLATE utf8_czech_ci NOT NULL,
   `popis` text COLLATE utf8_czech_ci NOT NULL,
   `pocet_stran` int(11) NOT NULL,
@@ -61,7 +62,7 @@ CREATE TABLE `tag` (
   `strana` int(11) NOT NULL,
   `tag` varchar(50) COLLATE utf8_czech_ci NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   KEY `cislo_id_strana` (`cislo_id`,`strana`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 

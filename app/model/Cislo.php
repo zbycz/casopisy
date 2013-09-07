@@ -115,6 +115,12 @@ class Cislo extends Entity {
         return "$this->mesicTxt $this->rok";
     }
 
+	function getPercentDone() {
+		$hotovo = $this->pocet_tagu + $this->pocet_nazvu + 3; // za Titulku a reklamu + 1
+		$obsahu = 2*$this->pocet_obsahu;
+		return $hotovo >= $obsahu ? 100 : round($hotovo / $obsahu *100);
+	}
+
     function save($newdata = false) {
         //(is_array or arrayHash)
         if ($newdata) {

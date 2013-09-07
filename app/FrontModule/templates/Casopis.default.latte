@@ -25,8 +25,21 @@
 		{!dibi::fetchSingle('SELECT text FROM pages WHERE id=%s', $casopis)}
 	</div>
 
-
-
+	<div class="spacer4">
+		<h2>Čísla, která můžeš oštítkovat :-)</h2>
+		<ul class="thumbnails rocnik">
+		{foreach \Casopisy\CasopisModel::getCislaTodo() as $c}
+		  <li class="span3">
+			<a n:href="Cislo: $c->id" class="thumbnail">
+			  <span style="position:absolute;">{$c->percentDone} %</span>
+			  <img src="{$c->getCoverLink(200)}">
+			  {$c->mesicrok} <br>
+			  {$c->pocet_tagu}+{$c->pocet_nazvu} / {$c->pocet_obsahu}<br>
+			</a>
+		  </li>
+		{/foreach}
+		</ul>
+	</div>
 
 {else}
     <table class="table table-condensed noheader spacer4">
