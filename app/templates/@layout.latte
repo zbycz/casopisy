@@ -46,6 +46,10 @@
 <script type="text/javascript" src="{$basePath}/static/js/admin.js"></script>
 
 {block head}{/block}
+
+<meta property="fb:admins" content="665467457">
+<meta property="fb:page_id" content="551795968209121">
+<meta property="og:image" content="http://casopisy.skaut.cz/static/images/casopisy-logo.png">
 </head>
 
 <body n:class="$presenter->isAdminModule() ? adminModule">
@@ -152,6 +156,8 @@
 	{* breakIf !$user->loggedIn *}
 {/foreach}
 
+<div class="fb-like-box" data-href="https://www.facebook.com/skautske.casopisy" data-width="292" data-height="83" data-show-faces="false" data-header="true" data-stream="false" data-show-border="false" style="height:83px"></div>
+
 {!dibi::fetchSingle('SELECT text FROM pages WHERE id="leftmenu"')}
 
 <div class="well sidebar-nav poutac">
@@ -186,8 +192,17 @@
 </div><!--/.fluid-container-->
 
 
-<script type="text/javascript">
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=515622781853695";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-7055592-5']);
   _gaq.push(['_trackPageview']);
@@ -197,7 +212,6 @@
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-
 </script>
 
 </body>
