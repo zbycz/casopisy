@@ -76,7 +76,7 @@ class CasopisModel {
 					pocet_stran - IFNULL((SELECT SUM(o.strany_navic) FROM obsah o WHERE o.cislo_id = c.id),0) AS pocet_obsahu
 				FROM cislo c
 				WHERE casopis_id = %i",self::$casopis_id," AND verejne=1 AND priloha=0 AND hotovo=0
-				ORDER BY (pocet_nazvu + pocet_tagu)/2/pocet_obsahu DESC
+				ORDER BY (pocet_nazvu + pocet_tagu)/2/pocet_obsahu DESC, c.rok DESC, c.mesic DESC
 			");
 		$cisla = array();
 		foreach ($query as $r) {
