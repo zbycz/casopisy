@@ -173,6 +173,8 @@ a.del:hover {background: #fd4239; color: #fff;}
 }
 .stranky th {padding: 1em; width: 330px;}
 .stranky td {padding: 1em; vertical-align: top}
+.stranky table td {padding: 0.5em}
+.stranky table tr {border:0}
 .stranky .lightbox {position: relative; display:block; float:left}
 .stranky .lightbox img {max-width: none; vertical-align: top;}
 .stranky .lightbox:hover {opacity: 0.8}

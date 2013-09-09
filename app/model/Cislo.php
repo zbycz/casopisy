@@ -32,7 +32,11 @@ class Cislo extends Entity {
 			return $this->obsah;
 
         $stranky = dibi::query("SELECT * FROM obsah WHERE cislo_id=%i", $this->id)->fetchAssoc('strana');
+		$this->setObsah($stranky);
+        return $this->obsah;
+    }
 
+	function setObsah($stranky) {
         for ($pagenum = 1; $pagenum <= $this->pocet_stran; $pagenum++) {
             if (isset($stranky[$pagenum]))
                 $obsah = new Obsah($stranky[$pagenum]);
@@ -42,11 +46,9 @@ class Cislo extends Entity {
 			$this->obsah[$pagenum] = $obsah;
             $pagenum += $obsah->strany_navic;
         }
+	}
 
-        return $this->obsah;
-    }
-
-    function getPrilohy() {
+	function getPrilohy() {
         $prilohy = dibi::query("
             SELECT *
             FROM cislo
@@ -63,7 +65,7 @@ class Cislo extends Entity {
         return $result;
     }
 
-    /** WARNING: NOT FILLED FROM DATABASE (only for linking purposes)
+    /** WARNING: NOT FILLED FROM DATABASE BEFORE getObsah() CALLED
      * @return \Casopisy\Obsah
      */
     function getPage($strana = 1) {

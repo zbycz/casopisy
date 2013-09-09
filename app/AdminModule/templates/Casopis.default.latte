@@ -2,3 +2,34 @@
 {block content}
 <h1 n:block=title>Vítej v administraci</h1>
 <p>Zde můžeš nahrát nový časopis nebo prohlížet ještě NEVEŘEJNÉ.
+
+
+<h2>Záznam úprav</h2>
+
+{foreach $log as $cislo}
+	<h3>{$cislo->casopis} <a n:href=":Front:Cislo: $cislo->id">{$cislo->mesicrok}</a></h3>
+	<table class="stranky">
+	{foreach $cislo->stranyLog as $logs}
+	    {var $p = $logs[0]->strana}
+	    {var $navic = $logs[0]->strany_navic}
+		<tr>
+		<th>
+			{for $i=$p; $i<=$p+$navic; $i++}
+				{var $r = $cislo->getPage($i)}
+				<a href="{$r->getLink($i)}" class="lightbox"><span>{$i}</span><img src="{$r->getLink($i, 200)}"></a>
+			{/for}
+		</th>
+		<td>
+			<table>
+			{foreach $logs as $l}
+				<tr><td><span title="{$l->fullname} {$l->time}">{$l->name}</span></td><td>{$l->typ}</td><td>{$l->puvodni ? "$l->puvodni =>"} {$l->nova}</td>
+				</tr>
+			{/foreach}
+			</table>
+		</td>
+		</tr>
+	{/foreach}
+	</table>
+{/foreach}
+
+
