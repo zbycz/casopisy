@@ -11,6 +11,12 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 	public function actionDefault()
 	{
 		if (!$this->user->loggedIn) {
+			$backlink = $this->context->httpRequest->getReferer();
+			if ($backlink) {
+				$backlink = substr($backlink, strlen($backlink->getHostUrl()));
+				$this->redirectUrl(loginFormAddres . "&ReturnUrl=" . $backlink);
+			}
+
 			$this->redirectUrl(loginFormAddres);
 		}
 	}
@@ -57,6 +63,10 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 
 		$this->user->login(new \Nette\Security\Identity($row->id, $role, $row));
 		$this->flashMessage("Přihlášení úspěšné");
+
+		if ($url = $this->getParam('ReturnUrl')) {
+			$this->redirectUrl("http://$_SERVER[HTTP_HOST]".$url);
+		}
 		$this->redirect(':Front:Homepage:');
 	}
 
