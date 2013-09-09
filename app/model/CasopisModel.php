@@ -142,4 +142,14 @@ class CasopisModel {
         1 => 'leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'
     );
 
+    // admin only
+    function getTagsStarting($q, $limit = false) {
+        return dibi::query("
+            SELECT DISTINCT tag
+            FROM tag t
+            LEFT JOIN cislo c ON t.cislo_id = c.id
+            WHERE tag LIKE %s", $q . "%", "
+              AND casopis_id=%i", self::$casopis_id, "
+            %if",$limit," LIMIT %i", $limit)->fetchAssoc("[]=tag");
+    }
 }

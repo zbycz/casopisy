@@ -130,15 +130,4 @@ class Cislo extends Entity {
         return dibi::query("UPDATE cislo SET ", $this->getData(), " WHERE id=%i", $this->id);
     }
 
-    // admin only
-    function getTagsStarting($q, $limit = false) {
-        return dibi::query("
-            SELECT DISTINCT tag
-            FROM tag t
-            LEFT JOIN cislo c ON t.cislo_id = c.id
-            WHERE tag LIKE %s", $q . "%", "
-              AND casopis_id=%i", $this->casopis_id, "
-            %if",$limit," LIMIT %i", $limit)->fetchAssoc("[]=tag");
-    }
-
 }
