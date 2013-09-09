@@ -86,6 +86,7 @@ CREATE TABLE `user` (
   `firstlogin` datetime NOT NULL,
   `lastlogin` datetime NOT NULL,
   `role` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `log_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 

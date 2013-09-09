@@ -37,4 +37,9 @@ class UserModel
 		return \Casopisy\UserModel::getById($id);
 	}
 
+
+	static function logTime($id, $time)
+	{
+			dibi::query("UPDATE user SET log_time = %s", $time, " WHERE id=%i",$id);
+	}
 }

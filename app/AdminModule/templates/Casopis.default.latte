@@ -4,7 +4,10 @@
 <p>Zde můžeš nahrát nový časopis nebo prohlížet ještě NEVEŘEJNÉ.
 
 
-<h2>Záznam úprav</h2>
+<h2>Záznam úprav <small>od {$od}</small>
+		<a n:href="logTime! date('Y-m-d H:i:s')" class="btn btn-mini">Nastavit teď</a>
+		<a n:href="logTime! date('Y-m-d', time()-3600*24*7)" class="btn btn-mini">před týdnem</a>
+</h2>
 
 {foreach $log as $cislo}
 	<h3>{$cislo->casopis} <a n:href=":Front:Cislo: $cislo->id">{$cislo->mesicrok}</a></h3>

@@ -19,7 +19,7 @@ class LogModel
 		return FALSE;
 	}
 
-	static function getAll()
+	static function getAll($od)
 	{
 		$log = dibi::query("
 			SELECT l.*, u.*, c.*, o.strany_navic
@@ -27,6 +27,7 @@ class LogModel
 			LEFT JOIN user u ON u.id = l.user_id
 			LEFT JOIN cislo c ON c.id = l.cislo_id
 			LEFT JOIN obsah o ON o.cislo_id = l.cislo_id AND o.strana = l.strana
+			WHERE [time] >= %s",$od,"
 			ORDER BY time ASC
 		");
 
