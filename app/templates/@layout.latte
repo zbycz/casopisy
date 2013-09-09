@@ -154,6 +154,17 @@
 
 {!dibi::fetchSingle('SELECT text FROM pages WHERE id="leftmenu"')}
 
+<div class="well sidebar-nav poutac">
+	<p><b>Bodování:</b></p>
+	<p>Za každou úpravu dostaneš bod, stačí se přihlásit vpravo nahoře.
+	<ul class="aleft">
+	{foreach \Casopisy\LogModel::getZebricek() as $r}
+		<li>{$r->name} <i class="icon-star"></i>{$r->cnt}</li>
+	{/foreach}
+	</ul>
+</div><!--/.well -->
+
+
 </div><!--/span-->
 <div class="span9">
     {include #content}

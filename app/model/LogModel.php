@@ -56,4 +56,14 @@ class LogModel
 		dibi::query("INSERT INTO log", $data);
 	}
 
+	static function getZebricek()
+	{
+		return dibi::query("
+			SELECT name, sum(typ != 'removeTag') cnt
+			FROM log l
+			LEFT JOIN user u ON u.id = l.user_id
+			GROUP BY user_id
+			ORDER BY cnt DESC
+			");
+	}
 }
