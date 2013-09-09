@@ -116,8 +116,8 @@ class Cislo extends Entity {
     }
 
 	function getPercentDone() {
-		$hotovo = $this->pocet_tagu + $this->pocet_nazvu + 3; // za Titulku a reklamu + 1
-		$obsahu = 2*$this->pocet_obsahu;
+		$hotovo = $this->pocet_tagu + $this->pocet_nazvu;
+		$obsahu = 2*$this->pocet_obsahu -3; // 3 tolerujeme chybějící za Titulku a reklamu
 		return $hotovo >= $obsahu ? 100 : round($hotovo / $obsahu *100);
 	}
 

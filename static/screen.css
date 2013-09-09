@@ -203,6 +203,10 @@ a.del:hover {background: #fd4239; color: #fff;}
 .rocnik .span3:first-child {margin-left: 20px;}
 .rocnik a {text-align: center;  color: #000;}
 .rocnik a:hover {text-decoration: none; color:#000;}
+.rocnik .thumbnail {position:relative;}
+.rocnik .percentDone {position:absolute; right:0; font-size:80%;}
+.rocnik .percentDone small {color: #bbb}
+
 
 
 footer {

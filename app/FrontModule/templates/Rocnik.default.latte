@@ -7,6 +7,7 @@
 {foreach $rocnik->getCisla() as $c}
   <li class="span3">
     <a n:href="Cislo: $c->id" class="thumbnail">
+	  <span class="percentDone" n:if="$c->percentDone < 100" title="názvů+tagů/obsahů: {$c->pocet_nazvu}+{$c->pocet_tagu} / {$c->pocet_obsahu}">{$c->percentDone}<small>%</small></span>
       <img src="{$c->getCoverLink(200)}">
       {$c->mesicrok}
     </a>
