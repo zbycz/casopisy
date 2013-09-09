@@ -15,13 +15,17 @@ class CisloPresenter extends BasePresenter {
      */
     private $cislo;
 
-    public function actionDefault($id) {
-        $this->cislo = $this->template->cislo = CisloModel::getById($id);
+    public function actionDefault($id, $zoom=200) {
+        $this->cislo = CisloModel::getById($id);
 		$this->cislo->getObsah(); // cache
-        if (!$this->cislo)
+
+		if (!$this->cislo)
 			throw new \Nette\Application\BadRequestException("Cislo '$id' neexistuje");
 		if (!$this->cislo->verejne AND !$this->user->isInRole('admin'))
 			throw new \Nette\Application\ForbiddenRequestException("Číslo '$id' není veřejné");
+
+		$this->template->zoom = ($zoom % 100 == 0 AND $zoom <= 1000) ? intval($zoom) : 200;
+		$this->template->cislo = $this->cislo;
     }
 
 	public function handlePribrat($p)

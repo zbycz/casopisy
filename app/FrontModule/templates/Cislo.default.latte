@@ -52,7 +52,7 @@
     <tr n:class="$iterator->odd ? odd" id="p{$p}" n:if="$p>1 OR $cislo->priloha">
     <th>
         {foreach $r->getStrany() as $s}
-			<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, 200)}"></a>
+			<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, $zoom)}"></a>
 		{/foreach}
     </th>
     <td><div>
