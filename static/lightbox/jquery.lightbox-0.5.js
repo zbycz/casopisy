@@ -435,6 +435,7 @@
 		 *
 		 */
 		function _finish() {
+			_disable_keyboard_navigation();
 			$('#jquery-lightbox').remove();
 			$('#jquery-overlay').fadeOut(function() {$('#jquery-overlay').remove();});
 			// Show some elements to avoid conflict with overlay in IE. These elements appear above the overlay.
