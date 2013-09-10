@@ -40,12 +40,13 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 
 		// get info from skautis
 		$p = $skautis->getLoggedPerson();
-		// $p->ID_PersonType = junak  // vždy
+		$clen = $this->clenstvi($skautis, $p->ID);
+
 		$row = \Casopisy\UserModel::login(array(
 			'id' => $p->ID,
 			'name' => $p->NickName ?: "$p->FirstName {$p->LastName[0]}.",
 			'fullname' => $p->DisplayName . ($p->City ? ", $p->City" : ""),
-			'yearfrom' => $p->YearFrom,
+			'yearfrom' => $p->YearFrom ?: 0,
 			'email' => $p->Email,
 			'birthday' => $p->Birthday,
 			));
@@ -57,17 +58,45 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 		}
 
 		// admin role
-		$role = array('user');
-		if ($row->role == 'admin')
-			$role[] = 'admin';
+		$role = $row->role ? explode(',', $row->role) : array(); //junak,admin
 
+		// získal členství? zapíšeme
+		if ($clen AND !in_array('junak', $role)) {
+			$role[] = 'junak';
+			\Casopisy\UserModel::update($row->id, array('role' => implode(',',$role)));
+		}
+
+		// nette login
 		$this->user->login(new \Nette\Security\Identity($row->id, $role, $row));
 		$this->flashMessage("Přihlášení úspěšné");
 
-		if ($url = $this->getParam('ReturnUrl')) {
+		$url = $this->getParam('ReturnUrl');
+		if ($url AND $url != '/')
 			$this->redirectUrl("http://$_SERVER[HTTP_HOST]".$url);
-		}
+
+		if (in_array('admin', $role))
+			$this->redirect(':Admin:Casopis:');
+
 		$this->redirect(':Front:Homepage:');
+	}
+
+	public function clenstvi($skautis, $personid)
+	{
+		$request = new \MembershipAllPerson();
+		$request->membershipAllPersonInput = new \MembershipAllPersonInput();
+		$request->membershipAllPersonInput->ID_Login = $skautis->loginHelper->getLoginId();
+		$request->membershipAllPersonInput->ID_Person = $personid;
+		$request->membershipAllPersonInput->IsValid = true;
+		$response = $skautis->organizationUnit->MembershipAllPerson($request);
+		$clenstvi = $response->MembershipAllPersonResult->MembershipAllOutput;
+		if (!is_array($clenstvi))
+			$clenstvi = array($clenstvi);
+
+		foreach ($clenstvi as $c) {
+			if ($c->ID_MembershipType == 'radne' OR $c->ID_MembershipType == 'cestne')
+				return $c->Unit;
+		}
+		return false;
 	}
 
 	public function actionMotd()
