@@ -49,7 +49,7 @@
 <table class="stranky" id="strankyTable" data-cid="{$cislo->id}">
 {foreach $cislo->getObsah() as $r}
     {var $p = $r->strana}
-    <tr n:class="$iterator->odd ? odd" id="p{$p}" n:if="$p>1 OR $cislo->priloha">
+    <tr n:class="$iterator->odd ? odd" id="p{$p}" n:if="$p>1 OR $cislo->priloha OR $user->loggedIn">
     <th>
         {foreach $r->getStrany() as $s}
 			<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, $zoom)}"></a>
