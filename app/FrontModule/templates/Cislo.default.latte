@@ -81,6 +81,8 @@
 <script>
 	var cid = $('#strankyTable').attr('data-cid');
 
+	var tagsSource = {array_keys(\Casopisy\CasopisModel::getAllTags())};
+
 	// add next page
 	$('#strankyTable').on('click', '.addPage', function(){
 		var $tr = $(this).parents('tr');
@@ -106,6 +108,10 @@
 			$obj.val("");
 		});
 		$('.addTag').autocomplete("close");
+
+		if ($.grep( tagsSource, function(val){ return val==tag }).length == 0) {
+			tagsSource.push(tag);
+		}
 	}
 
 	$('.addTag').autocomplete({
@@ -116,7 +122,12 @@
 				addTag($obj);
 			}, 20);
 		},
-		source: {array_keys(\Casopisy\CasopisModel::getAllTags())}
+		source: function(request,response){
+			var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" ); // escape regex characters
+			response( $.grep( tagsSource, function(value) {
+				return matcher.test( value );
+			}) );
+		}
 	}).on('focus click', function(){
 		$(this).autocomplete("search", $(this).val());
     }).keypress(function(e) {
