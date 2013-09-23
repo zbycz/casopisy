@@ -80,6 +80,9 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 		$this->redirect(':Front:Homepage:');
 	}
 
+	/** Zjistí zdali je osoba v současnosti čestným či řádným členem
+	 * @return boolean
+	 */
 	public function clenstvi($skautis, $personid)
 	{
 		$request = new \MembershipAllPerson();

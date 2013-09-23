@@ -1,0 +1,13 @@
+
+common:
+	parameters:
+		users:
+			admin: adminovoheslo
+
+		database:
+			database: zbycz_casopisy
+			username: zbycz
+			password: dtbheslo
+
+production < common:
+development < common:
