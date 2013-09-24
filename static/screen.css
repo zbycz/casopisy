@@ -7,8 +7,9 @@ body {
 .spacer3 {margin-top: 27px;}
 .spacer4 {margin-top: 36px;}
 .spacerr {margin-right: 9px;}
-.spacerl {margin-left: 9px; }
-.spacerl5 {margin-left: 5em; }
+.spacerl {margin-left: 9px;}
+.spacerl5 {margin-left: 5em;}
+.spacerb2 {margin-bottom: 2em;}
 .sidebar-nav {
     padding: 0 0 9px 0;
 }
@@ -263,6 +264,24 @@ footer a:hover img {background: #ccc}
 
 }
 .poutac b {font-size: 220%; line-height: 1.3; color: #819d37;}
+
+.callInAction {
+	margin: 2em auto;
+	width: 300px;
+	font-size: 200%;
+	line-height: 1.4;
+	text-align: center;
+	background: #ffed1f;
+	color: #aaa;
+}
+.callInAction span {
+	font-size: 233%; line-height: 0.9; font-weight: bold;
+	position: relative; top: 0.1em;
+	color: #444
+}
+
+
+
 
 .casopislink {
 	text-transform: none;

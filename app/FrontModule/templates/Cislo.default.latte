@@ -19,16 +19,12 @@
 {* -------------- meta informace ---------------- *}
 <p>{$cislo->popis}</p>
 
-{if $user->isInRole(admin)}
-	<p><i>Vnitřní poznámka:</i> {$cislo->poznamka}</p>
-	<div class="alert" n:if="!$cislo->verejne">POZOR: Toto číslo není zatím veřejné, vidí ho pouze administrátor!</div>
-{/if}
-<p n:if="$user->loggedIn"><i>Nápověda pro editaci:</i> <br> - Můžeš libovolně editovat názvy a štítky níže - stačí kliknout napsat a kliknout pryč. <br>
-	- Pokud má článek více stránek, klikni na "Přibrat další stránku". <br>
-	- Pokud jsou dva články na stránce - píšou se názvy s lomítkem (časem to půjde lépe). <br>
-	- Celostránkovou reklamu označ štítkem "reklama" - bude potom schovaná ve výpisech. <br>
-	- Pro lepší přehled stránek můžeš vybrat <a n:href="this id=>$cislo->id, zoom=>400">2× zoom</a>.
-</p>
+<div n:if="!$cislo->verejne" class="alert">POZOR: Toto číslo není zatím veřejné, vidí ho pouze administrátor!</div>
+<div n:if="$cislo->verejne == 2" class="alert alert-success">
+	<i class="icon-ban-circle"></i>
+	<strong>Toto číslo zatím není k dispozici online, lze zobrazit pouze náhledy.</strong>
+</div>
+<p n:if="$user->isInRole(admin)"><i>Vnitřní poznámka:</i> {$cislo->poznamka}</p>
 
 {* -------------- tabulka OBSAH čísla ---------------- *}
 <table class="table table-condensed" style="width:auto">
@@ -43,6 +39,24 @@
 </tr>
 {/foreach}
 </table>
+
+
+{if $user->loggedIn}
+<div class="spacerb2">
+  <h4>Nápověda pro editaci:</h4>
+	- Můžeš libovolně editovat názvy a štítky níže - stačí kliknout napsat a kliknout pryč. <br>
+	- Pokud má článek více stránek, klikni na "Přibrat další stránku". <br>
+	- Pokud jsou dva články na stránce - píšou se názvy s lomítkem (časem to půjde lépe). <br>
+	- Celostránkovou reklamu označ štítkem <span class="label">reklama</span> - bude potom schovaná ve výpisech. <br>
+	- Pro lepší přehled stránek můžeš vybrat <a n:href="this id=>$cislo->id, zoom=>400">2× zoom</a>.
+</div>
+{else}
+<div class="well callInAction">
+	Chybí ti tu <span>štítky</span>?
+	<p><small>Přihlaš se vpravo nahoře přes SkautIS a pomož nám!</small></p>
+</div>
+{/if}
+
 
 
 {* -------------- editace/prohlížení ---------------- *}
