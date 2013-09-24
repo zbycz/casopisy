@@ -276,5 +276,6 @@ footer a:hover img {background: #ccc}
 .casopislink.skaut b {color: #819d37;}
 .casopislink.skauting b {color: #0b2c65; font-style:italic}
 .casopislink.kmen b {color: #d50e40;}
+.casopislink.svet b {color: #4d8dbd; font-style:italic}
 .adminModule .casopislink:hover span {display:none;}
 .poutac .casopislink {display: block;margin:-15px;padding:15px}

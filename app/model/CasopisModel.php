@@ -62,7 +62,8 @@ class CasopisModel {
 				WHERE casopis_id = %i",$idx," AND verejne=1 AND priloha=0
 				ORDER BY rok DESC, mesic DESC
 				LIMIT 1");
-			$cisla[] = new Cislo($data);
+			if ($data)
+				$cisla[] = new Cislo($data);
 		}
 		return $cisla;
 	}

@@ -29,8 +29,8 @@ common:
 	services:
 	factories:
 	parameters:
-		casopisy: ['Světýlko', 'Skaut', 'Skauting', 'Kmen']
-		casopisyLong: ['Světýlko', 'Skaut', 'Skauting', 'Roverský kmen']
+		casopisy: ['Světýlko', 'Skaut', 'Skauting', 'Kmen', 'Svět']
+		casopisyLong: ['Světýlko', 'Skaut', 'Skauting', 'Roverský kmen', 'Skautský svět']
 		staticDir: %wwwDir%/static
 		dataDir:   %wwwDir%/data
 		users:

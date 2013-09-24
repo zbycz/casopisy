@@ -65,7 +65,7 @@ $frontRouter[] = new Route('<casopis>/tagy/<id .*>', array(
             'presenter' => 'Casopis',
             'action' => 'default',
         ));
-$frontRouter[] = new Route('<casopis svetylko|kmen|skaut|skauting>/<presenter>[/<id>][/<action>]', array(
+$frontRouter[] = new Route('<casopis svetylko|kmen|skaut|skauting|svet>/<presenter>[/<id>][/<action>]', array(
             'casopis' => array(
                 Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL(),
             ),
