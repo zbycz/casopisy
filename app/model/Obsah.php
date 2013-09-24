@@ -30,10 +30,6 @@ class Obsah extends Entity {
         parent::__construct(array_merge(self::$defaults, (array) $data));
     }
 
-	function isCover() {
-		return ($this->strana == 1 AND $this->nazev == "Titulka");
-	}
-
     function getStrany() {
         return range($this->strana, $this->strana + $this->strany_navic);
     }
