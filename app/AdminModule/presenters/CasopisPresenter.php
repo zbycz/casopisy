@@ -18,4 +18,11 @@ class CasopisPresenter extends BasePresenter
 		Casopisy\UserModel::logTime($this->user->id, $time);
 		$this->redirect('this');
 	}
+
+	public function actionRefreshImgHashes()
+	{
+		$count = Casopisy\Obsah::refreshImgHashes();
+		echo "Upraveno img: $count";
+		$this->terminate();
+	}
 }

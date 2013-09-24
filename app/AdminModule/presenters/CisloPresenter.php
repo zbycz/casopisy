@@ -26,17 +26,11 @@ class CisloPresenter extends BasePresenter {
     }
 
     public function addFormSubmitted(Nette\Application\UI\Form $form) {
-		if(!$this->user->identity->admin)
-			throw new \Nette\Application\ForbiddenRequestException("Only admin can add");
-
 		$id = CisloModel::upload($this->casopis, $form['file']->value);
         $this->flashMessage('Číslo úspěšně nahráno.');
-        $this->redirect('edit', $id);
+        $this->redirect('default', $id);
     }
     function handleBulkInsert(){
-		if(!$this->user->identity->admin)
-			throw new \Nette\Application\ForbiddenRequestException("Only admin can add");
-
 		$this->template->bulklog = CisloModel::bulkInsert($this->casopis);
         $this->flashMessage('Úspěšně vloženo');
         $this->redirect('add');
@@ -78,7 +72,7 @@ class CisloPresenter extends BasePresenter {
         $this->flashMessage('Číslo časopisu upraveno.');
 
         if($form['gonext']->isSubmittedBy())
-            $this->redirect('edit', $this->cislo->id+1);
+            $this->redirect('default', $this->cislo->id+1);
         else
             $this->redirect('default', $this->cislo->id);
     }

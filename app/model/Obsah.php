@@ -5,6 +5,7 @@ namespace Casopisy;
 use Nette\Image;
 use Nette\Environment;
 use \dibi;
+use Nette\Utils\Finder;
 
 /* CREATE TABLE `obsah` (
   `cislo_id` int(11) NOT NULL,
@@ -42,28 +43,55 @@ class Obsah extends Entity {
         return CisloModel::getById($this->cislo_id);
     }
 
-	// like /data/thumbs/351-1-ab3f1e.300.png
-	function getFilesSecretHash($p, $opts) {
-		return substr(md5("$this->cislo_id-$p-$opts" . Environment::getVariable("filesSecret")), -6);
-	}
+	// -------------------   disk operation related -----------------------
 
     function getLink($p, $opts = "") {
-		$hash = $this->getFilesSecretHash($p,$opts);
+		$hash = self::getFilesSecretHash($this->cislo_id, $p, $opts);
         if ($opts)
             return Environment::getApplication()->getPresenter()
                             ->link(':Front:File:preview', array($this->cislo_id, $p, $hash, $opts));
         return Environment::getHttpRequest()->getUrl()->getBasePath()
-                . "data/img/$this->cislo_id-$p.png";
+                . "data/img/$this->cislo_id-$p-$hash.png";
     }
 
     function getPath($p, $opts = "") {
-		$hash = $this->getFilesSecretHash($p,$opts);
+		$hash = self::getFilesSecretHash($this->cislo_id, $p, $opts);
         if ($p)
             $p = "-$p";
         if ($opts)
             return Environment::getVariable("dataDir") . "/thumbs/$this->cislo_id$p-$hash.$opts.png";
-        return Environment::getVariable("dataDir") . "/img/$this->cislo_id$p.png";
+        return Environment::getVariable("dataDir") . "/img/$this->cislo_id$p-$hash.png";
     }
+
+	// like /data/thumbs/351-1-ab3f1e.300.png
+	static function getFilesSecretHash($id, $p, $opts) {
+		return substr(md5("$id-$p-$opts" . Environment::getVariable("filesSecret")), -6);
+	}
+
+	static function refreshImgHashes(){
+		$e = error_reporting(E_ALL & ~E_NOTICE);
+		$count = 0;
+
+		$dir = Environment::getVariable("dataDir") . '/img/';
+		$files = Finder::findFiles("*.png")->from($dir);
+        foreach ($files as $file => $info) {
+			$res = preg_match('~^(?P<id>\d+)-(?P<p>\d+)(-(?P<hash>[0-9a-z]+))?(?P<o>.(?P<opts>[^.]+))?.png$~', $info->getFilename(), $m);
+			if (!$res) {
+				throw new \Nette\InvalidStateException("Img soubor neodpovídá RegExpu: '$file'");
+			}
+
+			$hash = self::getFilesSecretHash($m['id'], $m['p'], $m['opts']);
+			if ($hash != @$m['hash']) {
+				rename($file, "$dir$m[id]-$m[p]-$hash$m[o].png");
+				$count++;
+			}
+		}
+
+		error_reporting($e);
+		return $count;
+	}
+
+	// ----------------------------------------------------------------
 
     function save($newdata = false) {
         //(is_array or arrayHash)

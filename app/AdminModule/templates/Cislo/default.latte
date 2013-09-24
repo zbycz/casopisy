@@ -32,6 +32,10 @@
 
 <p><br>
 
+{if !file_exists($cislo->getPage(1)->getPath(1))}
+<p class="alert alert-danger"><strong>Obrázek chybí!</strong> Po několika minutách od nahrání zkuste <a n:href="Casopis:refreshImgHashes">obnovit interní keš</a>.</p>
+{/if}
+
 <p><img src="{$cislo->getCoverLink()}">
 
 <p class="spacer">Záznam zpracování:
