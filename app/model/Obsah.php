@@ -42,19 +42,26 @@ class Obsah extends Entity {
         return CisloModel::getById($this->cislo_id);
     }
 
+	// like /data/thumbs/351-1-ab3f1e.300.png
+	function getFilesSecretHash($p, $opts) {
+		return substr(md5("$this->cislo_id-$p-$opts" . Environment::getVariable("filesSecret")), -6);
+	}
+
     function getLink($p, $opts = "") {
+		$hash = $this->getFilesSecretHash($p,$opts);
         if ($opts)
             return Environment::getApplication()->getPresenter()
-                            ->link(':Front:File:preview', array($this->cislo_id, $p, $opts));
+                            ->link(':Front:File:preview', array($this->cislo_id, $p, $hash, $opts));
         return Environment::getHttpRequest()->getUrl()->getBasePath()
                 . "data/img/$this->cislo_id-$p.png";
     }
 
     function getPath($p, $opts = "") {
+		$hash = $this->getFilesSecretHash($p,$opts);
         if ($p)
             $p = "-$p";
         if ($opts)
-            return Environment::getVariable("dataDir") . "/thumbs/$this->cislo_id$p.$opts.png";
+            return Environment::getVariable("dataDir") . "/thumbs/$this->cislo_id$p-$hash.$opts.png";
         return Environment::getVariable("dataDir") . "/img/$this->cislo_id$p.png";
     }
 
@@ -100,11 +107,11 @@ class Obsah extends Entity {
 
     /** Response for Files:preview
      */
-    public function getPreviewHttpResponse($o = null) {
+    public function getPreviewHttpResponse($opts = null) { //$opts obsahuje jen width[px]
         $p = $this->strana;
 
         //custom caching mechanism (dont use Nette\Cache!)
-        $cachePath = $this->getPath($p, $o);
+        $cachePath = $this->getPath($p, $opts);
         if (file_exists($cachePath))
             return new ImageResponse(file_get_contents($cachePath), 'image/png');
 
@@ -115,7 +122,7 @@ class Obsah extends Entity {
         //$image->savealpha(true);
         //$image->alphablending(false);
 
-        self::applyImageOptions($image, $o);
+        $image->resize($opts, $opts, Image::SHRINK_ONLY);
 
         //cache
         if (!isset($opts["nocache"]))
@@ -124,25 +131,4 @@ class Obsah extends Entity {
         //output it
         return new ImageResponse($image, 'image/png');
     }
-
-    /** Applies any options to the supplied image
-     * resize, crop, text, fadeframe
-     * TODO: introduce API for other filters
-     */
-    private static function applyImageOptions(Image $image, $o) {
-        $opts = array($o);
-        if ($o{0} == 'c') {
-            $opts[0] = substr($opts[0], 1);
-            $opts['crop'] = true;
-        }
-
-        //crop image to square or just resize
-        if (isset($opts["crop"])) {
-            $image->resize($opts[0], $opts[0], Image::FILL);
-            $image->crop('50%', '20%', $opts[0], $opts[0]);
-        }
-        else
-            $image->resize($opts[0], $opts[0], Image::SHRINK_ONLY);
-    }
-
 }

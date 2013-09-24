@@ -9,5 +9,7 @@ common:
 			username: zbycz
 			password: dtbheslo
 
+		filesSecret: 11111111111111111111111
+
 production < common:
 development < common:
