@@ -1,9 +1,4 @@
-
 /app/config-server.neon
 /app/log/
 /app/temp/cache/
 /nbproject
-/data/pdf/*
-/data/img/*
-/data/thumbs/*
-

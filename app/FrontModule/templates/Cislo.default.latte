@@ -2,9 +2,15 @@
 {block content}
 <p class="pull-right margin1">
 	<a n:href=":Admin:Cislo: $cislo->id" class="btn" n:if="$user->isInRole(admin)"><i class="icon-pencil"></i> Administrovat</a>
-	<a href="{$cislo->getPdfLink()}" class="btn btn-primary"><i class="icon-download-alt icon-white"></i> Stáhnout kompletní PDF</a>
-	<small n:if="$cislo->pdfSize">({$cislo->pdfSize})</small>
-	<small n:if="!$cislo->pdfSize">PDF chybí :(</small>
+
+	{if $cislo->verejne == 2 AND !$user->isInRole(admin)}
+		<span class="btn disabled" title="Číslo zatím není publikováno"><i class="icon-download-alt icon-white"></i> Stáhnout kompletní PDF</span>
+	{elseif !$user->loggedIn}
+		<span class="btn disabled" title="Pro stažení se přihlaš"><i class="icon-download-alt icon-white"></i> Stáhnout kompletní PDF</span>
+	{else}
+		<a n:href="download $cislo->id" class="btn btn-primary"><i class="icon-download-alt icon-white"></i> Stáhnout kompletní PDF</a>
+	{/if}
+	<small>({$cislo->pdfSize})</small>
 </p>
 
 

@@ -96,11 +96,13 @@ class Cislo extends Entity {
                 . "data/pdf/$this->id.pdf";
     }
 
+	function getPdfFilename() { //Roverský kmen 2004-05.pdf
+		return "$this->casopis $this->rok-$this->mesic.pdf";
+	}
+
     function getPdfSize(){
         $size = @filesize($this->getPdfPath());
-        if($size)
-            return round($size / 1024 / 1024, $size>10e7 ? 0 : 1) . " MB";
-        return false;
+        return round($size / 1024 / 1024, $size>10e7 ? 0 : 1) . " MB";
     }
 
     function getCasopis() {

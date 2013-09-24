@@ -110,7 +110,7 @@ class CasopisModel {
             FROM cislo
             WHERE casopis_id=%i", self::$casopis_id, "
                 AND priloha=0
-                %if", !self::$showUnpublished, " AND verejne = 1 %end
+                %if", !self::$showUnpublished, " AND verejne != 0 %end
             GROUP BY rocnik
             ORDER BY rocnik DESC
           ");

@@ -17,7 +17,7 @@ class Rocnik extends Entity {
             WHERE casopis_id=%i", $this->casopis_id, "
                 AND rocnik=%i", $this->rocnik, "
                 AND priloha=0
-                %if",!CasopisModel::$showUnpublished," AND verejne = 1 %end
+                %if",!CasopisModel::$showUnpublished," AND verejne != 0 %end
             ORDER BY cislo");
         $result = array();
         foreach ($cisla as $r)

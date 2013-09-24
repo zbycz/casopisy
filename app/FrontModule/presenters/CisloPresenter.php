@@ -2,9 +2,9 @@
 
 namespace FrontModule;
 
-use Casopisy\CasopisModel,
-    Casopisy\CisloModel,
-    Casopisy\ObsahModel;
+use Casopisy\CisloModel;
+use Nette\Application\Responses\FileResponse;
+use \Nette\Application\Responses\TextResponse;
 
 /**
  */
@@ -27,6 +27,21 @@ class CisloPresenter extends BasePresenter {
 		$this->template->zoom = ($zoom % 100 == 0 AND $zoom <= 1000) ? intval($zoom) : 200;
 		$this->template->cislo = $this->cislo;
     }
+
+	public function actionDownload($id)
+	{
+        $cislo = CisloModel::getById($id);
+
+		//allow only logged in user
+		if (!($this->user->isInRole('admin') OR ($this->user->loggedIn AND $cislo->verejne == 1))) //TODO opravdu == ?
+			throw new \Nette\Application\ForbiddenRequestException("Číslo $id není veřejné");
+
+		if (!file_exists($cislo->getPdfPath()))
+			throw new \Nette\Application\BadRequestException("PDF $id nenalezeno");
+
+		$response = new FileResponse($cislo->getPdfPath(), $cislo->getPdfFilename(), 'application/pdf');
+		$this->sendResponse($response);
+	}
 
 	public function handlePribrat($p)
 	{
