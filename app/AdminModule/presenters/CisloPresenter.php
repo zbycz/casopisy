@@ -60,7 +60,7 @@ class CisloPresenter extends BasePresenter {
                 ->setPrompt("-vyberte-")->controlPrototype->accesskey('m');
         $form->addText('rok', 'Rok')->controlPrototype->class("input-mini");
         $form->addText('popis', 'Popis');
-        $form->addCheckbox('verejne', 'Zveřejněno');
+        $form->addRadioList('verejne', 'Zveřejněno', array('Skryté', 'Veřejné', 'Jen náhled'));
         $form->addCheckbox('priloha', 'Příloha k časopisu (přiřazuje se dle ročníku a čísla)');
         $form->addCheckbox('hotovo', 'Štítkování HOTOVO (nenabízet editorům)');
         $form->addText('poznamka', 'Vnitřní poznámka')->controlPrototype->class("input-xxlarge");

@@ -52,6 +52,7 @@ a.del:hover {background: #fd4239; color: #fff;}
 
 #js-published-helper {padding-left: 24px; background: url(images/iconEyeNo.png) no-repeat 3px center;}
 
+label {display: inline}
 
 #flashes {
     overflow:hidden;
