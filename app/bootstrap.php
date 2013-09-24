@@ -55,7 +55,7 @@ $adminRouter[] = new Route('admin/<casopis>/<presenter>[/<action>][/<id>]', arra
 
 
 $container->router[] = $frontRouter = new RouteList('Front');
-$frontRouter[] = new Route('data/thumbs/<id>-<page>-<hash>[.<opts>].png', 'File:preview');
+$frontRouter[] = new Route('data/thumbs/<id>-<page>[-<hash>][.<opts>].png', 'File:preview');
 $frontRouter[] = new Route('[index.php]', 'Homepage:default');
 $frontRouter[] = new Route('login[/<action>]', "Login:default");
 $frontRouter[] = new Route('<casopis>/tagy/<id .*>', array(
