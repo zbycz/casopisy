@@ -4,7 +4,7 @@
 
 <p class="tagy">
 {foreach $tagy as $t}
-    <a n:href="Casopis: id=>$t" n:class="label,isset($tag)&&$t==$tag?label-info">{$t}</a> <small>({$t->pocet})</small>
+    <a n:href="Casopis: id=>$t" n:class="label,isset($tag)&&$t==$tag?label-info">{$t}</a> <small n:if="$t->pocet>1">({$t->pocet})</small>
     <br>
 {/foreach}
 </p>
