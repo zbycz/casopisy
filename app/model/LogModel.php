@@ -56,12 +56,13 @@ class LogModel
 		dibi::query("INSERT INTO log", $data);
 	}
 
-	static function getZebricek()
+	static function getZebricek($month = NULL)
 	{
 		return dibi::query("
-			SELECT name, sum(typ != 'removeTag') cnt
+			SELECT name, sum(typ != 'removeTag' AND typ != 'pribrat') cnt
 			FROM log l
 			LEFT JOIN user u ON u.id = l.user_id
+			%if",$month," WHERE YEAR(time)=YEAR(%d",$month,") AND MONTH(time)=MONTH(%d",$month,")   %end
 			GROUP BY user_id
 			ORDER BY cnt DESC
 			");

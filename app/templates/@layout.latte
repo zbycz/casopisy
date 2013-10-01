@@ -161,9 +161,16 @@
 {!dibi::fetchSingle('SELECT text FROM pages WHERE id="leftmenu"')}
 
 <div class="well sidebar-nav poutac">
-	<p><b>Bodování:</b></p>
+	<p><b>Bodování za měsíc:</b></p>
 	<p>Za každou úpravu dostaneš bod, stačí se přihlásit vpravo nahoře.
 	<ul class="aleft">
+	{foreach \Casopisy\LogModel::getZebricek(date('Y-m-d')) as $r}
+		<li>{$r->name} <i class="icon-star"></i>{$r->cnt}</li>
+	{/foreach}
+	</ul>
+
+	<p><a href="#" onclick="$(this).parent().next().toggle(200);return false">Celkový žebříček</a>
+	<ul class="aleft hide">
 	{foreach \Casopisy\LogModel::getZebricek() as $r}
 		<li>{$r->name} <i class="icon-star"></i>{$r->cnt}</li>
 	{/foreach}
