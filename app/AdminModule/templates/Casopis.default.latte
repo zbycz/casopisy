@@ -11,7 +11,7 @@
 </h2>
 
 {foreach $log as $cislo}
-	<h3>{$cislo->casopis} <a n:href=":Front:Cislo: $cislo->id">{$cislo->mesicrok}</a></h3>
+	<h3>{$cislo->casopis} <a n:href=":Front:Cislo: $cislo->id, casopis=>$cislo->casopis_id">{$cislo->mesicrok}</a></h3>
 	<table class="stranky">
 	{foreach $cislo->stranyLog as $logs}
 	    {var $p = $logs[0]->strana}
