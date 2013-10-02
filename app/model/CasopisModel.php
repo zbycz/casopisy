@@ -59,7 +59,7 @@ class CasopisModel {
 			$data = dibi::fetch("
 				SELECT *
 				FROM cislo
-				WHERE casopis_id = %i",$idx," AND verejne=1 AND priloha=0
+				WHERE casopis_id = %i",$idx," AND verejne>0 AND priloha=0
 				ORDER BY rok DESC, mesic DESC
 				LIMIT 1");
 			if ($data)
