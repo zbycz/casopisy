@@ -127,6 +127,16 @@
 	function addTag($obj) {
 		var page = $obj.parents('tr').attr('id').substr(1);
 		var tag = $obj.val();
+
+		//check duplicity
+		var duplicity = false;
+		$obj.siblings('.label').each(function(){
+			if ($(this).text() == tag)
+				duplicity = true;
+		});
+		if (duplicity) return;
+
+		$obj.before('<span class="label hide">'+tag+'</span> '); //aby fungoval duplicty check
 		$obj.after('<small>ukládám...</small>')
 		$.get({link Ajax:addTag}, { cid: cid, p: page, tag: tag}, function(){
 			$obj.before('<span class="label label-info">'+tag+'</span> ');
