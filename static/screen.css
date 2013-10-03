@@ -198,6 +198,11 @@ label {display: inline}
 .stranky input.tags {border: 0;margin-top:3px; box-shadow: none; }
 .stranky label {display: block; float:left; line-height: 2; width: 4em}
 .stranky .btn-group {position:relative; top:-1px;}
+.stranky .pribrat {float:right; color: #ccc; font-size: 10px}
+.stranky .pribrat a {color: #ccc}
+
+
+
 
 .margin1 {margin:1em}
 .margin2 {margin:2em}
