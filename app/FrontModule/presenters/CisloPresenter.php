@@ -88,4 +88,9 @@ class CisloPresenter extends BasePresenter {
 		}
 		$this->redirect("this#p$p");
 	}
+
+	public function handleAddComment()
+	{
+		
+	}
 }

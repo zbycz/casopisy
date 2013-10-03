@@ -71,7 +71,8 @@
 <table class="stranky" id="strankyTable" data-cid="{$cislo->id}">
 {foreach $cislo->getObsah() as $r}
     {var $p = $r->strana}
-    <tr n:class="$iterator->odd ? odd" id="p{$p}" n:if="$p>1 OR $cislo->priloha OR $user->loggedIn">
+	{continueIf $p==1 AND !$cislo->priloha AND !$user->loggedIn}
+    <tr n:class="$iterator->odd ? odd" id="p{$p}">
     <th>
 		{if $fullView}
 	        {foreach $r->getStrany() as $s}
@@ -96,6 +97,22 @@
 			{/foreach}
 			<input type="text" class="addTag" placeholder="přidat štítek [enter]" n:if="$user->loggedIn">
 		</p>
+
+		<div>
+			<p class="comment" n:if="0">
+				<a class="author">Pif</a> tenhle článek se mi fakt lííbí, budeme na něj dělat body.<br>
+				<small>24.září 2013 v 9:55</small>
+			</p>
+
+			<form action="{link addComment!}" method="post" n:if="$user->loggedIn">
+			<div class="comment comment-form">
+				<a class="author">Pif</a>
+				<span class="td"><textarea placeholder="Přidat komentář..."></textarea></span>
+				<span class="submit-td"><button type="submit" value="S" class="btn"><i class="icon-comment"></i></button></span>
+			</div>
+			</form>
+
+		</div>
 
 	</td>
     </tr>
@@ -243,8 +260,6 @@
 	.cedit { cursor: pointer; }
 	.cedit:hover:not(:focus):after { content: url(/static/images/inline-edit.png); }
 	p.cedit { min-height: 19px }
-
-	#strankyTable small { font-size: 12px }
 
 	#strankyTable .label:hover {text-decoration: line-through; background: #aaa; cursor: pointer;}
 

@@ -552,6 +552,8 @@ $(function(){
 	//editace cisla form
 	editaceCislaForm_changes_catcher();
 
+	//commnet textarea autosize
+	$('.comment-form textarea').autosize();
 
     //anchor scrolling
     if (document.location.hash) highlight();

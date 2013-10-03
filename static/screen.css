@@ -174,7 +174,7 @@ label {display: inline}
 .stranky tr {
     border-bottom: 1em #fafafa solid;
 }
-.stranky th {padding: 1em; width: 330px;}
+.stranky th {padding: 1em; width: 330px; vertical-align:top;}
 .stranky td {padding: 1em; vertical-align: top}
 .stranky table td {padding: 0.5em}
 .stranky table tr {border:0}
@@ -201,6 +201,32 @@ label {display: inline}
 .stranky .pribrat {float:right; color: #ccc; font-size: 10px}
 .stranky .pribrat a {color: #ccc}
 
+.stranky .comment {
+	background: #F7F8EA;
+	margin-bottom:2px;
+	padding: .2em .1em 0 .4em;
+	font-size: 12px;
+}
+.stranky .comment .author {padding-right:0.3em; font-weight: bold;}
+.stranky .comment small {font-size: 9px;}
+
+.stranky .comment-form {display: table; width: 100%;}
+.stranky .comment-form .author {
+	display: table-cell;
+	line-height: 2;
+	white-space: nowrap;
+	width: 30px;
+	padding-left: 0.4em;
+}
+.stranky .comment-form .td {display: table-cell;}
+.stranky .comment-form .submit-td {display: table-cell; width: 45px;}
+.stranky .comment-form .submit-td button {margin-top: 5px;}
+.stranky .comment-form textarea {
+	margin-bottom:0.4em;
+	width: 95%;
+	resize: vertical;
+	height: 18px;
+}
 
 
 
