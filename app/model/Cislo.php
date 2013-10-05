@@ -148,14 +148,18 @@ class Cislo extends Entity {
 	public function getKomentare($p) {
 		if (!$this->komentCache) {
 			$this->komentCache = dibi::query("
-				SELECT *
+				SELECT k.*, u.name
 				FROM komentare k
 				LEFT JOIN user u ON user_id = u.id
-				WHERE k.cislo_id = %i",$this->id,"
+				WHERE k.cislo_id = %i",$this->id," AND del=0
 				ORDER BY time
 				")->fetchAssoc('strana[]');
 		}
 		return isset($this->komentCache[$p]) ? $this->komentCache[$p] : array();
+	}
+
+	public function deleteKomentar($id)	{
+		dibi::query("UPDATE komentare SET del=1 WHERE id = %i",$id);
 	}
 
 }

@@ -98,7 +98,7 @@ class CisloPresenter extends BasePresenter {
 		$p = $this->request->post['strana'];
 		$text = $this->request->post['text'];
 		if($text) {
-			$this->cislo->addKomentar($p, $this->user->id, $text);
+			$this->cislo->addKomentar($p, $this->user->id, trim($text));
 			$this->flashMessage('Komentář úspěšně přidán.');
 		}
 
@@ -107,5 +107,18 @@ class CisloPresenter extends BasePresenter {
 
 		if (!$this->isAjax())
 			$this->redirect("this#p$p");
+	}
+
+	public function handleDeleteComment($kid)
+	{
+		if (!$this->user->isInRole('admin')) {
+			throw new \Nette\Application\ForbiddenRequestException("Mazat komenty mohou jen admini");
+		}
+		$this->cislo->deleteKomentar($kid);
+		$this->flashMessage('Komentář je skrytý.');
+		$this->invalidateControl("komentare");
+		$this->invalidateControl("flashes");
+		if (!$this->isAjax())
+			$this->redirect("this");
 	}
 }

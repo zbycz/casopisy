@@ -209,6 +209,7 @@ label {display: inline}
 }
 .stranky .comment .author {padding-right:0.3em; font-weight: bold;}
 .stranky .comment small {font-size: 9px;}
+.stranky .comment small a {color: #999}
 
 .stranky .comment-form {display: table; width: 100%; background: transparent}
 .stranky .comment-form .author {
