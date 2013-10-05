@@ -590,18 +590,11 @@ $(function(){
 
 	/* visibly remove flash id and backlink parameters from URI */
 	if(history.replaceState) {
-		l = location.toString();
-		r = [['_fid',4],['backlink',5]];
-		for(i in r) {
-			uri = l.indexOf(r[i][0]+'=');
-			if(uri != -1) {
-				uri = l.substr(0, uri)+l.substr(uri+r[i][0].length+r[i][1]+2);
-				if( (uri.substr(uri.length-1) == '?') || (uri.substr(uri.length-1) == '&') ) {
-					uri = uri.substr(0, uri.length-1);
-				}
-				history.replaceState('', '', uri);
-			}
-		}
+		var l = location.toString()
+		var uri = l.replace(/\?_fid=[^&#]+&/g, '?') //?fid&...
+		           .replace(/[?&]_fid=[^&#]+/g, ''); // ?fid OR ?...&fid
+		if(uri != l)
+			history.replaceState('', '', uri);
 	}
 
         $('.lightbox').lightBox({

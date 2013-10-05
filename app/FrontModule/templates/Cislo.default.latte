@@ -99,19 +99,19 @@
 		</p>
 
 		<div>
-			<p class="comment" n:if="0">
-				<a class="author">Pif</a> tenhle článek se mi fakt lííbí, budeme na něj dělat body.<br>
-				<small>24.září 2013 v 9:55</small>
+			<p class="comment" n:foreach="$cislo->getKomentare($p) as $koment">
+				<a class="author">{$koment[name]}</a> {!$koment[text]|linkify}<br>
+				<small>{$koment[time]|date:'j.n. Y \v H:i'}</small>
 			</p>
 
 			<form action="{link addComment!}" method="post" n:if="$user->loggedIn">
+			<input type="hidden" name="strana" value="{$p}">
 			<div class="comment comment-form">
 				<a class="author">Pif</a>
-				<span class="td"><textarea placeholder="Přidat komentář..."></textarea></span>
+				<span class="td"><textarea name="text" placeholder="Přidat vlastní zkušenost či doplnění..."></textarea></span>
 				<span class="submit-td"><button type="submit" value="S" class="btn"><i class="icon-comment"></i></button></span>
 			</div>
 			</form>
-
 		</div>
 
 	</td>

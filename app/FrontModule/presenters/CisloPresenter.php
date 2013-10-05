@@ -91,6 +91,18 @@ class CisloPresenter extends BasePresenter {
 
 	public function handleAddComment()
 	{
-		
+		if (!$this->user->loggedIn) {
+			throw new \Nette\Application\ForbiddenRequestException("Komentovat mohou přihlášení");
+		}
+
+		$p = $this->request->post['strana'];
+		$text = $this->request->post['text'];
+		if($text) {
+			$this->cislo->addKomentar($p, $this->user->id, $text);
+			$this->flashMessage('Komentář úspěšně přidán.');
+		}
+
+		if (!$this->isAjax())
+			$this->redirect("this#p$p");
 	}
 }

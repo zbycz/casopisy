@@ -83,6 +83,14 @@ Nette\Templating\FileTemplate::extensionMethod('modified', function ($that, $s) 
 			return $s . "?". dechex(filemtime(WWW_DIR.$s));
 		});
 
+Nette\Templating\FileTemplate::extensionMethod('linkify', function ($that, $s) {
+	$s = htmlspecialchars($s);
+	$s = nl2br($s);
+	//$s = preg_replace('~==([^=]+)==[\r\n]+~is', '<h2>\\1</h2>', $s);
+	$s = preg_replace('~\*([^*]+)\*~iU', '<b>\\1</b>', $s);
+	return preg_replace('~https?://([^ \n\r\t]+)~is', '<a href="http://\\1" target="_blank">\\1</a>', $s);
+});
+
 
 // Configure and run the application!
 //$container->application->catchExceptions = true;
