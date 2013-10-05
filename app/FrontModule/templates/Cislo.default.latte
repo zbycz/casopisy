@@ -1,6 +1,5 @@
 
 {block content}
-{var $fullView = ($user->isInRole(admin) OR $cislo->verejne == 1)}
 
 <p class="pull-right margin1">
 	<a n:href=":Admin:Cislo: $cislo->id" class="btn" n:if="$user->isInRole(admin)"><i class="icon-pencil"></i> Administrovat</a>
@@ -68,6 +67,8 @@
 
 
 {* -------------- editace/prohlížení ---------------- *}
+{snippet komentare}
+{var $fullView = ($user->isInRole(admin) OR $cislo->verejne == 1)}
 <table class="stranky" id="strankyTable" data-cid="{$cislo->id}">
 {foreach $cislo->getObsah() as $r}
     {var $p = $r->strana}
@@ -98,13 +99,13 @@
 			<input type="text" class="addTag" placeholder="přidat štítek [enter]" n:if="$user->loggedIn">
 		</p>
 
-		<div>
+		<div n:snippet="komentare-$p">
 			<p class="comment" n:foreach="$cislo->getKomentare($p) as $koment">
 				<a class="author">{$koment[name]}</a> {!$koment[text]|linkify}<br>
 				<small>{$koment[time]|date:'j.n. Y \v H:i'}</small>
 			</p>
 
-			<form action="{link addComment!}" method="post" n:if="$user->loggedIn">
+			<form action="{link addComment!}" method="post" n:if="$user->loggedIn" class="ajax">
 			<input type="hidden" name="strana" value="{$p}">
 			<div class="comment comment-form">
 				<a class="author">Pif</a>
@@ -118,6 +119,8 @@
     </tr>
 {/foreach}
 </table>
+{/snippet}
+
 
 {if $user->loggedIn}
 

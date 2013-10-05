@@ -102,6 +102,9 @@ class CisloPresenter extends BasePresenter {
 			$this->flashMessage('Komentář úspěšně přidán.');
 		}
 
+		$this->invalidateControl("komentare");
+		$this->invalidateControl("flashes");
+
 		if (!$this->isAjax())
 			$this->redirect("this#p$p");
 	}
