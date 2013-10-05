@@ -23,6 +23,23 @@ CREATE TABLE `cislo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
+DROP TABLE IF EXISTS `komentare`;
+CREATE TABLE `komentare` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cislo_id` int(11) NOT NULL,
+  `strana` tinyint(3) unsigned NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `time` datetime NOT NULL,
+  `text` text COLLATE utf8_czech_ci NOT NULL,
+  `del` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cislo_id` (`cislo_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `komentare_ibfk_1` FOREIGN KEY (`cislo_id`) REFERENCES `cislo` (`id`),
+  CONSTRAINT `komentare_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+
 DROP TABLE IF EXISTS `log`;
 CREATE TABLE `log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -88,7 +105,7 @@ CREATE TABLE `user` (
   `role` varchar(50) COLLATE utf8_czech_ci NOT NULL,
   `log_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
--- 2013-08-30 17:00:56
+-- 2013-10-06 01:27:55

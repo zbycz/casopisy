@@ -99,7 +99,7 @@
 			<input type="text" class="addTag" placeholder="přidat štítek [enter]" n:if="$user->loggedIn">
 		</p>
 
-		<div n:snippet="komentare-$p" class="spacer3">
+		<div n:snippet="komentare-$p" class="spacer3" n:if="$p>1 AND $cislo->casopis != 'Skauting'">
 			<p class="comment" n:foreach="$cislo->getKomentare($p) as $koment">
 				<a class="author">{$koment[name]}</a> {!$koment[text]|linkify}<br>
 				<small>{$koment[time]|date:'j.n. Y \v H:i'}</small>
