@@ -155,7 +155,7 @@
 			if ($(this).text() == tag)
 				duplicity = true;
 		});
-		if (duplicity) return;
+		if (duplicity || tag=="") return;
 
 		$obj.before('<span class="label hide">'+tag+'</span> '); //aby fungoval duplicty check
 		$obj.after('<small>ukládám...</small>')
