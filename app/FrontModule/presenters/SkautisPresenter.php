@@ -104,7 +104,7 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 
 	public function actionMotd()
 	{
-		echo "<h1>Já jsem pozdrav, co ty?</h1>";
+		echo '<iframe src="//www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fskautske.casopisy&amp;width=640&amp;height=550&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=true&amp;show_border=true&amp;appId=515622781853695" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:640px; height:590px;" allowTransparency="true"></iframe>';
 		$this->terminate();
 	}
 
