@@ -164,7 +164,7 @@
 
 <div class="well sidebar-nav poutac">
 	<p><b>Bodování za měsíc:</b></p>
-	<p>Za každou úpravu dostaneš bod{if !$presenter->user->loggedIn}, stačí se přihlásit vpravo nahoře.{else}.{/if}
+		<p>Za každou úpravu dostaneš bod{if !$user->loggedIn}, stačí se přihlásit vpravo nahoře{/if}.
 	<ul class="aleft">
 	{foreach \Casopisy\LogModel::getZebricek(date('Y-m-d')) as $r}
 		<li>{$r->name} <i class="icon-star"></i>{$r->cnt}</li>
