@@ -21,7 +21,7 @@ class FilePresenter extends Nette\Application\UI\Presenter {
         $cislo = CisloModel::getById($id);
         $obsah = $cislo->getPage($page);
 
-		// špatný hash - může být starý či si někdo hrál s url OR chybí orig
+	    // špatný hash - může být starý či si někdo hrál s url OR chybí orig
 		if ($hash != Obsah::getFilesSecretHash($id, $page, $opts) OR !file_exists($obsah->getPath($page))) {
 			$this->context->httpResponse->setCode(404);
 			$filename = $this->context->parameters['staticDir'] . '/images/chyba404.png';

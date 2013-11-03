@@ -68,29 +68,6 @@ class Obsah extends Entity {
 		return substr(md5("$id-$p-$opts" . Environment::getVariable("filesSecret")), -6);
 	}
 
-	static function refreshImgHashes(){
-		$e = error_reporting(E_ALL & ~E_NOTICE);
-		$count = 0;
-
-		$dir = Environment::getVariable("dataDir") . '/img/';
-		$files = Finder::findFiles("*.png")->from($dir);
-        foreach ($files as $file => $info) {
-			$res = preg_match('~^(?P<id>\d+)-(?P<p>\d+)(-(?P<hash>[0-9a-z]+))?(?P<o>.(?P<opts>[^.]+))?.png$~', $info->getFilename(), $m);
-			if (!$res) {
-				throw new \Nette\InvalidStateException("Img soubor neodpovídá RegExpu: '$file'");
-			}
-
-			$hash = self::getFilesSecretHash($m['id'], $m['p'], $m['opts']);
-			if ($hash != @$m['hash']) {
-				rename($file, "$dir$m[id]-$m[p]-$hash$m[o].png");
-				$count++;
-			}
-		}
-
-		error_reporting($e);
-		return $count;
-	}
-
 	// like /data/thumbs/351-1-ab3f1e.300.png
 	static function purgeImgCache($cislo_id) {
 		$cnt=0;
@@ -158,7 +135,7 @@ class Obsah extends Entity {
             return new ImageResponse(file_get_contents($cachePath), 'image/png');
 
         //create image
-        $image = Image::fromFile($this->getPath($this->strana));
+        $image = Image::fromFile($this->getPath($p));
 
         //enable alpha channel
         //$image->savealpha(true);
