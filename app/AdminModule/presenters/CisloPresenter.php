@@ -2,9 +2,10 @@
 
 namespace AdminModule;
 
-use Casopisy\CasopisModel,
-    Casopisy\CisloModel,
-    Casopisy\ObsahModel;
+use Casopisy;
+use Casopisy\CasopisModel;
+use Casopisy\CisloModel;
+use Casopisy\ObsahModel;
 use Nette;
 
 /**
@@ -12,7 +13,7 @@ use Nette;
 class CisloPresenter extends BasePresenter {
 
     /**
-     * @var Cislo
+     * @var Casopisy\Cislo
      */
     private $cislo;
 
@@ -39,11 +40,20 @@ class CisloPresenter extends BasePresenter {
 	// zobrazení čísla a formuláře
     public function actionDefault($id) {
         $this->cislo = $this->template->cislo = CisloModel::getById($id);
-        if (!$this->cislo)
-			throw new \Nette\Application\BadRequestException("Cislo '$id' neexistuje");
-        if (!$this['editForm']->submitted)
+
+	    if (!$this->cislo) {
+			throw new Nette\Application\BadRequestException("Cislo '$id' neexistuje");
+	    }
+
+	    if (!$this['editForm']->submitted) {
             $this['editForm']->setValues($this->cislo);
+	    }
     }
+
+	public function handlePurgeImgCache() {
+		$cnt = Casopisy\Obsah::purgeImgCache($this->cislo->id);
+		$this->flashMessage("Smazáno $cnt kešovaných náhledů");
+	}
 
     protected function createComponentEditForm() {
         $form = new Nette\Application\UI\Form;
@@ -56,7 +66,7 @@ class CisloPresenter extends BasePresenter {
         $form->addText('popis', 'Popis');
         $form->addRadioList('verejne', 'Zveřejněno', array('Skryté', 'Veřejné', 'Jen náhled'));
         $form->addCheckbox('priloha', 'Příloha k časopisu (přiřazuje se dle ročníku a čísla)');
-        $form->addCheckbox('hotovo', 'Štítkování HOTOVO (nenabízet editorům)');
+        $form->addCheckbox('hotovo', 'Štítkování HOTOVO (nenabízet "ke štítkování")');
         $form->addText('poznamka', 'Vnitřní poznámka')->controlPrototype->class("input-xxlarge");
         $form->addSubmit('submit1', 'Uložit úpravy')->controlPrototype->class("btn btn-primary");
         $form->addSubmit('gonext', '_Uložit & přejít +1')->controlPrototype->class("btn")->accesskey('u');

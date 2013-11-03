@@ -91,6 +91,20 @@ class Obsah extends Entity {
 		return $count;
 	}
 
+	// like /data/thumbs/351-1-ab3f1e.300.png
+	static function purgeImgCache($cislo_id) {
+		$cnt=0;
+		$dir = Environment::getVariable("dataDir") . '/thumbs/';
+		$files = Finder::findFiles("$cislo_id-*.png")->from($dir);
+
+		foreach ($files as $file => $info) {
+			unlink($file);
+			$cnt++;
+		}
+
+		return $cnt;
+	}
+
 	// ----------------------------------------------------------------
 
     function save($newdata = false) {

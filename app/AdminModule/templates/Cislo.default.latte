@@ -3,6 +3,8 @@
 <a n:href=":Front:Cislo: $cislo[id]" class="btn pull-right margin1"><i class="icon-globe"></i> Zobrazit/editovat na webu</a>
 <h1 n:block=title><span class="muted">{$cislo->casopis}</span> {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
 
+<p class="pull-right"><a n:href="purgeImgCache!"><small>smazat keš obrázků</small></a></p>
+
 {control editForm}
 
 <button class="btn" onclick="var s=$('#frmeditForm-poznamka').val();
