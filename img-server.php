@@ -29,13 +29,17 @@ if(file_exists(APP_DIR . '/config-server.neon'))
 	$configurator->addConfig(APP_DIR . '/config-server.neon');
 $container = $configurator->createContainer();
 
+//error_reporting(E_ALL & ~E_NOTICE);
 
 //------------------ do tricks: ------------
 $img = basename($container->httpRequest->url->path);
 
-//check permissions @TODO consolidate persmissions
-if (file_exists("data/img/$img") AND $container->user->loggedIn) {
-	$file = "data/img/$img";
+preg_match('~^(\d+)-(\d+)-([0-9a-z]+).png$~', $img, $m);
+$allowed = (\Casopisy\Obsah::getFilesSecretHash($m[1], $m[2], "") == $m[3]) OR $container->user->isInRole('admin');
+
+//check permission
+if (file_exists("data/img/$m[1]-$m[2].png") AND $allowed) {
+	$file = "data/img/$m[1]-$m[2].png";
 }
 else {
 	header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
