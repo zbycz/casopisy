@@ -51,7 +51,7 @@ class Obsah extends Entity {
             return Environment::getApplication()->getPresenter()
                             ->link(':Front:File:preview', array($this->cislo_id, $p, $hash, $opts));
         return Environment::getHttpRequest()->getUrl()->getBasePath()
-                . "data/img/$this->cislo_id-$p-$hash.png";
+                . "data/imgserver/$this->cislo_id-$p.png";
     }
 
     function getPath($p, $opts = "") {
@@ -60,7 +60,7 @@ class Obsah extends Entity {
             $p = "-$p";
         if ($opts)
             return Environment::getVariable("dataDir") . "/thumbs/$this->cislo_id$p-$hash.$opts.png";
-        return Environment::getVariable("dataDir") . "/img/$this->cislo_id$p-$hash.png";
+        return Environment::getVariable("dataDir") . "/img/$this->cislo_id$p.png";
     }
 
 	// like /data/thumbs/351-1-ab3f1e.300.png

@@ -41,11 +41,10 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* index.php [NE,L]
 
 ##
-## Missing file - means potentially pending hash and is corrected by PHP
+## /data/img files handled by script (check permissions)
 ##
-RewriteCond %{REQUEST_URI} /data/img/([^.]+)(\.[^.]+)?\.(jpg|jpeg|png|gif)$
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule .* data/hash-corrector.php [NE,L]
+RewriteCond %{REQUEST_URI} /data/imgserver/([^.]+)(\.[^.]+)?\.(jpg|jpeg|png|gif)$
+RewriteRule .* img-server.php [NE,L]
 
 
 ##

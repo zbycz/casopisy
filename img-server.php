@@ -1,7 +1,7 @@
 <?php
 
 // absolute filesystem path to this web root
-define('WWW_DIR', dirname(__FILE__).'/..');
+define('WWW_DIR', dirname(__FILE__));
 
 // absolute filesystem path to the application root
 define('APP_DIR', WWW_DIR . '/app');
@@ -30,18 +30,26 @@ if(file_exists(APP_DIR . '/config-server.neon'))
 $container = $configurator->createContainer();
 
 
-//do tricks:
+//------------------ do tricks: ------------
 $img = basename($container->httpRequest->url->path);
-preg_match('~^(\d+)-(\d+)~', $img, $m);
 
-if (file_exists("img/$m[0].png")) {
-	$hash = \Casopisy\Obsah::getFilesSecretHash($m[1], $m[2], "");
-	rename("img/$m[0].png", "img/$m[0]-$hash.png");
-
-	header("Location: $_SERVER[REQUEST_URI]");
-	exit;
+//check permissions @TODO consolidate persmissions
+if (file_exists("data/img/$img") AND $container->user->loggedIn) {
+	$file = "data/img/$img";
 }
-else echo "error file not found";
+else {
+	header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+	$file = $container->parameters['staticDir'] . '/images/chyba404.png';
+}
+
+header("Content-Type: image/png");
+readfile($file);
 
 
-
+/* HELPER
+$files = \Nette\Utils\Finder::findFiles("*.png")->from('data/img/');
+foreach ($files as $file => $info) {
+	preg_match('~^(\d+)-(\d+)~', $info->getFilename(), $m);
+	rename($file, "data/img/$m[0].png");
+}
+*/
