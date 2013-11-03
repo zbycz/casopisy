@@ -43,7 +43,7 @@ if (file_exists("data/img/$m[1]-$m[2].png") AND $allowed) {
 
 	//allow http caching - http://stackoverflow.com/questions/1971721/how-to-use-http-cache-headers-with-php
 	$tsstring = gmdate('D, d M Y H:i:s ', filemtime($file)) . 'GMT';
-	$etag = md5($file);
+	$etag = md5($tsstring);
 
 	$if_modified_since = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : false;
 	$if_none_match = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] : false;
