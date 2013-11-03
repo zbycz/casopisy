@@ -40,11 +40,33 @@ $allowed = (\Casopisy\Obsah::getFilesSecretHash($m[1], $m[2], "") == $m[3]) OR $
 //check permission
 if (file_exists("data/img/$m[1]-$m[2].png") AND $allowed) {
 	$file = "data/img/$m[1]-$m[2].png";
+
+	//allow http caching - http://stackoverflow.com/questions/1971721/how-to-use-http-cache-headers-with-php
+	$tsstring = gmdate('D, d M Y H:i:s ', filemtime($file)) . 'GMT';
+	$etag = md5($file);
+
+	$if_modified_since = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : false;
+	$if_none_match = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] : false;
+	if ((($if_none_match && $if_none_match == $etag) || (!$if_none_match)) &&
+		($if_modified_since && $if_modified_since == $tsstring))
+	{
+		header('HTTP/1.1 304 Not Modified');
+		exit();
+	}
+	else
+	{
+		header("Last-Modified: $tsstring");
+		header("ETag: \"{$etag}\"");
+		header("Pragma: cache");
+		header_remove("Expires");
+		header_remove("Cache-control");
+	}
 }
 else {
 	header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
 	$file = $container->parameters['staticDir'] . '/images/chyba404.png';
 }
+
 
 header("Content-Type: image/png");
 readfile($file);
