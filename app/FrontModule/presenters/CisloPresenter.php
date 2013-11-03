@@ -24,6 +24,9 @@ class CisloPresenter extends BasePresenter {
 		if (!$this->cislo->verejne AND !$this->user->isInRole('admin'))
 			throw new \Nette\Application\ForbiddenRequestException("Číslo '$id' není veřejné");
 
+		//kanonická url - po action se volá $autoCanonicalize
+		$this->casopis = $this->cislo->casopis_id;
+
 		$this->template->zoom = ($zoom % 100 == 0 AND $zoom <= 1000) ? intval($zoom) : 200;
 		$this->template->cislo = $this->cislo;
     }
