@@ -17,7 +17,7 @@ abstract class CommonBasePresenter extends Nette\Application\UI\Presenter {
         parent::startup();
 
 		if (!CasopisModel::getCasopisById($this->casopis))
-            throw new \Nette\Application\BadRequestException("Časopis nenalzen");
+            throw new \Nette\Application\BadRequestException("Časopis nenalezen");
 
         CasopisModel::$casopis_id = $this->casopis;
 		$this->template->casopis = \Casopisy\CasopisModel::getCasopis();

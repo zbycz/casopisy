@@ -3,8 +3,9 @@
 namespace FrontModule;
 
 use Casopisy\CisloModel;
+use Nette\Application\BadRequestException;
+use Nette\Application\ForbiddenRequestException;
 use Nette\Application\Responses\FileResponse;
-use \Nette\Application\Responses\TextResponse;
 
 /**
  */
@@ -20,9 +21,9 @@ class CisloPresenter extends BasePresenter {
 		$this->cislo->getObsah(); // cache
 
 		if (!$this->cislo)
-			throw new \Nette\Application\BadRequestException("Cislo '$id' neexistuje");
+			throw new BadRequestException("Cislo '$id' neexistuje");
 		if (!$this->cislo->verejne AND !$this->user->isInRole('admin'))
-			throw new \Nette\Application\ForbiddenRequestException("Číslo '$id' není veřejné");
+			throw new ForbiddenRequestException("Číslo '$id' není veřejné");
 
 		//kanonická url - po action se volá $autoCanonicalize
 		$this->casopis = $this->cislo->casopis_id;
@@ -37,10 +38,10 @@ class CisloPresenter extends BasePresenter {
 
 		//allow only logged in user
 		if (!($this->user->isInRole('admin') OR ($this->user->loggedIn AND $cislo->verejne == 1))) //TODO opravdu == ?
-			throw new \Nette\Application\ForbiddenRequestException("Číslo $id není veřejné");
+			throw new ForbiddenRequestException("Číslo $id není veřejné");
 
 		if (!file_exists($cislo->getPdfPath()))
-			throw new \Nette\Application\BadRequestException("PDF $id nenalezeno");
+			throw new BadRequestException("PDF $id nenalezeno");
 
 		$response = new FileResponse($cislo->getPdfPath(), $cislo->getPdfFilename(), 'application/pdf');
 		$this->sendResponse($response);
@@ -49,7 +50,7 @@ class CisloPresenter extends BasePresenter {
 	public function handlePribrat($p)
 	{
 		if (!$this->user->loggedIn)
-			throw new \Nette\Application\ForbiddenRequestException("Nepřihlášený uživatel");
+			throw new ForbiddenRequestException("Nepřihlášený uživatel");
 
 		$obsah = $this->cislo->getPage($p);
 		$dalsi = $this->cislo->getPage($p + $obsah->strany_navic + 1);
@@ -76,7 +77,7 @@ class CisloPresenter extends BasePresenter {
 	public function handleOdebrat($p)
 	{
 		if (!$this->user->loggedIn)
-			throw new \Nette\Application\ForbiddenRequestException("Nepřihlášený uživatel");
+			throw new ForbiddenRequestException("Nepřihlášený uživatel");
 
 		$obsah = $this->cislo->getPage($p);
 		$puvodni = $obsah->strany_navic;
@@ -95,7 +96,7 @@ class CisloPresenter extends BasePresenter {
 	public function handleAddComment()
 	{
 		if (!$this->user->loggedIn) {
-			throw new \Nette\Application\ForbiddenRequestException("Komentovat mohou přihlášení");
+			throw new ForbiddenRequestException("Komentovat mohou přihlášení");
 		}
 
 		$p = $this->request->post['strana'];
@@ -115,7 +116,7 @@ class CisloPresenter extends BasePresenter {
 	public function handleDeleteComment($kid)
 	{
 		if (!$this->user->isInRole('admin')) {
-			throw new \Nette\Application\ForbiddenRequestException("Mazat komenty mohou jen admini");
+			throw new ForbiddenRequestException("Mazat komenty mohou jen admini");
 		}
 		$this->cislo->deleteKomentar($kid);
 		$this->flashMessage('Komentář je skrytý.');
