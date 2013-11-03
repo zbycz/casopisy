@@ -40,6 +40,13 @@ RewriteCond %{REQUEST_URI} /data/thumbs/([^.]+)(\.[^.]+)?\.(jpg|jpeg|png|gif)$
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* index.php [NE,L]
 
+##
+## Missing file - means potentially pending hash and is corrected by PHP
+##
+RewriteCond %{REQUEST_URI} /data/img/([^.]+)(\.[^.]+)?\.(jpg|jpeg|png|gif)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* data/hash-corrector.php [NE,L]
+
 
 ##
 ## PHP settings - comment those when running PHP as CGI
