@@ -319,15 +319,26 @@ footer a:hover img {background: #ccc}
 	text-transform: none;
 	font-size: 220%;
 	line-height: 1.3;
+	font-weight: bold;
 }
-.casopislink span {display:none; font-size: 40%; color: #999999; text-transform: uppercase}
+.casopislink span {display:none; font-size: 40%; color: #999999; text-transform: uppercase; position: absolute;}
 .casopislink:hover {text-decoration: none;}
 .casopislink:hover b {text-decoration: underline;}
+.poutac .casopislink:hover {text-decoration: underline;}
 .casopislink:hover span {display: inline;text-decoration: none;}
-.casopislink.svetylko b {color: #fec210;}
-.casopislink.skaut b {color: #819d37;}
-.casopislink.skauting b {color: #0b2c65; font-style:italic}
-.casopislink.kmen b {color: #d50e40;}
-.casopislink.svet b {color: #4d8dbd; font-style:italic}
+.svetylko {color: #fec210 !important;}
+.skaut    {color: #819d37 !important;}
+.skauting {color: #0b2c65 !important; font-style:italic}
+.kmen    {color: #d50e40 !important;}
+.svet    {color: #006845 !important;}
+.kapitanska-posta, .mokre-vlcata, .mokre-skauti,
+.mokre   {color: #4d8dbd !important;}
+.publikace {color: #777 !important;}
+
+/*.poutac .casopislink.svet {font-size: 310%}*/
+.poutac .casopislink.mokre {font-size: 170%; line-height: 0.5;}
+
+
+
 .adminModule .casopislink:hover span {display:none;}
-.poutac .casopislink {display: block;margin:-15px;padding:15px}
+.poutac .casopislink {display: block;margin:-15px;padding:15px; font-size: 380%;}

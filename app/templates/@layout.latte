@@ -149,14 +149,26 @@
     </div>
 </div><!--/.well -->
 
+
 {foreach \Casopisy\CasopisModel::getCasopisy() as $id=>$c}
+	{continueIf in_array($c, array('Kapitánská pošta', 'Mokré vlčata', 'Mokré skauti', 'Publikace'))}
 	<div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis != $c">
-			<a n:href="Casopis: casopis=>$id" class="casopislink {$c|webalize}">
-				<b>{$c|firstUpper}</b>
-			</a>
+			<a n:href="Casopis: casopis=>$id" class="casopislink {$c|webalize}">{$c|firstUpper}</a>
 	</div><!--/.well -->
-	{* breakIf !$user->loggedIn *}
 {/foreach}
+
+<div class="well sidebar-nav poutac">
+	<a n:href="Casopis: casopis=>5" class="casopislink mokre">Kapitánská pošta</a><br>
+	<a n:href="Casopis: casopis=>6" class="casopislink mokre">Mokré vlčata</a><br>
+	<a n:href="Casopis: casopis=>7" class="casopislink mokre">Mokré skauti</a>
+</div><!--/.well -->
+
+{* <div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis != 8">
+	<a n:href="Casopis: casopis=>8" class="casopislink publikace">Publikace</a>
+</div><!--/.well -->
+*}
+
+
 
 <div class="fb-like-box" data-href="https://www.facebook.com/skautske.casopisy" data-width="292" data-height="83" data-show-faces="false" data-header="true" data-stream="false" data-show-border="false" style="height:83px"></div>
 
