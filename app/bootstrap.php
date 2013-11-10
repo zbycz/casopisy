@@ -69,7 +69,7 @@ foreach (\Casopisy\CasopisModel::getCasopisyURL() as $url=>$id) { //URL pro konk
 		'presenter' => 'Cislo',
 		'action' => 'default',
 	));
-	$frontRouter[] = new Route("$url/<presenter>[/<id>][/<action>]", array(
+	$frontRouter[] = new Route("$url/<presenter>[/<id [0-9]+>][/<action>]", array(
 		'casopis' => $id,
 		'presenter' => 'Casopis',
 		'action' => 'default',
