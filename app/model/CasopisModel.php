@@ -8,50 +8,73 @@ use \dibi;
 class CasopisModel {
 
     private static $casopisy;
-    private static $casopisyLong;
     public static $showUnpublished = false;
     public static $casopis_id;
 
-    /** @return array of idx => txt */
-    static function getCasopisy() {
-        if (!self::$casopisy){
-            self::$casopisy = \Nette\Environment::getVariable("casopisy");
-            self::$casopisyLong = \Nette\Environment::getVariable("casopisyLong");
+	/** @return array of $idx => object(url, odkaz, long) */
+	private static function config() {
+		if (!self::$casopisy){
+			self::$casopisy = array();
+			foreach (\Nette\Environment::getVariable("casopisy") as $idx => $row) {
+				self::$casopisy[$idx] = (object) array(
+					'url' => $row[0],
+					'odkaz' => $row[1],
+					'nazev' => isset($row[2]) ? $row[2] : $row[1],
+				);
+			}
 		}
-        return self::$casopisy;
+		return self::$casopisy;
+	}
+
+    /** @return array of idx => odkaz */
+    static function getCasopisy() {
+	    $result = array();
+	    foreach (self::config() as $idx => $r) {
+		    $result[$idx] = $r->odkaz;
+	    }
+        return $result;
     }
 
+	/** @return array of url => idx */
     static function getCasopisyURL() {
-        $arr = array();
-        foreach (self::getCasopisy() as $id => $txt)
-            $arr[Nette\Utils\Strings::webalize($txt)] = $id;
-        return $arr;
+	    $result = array();
+	    foreach (self::config() as $idx => $r) {
+		    $result[$r->url] = $idx;
+	    }
+	    return $result;
     }
 
+	/** @return string odkaz */
     static function getCasopisById($id) {
-        if (!self::$casopisy)
-            self::getCasopisy();
+        self::config();
         if (isset(self::$casopisy[$id]))
-            return self::$casopisy[$id];
+            return self::$casopisy[$id]->odkaz;
         return false;
     }
 
+	/** @return string plný-název */
     static function getCasopisLongById($id) {
-        if (!self::$casopisy)
-            self::getCasopisy();
-        if (isset(self::$casopisyLong[$id]))
-            return self::$casopisyLong[$id];
+	    self::config();
+        if (isset(self::$casopisy[$id]))
+            return self::$casopisy[$id]->nazev;
         return false;
     }
 
 
+	// -----------------   stavové metody --------------------
+
+
+	/** @return string odkaz */
     static function getCasopis(){
         return self::getCasopisById(self::$casopis_id);
     }
 
+	/** @return string plný-název */
     static function getCasopisLong(){
-        return self::$casopisyLong[self::$casopis_id];
+        return self::getCasopisLongById(self::$casopis_id);
     }
+
+	// --------------   databázové metody -----------------
 
 	static function getPosledniCisla(){
 		$cisla = array();

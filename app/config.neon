@@ -29,8 +29,16 @@ common:
 	services:
 	factories:
 	parameters:
-		casopisy: ['Světýlko', 'Skaut', 'Skauting', 'Kmen', 'Svět', 'Kapitánská pošta', 'Mokré vlčata', 'Mokré skauti', 'Publikace']
-		casopisyLong: ['Světýlko', 'Skaut', 'Skauting', 'Roverský kmen', 'Skautský svět', 'Kapitánská pošta', 'Mokré stránky - vlčata', 'Morké stránky - skauti', 'Publikace']
+		casopisy: #url, odkaz, plný-název
+			- [svetylko, Světýlko]
+			- [skaut,    Skaut]
+			- [skauting, Skauting]
+			- [kmen,     Kmen,          Roverský kmen]
+			- [svet,     Skautský svět]
+			- [kp,       Kapitánská pošta]
+			- [mvs,      Mokré vlčata, Mokré stránky - vlčata]
+			- [mss,      Mokré skauti, Mokré stránky - skauti]
+			- [publikace, Publikace]
 		staticDir: %wwwDir%/static
 		dataDir:   %wwwDir%/data
 		users:
