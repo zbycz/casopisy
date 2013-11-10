@@ -115,11 +115,12 @@
 <div class="container-fluid">
 <div class="row-fluid">
 <div class="span3">
-<div class="well sidebar-nav" n:if="isset($casopis)">
+{ifset $casopis}
+<div class="well sidebar-nav">
     <a n:href=":Admin:Cislo:add" n:if="$user->isInRole(admin)" class="btn btn-mini btn-info pull-right spacer spacerr"><i class="icon-upload icon-white"></i> nahrát</a>
     <div class="nav-header spacer">
-		<a n:href="Casopis:" class="casopislink {$casopis|webalize}">
-			<b>{$casopis}</b>
+		<a n:href="Casopis:" class="casopislink {$casopis->url}">
+			<b>{$casopis->nazev}</b>
 			<span n:if="!$user->isInRole(admin)"> - kategorie a štítky</span>
 		</a>
 	</div>
@@ -148,12 +149,13 @@
         </ul>
     </div>
 </div><!--/.well -->
+{/ifset}
 
 
-{foreach \Casopisy\CasopisModel::getCasopisy() as $id=>$c}
-	{continueIf in_array($c, array('Kapitánská pošta', 'Mokré vlčata', 'Mokré skauti', 'Publikace'))}
-	<div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis != $c">
-			<a n:href="Casopis: casopis=>$id" class="casopislink {$c|webalize}">{$c|firstUpper}</a>
+{foreach \Casopisy\CasopisModel::config() as $id=>$r}
+	{breakIf $id == 5}
+	<div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis->id != $id">
+			<a n:href="Casopis: casopis=>$id" class="casopislink {$r->url}">{$r->odkaz|firstUpper}</a>
 	</div><!--/.well -->
 {/foreach}
 
@@ -163,7 +165,7 @@
 	<a n:href="Casopis: casopis=>7" class="casopislink mokre">Mokré skauti</a>
 </div><!--/.well -->
 
-{* <div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis != 8">
+{* <div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis->id != 8">
 	<a n:href="Casopis: casopis=>8" class="casopislink publikace">Publikace</a>
 </div><!--/.well -->
 *}

@@ -20,8 +20,7 @@ abstract class CommonBasePresenter extends Nette\Application\UI\Presenter {
             throw new \Nette\Application\BadRequestException("Časopis nenalezen");
 
         CasopisModel::$casopis_id = $this->casopis;
-		$this->template->casopis = \Casopisy\CasopisModel::getCasopis();
-		$this->template->casopisLong = \Casopisy\CasopisModel::getCasopisLong();
+	    $this->template->casopis = \Casopisy\CasopisModel::config($this->casopis);
 
 		// admin vidí i nepublikované
 		if ($this->user->isInRole('admin')) {

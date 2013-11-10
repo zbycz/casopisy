@@ -331,11 +331,11 @@ footer a:hover img {background: #ccc}
 .skauting {color: #0b2c65 !important; font-style:italic}
 .kmen    {color: #d50e40 !important;}
 .svet    {color: #006845 !important;}
-.kapitanska-posta, .mokre-vlcata, .mokre-skauti,
+.kp, .mvs, .mss,
 .mokre   {color: #4d8dbd !important;}
 .publikace {color: #777 !important;}
 
-/*.poutac .casopislink.svet {font-size: 310%}*/
+.poutac .casopislink.svet {font-size: 310%}
 .poutac .casopislink.mokre {font-size: 170%; line-height: 0.5;}
 
 

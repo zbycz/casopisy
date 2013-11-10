@@ -1,6 +1,6 @@
 
 {block content}
-<h1 n:block=title>Časopis {$casopisLong}</h1>
+<h1 n:block=title>Časopis {$casopis->nazev}</h1>
 
 <p class="tagy">
 {foreach $tagy as $t}
@@ -14,15 +14,15 @@
 	<div class="spacer4">
 		<ul class="thumbnails pull-right poslednicisla">
 		<li class="" n:foreach="\Casopisy\CasopisModel::getPosledniCisla() as $c">
-			{continueIf $c->casopis != $casopisLong}
+			{continueIf $c->casopis_id != $casopis->id}
 			<a n:href="Cislo: $c->id, casopis=>$c->casopis_id" class="thumbnail">
-				<img src="{$c->getCoverLink(200)}" alt="">
+				<img src="{$c->getCoverLink(200)}" alt="{$c->casopis}">
 				<span>{$c->mesicrok}</span>
 			</a>
 		</li>
 		</ul>
 
-		{!dibi::fetchSingle('SELECT text FROM pages WHERE id=%s', $casopis)}
+		{!dibi::fetchSingle('SELECT text FROM pages WHERE id=%s', $casopis->nazev)}
 	</div>
 
 	<div class="spacer4">

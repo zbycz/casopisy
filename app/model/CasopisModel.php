@@ -11,17 +11,26 @@ class CasopisModel {
     public static $showUnpublished = false;
     public static $casopis_id;
 
-	/** @return array of $idx => object(url, odkaz, long) */
-	private static function config() {
+	/** Get anonymous entities (or one)
+	 * @param int [$id]
+	 * @return array of $idx => object(id, url, odkaz, long)
+	 */
+	static function config($id = NULL) {
 		if (!self::$casopisy){
 			self::$casopisy = array();
 			foreach (\Nette\Environment::getVariable("casopisy") as $idx => $row) {
 				self::$casopisy[$idx] = (object) array(
+					'id' => $idx,
 					'url' => $row[0],
 					'odkaz' => $row[1],
 					'nazev' => isset($row[2]) ? $row[2] : $row[1],
 				);
 			}
+		}
+		if (isset($id)){
+			if (isset(self::$casopisy[$id]))
+				return self::$casopisy[$id];
+			return false;
 		}
 		return self::$casopisy;
 	}
@@ -76,6 +85,8 @@ class CasopisModel {
 
 	// --------------   databázové metody -----------------
 
+
+	/** @return Cislo[] index: $id casopisu*/
 	static function getPosledniCisla(){
 		$cisla = array();
 		foreach (self::getCasopisy() as $idx => $txt) {

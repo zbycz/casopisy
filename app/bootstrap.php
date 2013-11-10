@@ -58,23 +58,28 @@ $container->router[] = $frontRouter = new RouteList('Front');
 $frontRouter[] = new Route('data/thumbs/<id>-<page>[-<hash>][.<opts>].png', 'File:preview');
 $frontRouter[] = new Route('[index.php]', 'Homepage:default');
 $frontRouter[] = new Route('login[/<action>]', "Login:default");
-$frontRouter[] = new Route('<casopis>/tagy/<id .*>', array(
-            'casopis' => array(
-                Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL(),
-            ),
-            'presenter' => 'Casopis',
-            'action' => 'default',
-        ));
-$frontRouter[] = new Route('<casopis svetylko|kmen|skaut|skauting|svet|kapitanska-posta|mokre-vlcata|mokre-skauti|publikace>/<presenter>[/<id>][/<action>]', array(
-            'casopis' => array(
-                Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL(),
-            ),
-            'presenter' => 'Casopis',
-            'action' => 'default',
-        ));
-
+foreach (\Casopisy\CasopisModel::getCasopisyURL() as $url=>$id) { //URL pro konkrétní časopisy
+	$frontRouter[] = new Route("$url/tagy/<id .*>", array(
+		'casopis' => $id,
+		'presenter' => 'Casopis',
+		'action' => 'default',
+	));
+	$frontRouter[] = new Route("$url/<id [0-9]+>[/<action>]", array(
+		'casopis' => $id,
+		'presenter' => 'Cislo',
+		'action' => 'default',
+	));
+	$frontRouter[] = new Route("$url/<presenter>[/<id>][/<action>]", array(
+		'casopis' => $id,
+		'presenter' => 'Casopis',
+		'action' => 'default',
+	));
+}
 $frontRouter[] = new Route('<presenter>/<action>[.php][/<id>]', "Homepage:default");
 
+
+
+// --------------   extensions -------------------
 Presenter::extensionMethod('isAdminModule', function (Presenter $that) {
       return strpos($that->getName(), "Admin:") === 0;
     });
@@ -83,12 +88,13 @@ Nette\Templating\FileTemplate::extensionMethod('modified', function ($that, $s) 
 			return $s . "?". dechex(filemtime(WWW_DIR.$s));
 		});
 
-Nette\Templating\FileTemplate::extensionMethod('linkify', function ($that, $s) {
-	$s = htmlspecialchars($s);
+Nette\Templating\FileTemplate::extensionMethod('linkify', function ($that, $s, $safe = true) {
+	if($safe) $s = htmlspecialchars($s);
 	$s = nl2br($s);
-	//$s = preg_replace('~==([^=]+)==[\r\n]+~is', '<h2>\\1</h2>', $s);
-	$s = preg_replace('~\*([^*]+)\*~iU', '<b>\\1</b>', $s);
-	return preg_replace('~https?://([^ \n\r\t]+)~is', '<a href="http://\\1" target="_blank">\\1</a>', $s);
+	$s = preg_replace('~==([^=]+)==[\r\n]+~is', '<h2>\\1</h2>', $s); //... ==h2==
+	$s = preg_replace('~\*([^*]+)\*~iU', '<b>\\1</b>', $s);	         //... **bold**
+	$s = preg_replace('~(https?://)([^ \n\r\t]+)~is', '<a href="\\1\\2" target="_blank">\\2</a>', $s); //http[s]://...
+	return $s;
 });
 
 
