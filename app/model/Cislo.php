@@ -119,6 +119,11 @@ class Cislo extends Entity {
         return "$this->mesicTxt $this->rok";
     }
 
+	/** @see Rocnik::getRocnikTxt() */
+	function getRocnikTxt() {
+		return (strlen($this->rocnik) < 4) ? "$this->rocnik. ročník" : "ročník $this->rocnik";
+	}
+
 	function getPercentDone() {
 		$hotovo = $this->pocet_tagu + $this->pocet_nazvu;
 		$obsahu = 2*$this->pocet_obsahu -3; // 3 tolerujeme chybějící za Titulku a reklamu

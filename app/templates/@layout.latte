@@ -132,7 +132,7 @@
             {var $currentr = (isset($rocnik) AND $rocnik->rocnik==$r->rocnik)}
             <li>
                 <div n:class="(isset($rocnik)&&$r->rocnik==$rocnik->rocnik) ? current, rocnikmenu">
-                    <a n:href="Rocnik: $r->rocnik">{$r->rocnik}.ročník <small>({$r->pocet})</small></a>
+                    <a n:href="Rocnik: $r->rocnik">{$r->rocnikTxt} <small>({$r->pocet})</small></a>
                 </div>
                 <ul n:class="($first OR $currentc OR $currentr)?:jshidden">
                    {foreach $r->cisla as $c}

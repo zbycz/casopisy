@@ -37,4 +37,9 @@ class Rocnik extends Entity {
     function getRoky(){
         return $this->od . ($this->od != $this->do ? "-$this->do" : "");
     }
+
+	/** @see Cislo::getRocnikTxt() */
+	function getRocnikTxt(){
+		return (strlen($this->rocnik) < 4) ? "$this->rocnik. ročník" : "ročník $this->rocnik";
+	}
 }
