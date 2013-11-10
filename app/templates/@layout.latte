@@ -138,7 +138,7 @@
                    {foreach $r->cisla as $c}
                          <li>
                             <div n:class="!$c->verejne ? unpublished, (isset($cislo)&&$c->id==$cislo->id) ? current">
-                                <a n:href='Cislo: $c->id'>č.{$c->cislo} &ndash; {$c->mesicrok} </a>
+                                <a n:href='Cislo: $c->id'>{!$c->nazev ?: "č.$c->cislo &ndash; $c->mesicrok"}</a>
                             </div>
                         </li>
                     {/foreach}

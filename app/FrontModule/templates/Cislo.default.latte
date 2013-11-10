@@ -15,7 +15,16 @@
 </p>
 
 
-<h1 n:block=title><span class="muted">{$cislo->casopis}</span> {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
+<h1 n:block=title>
+	<span class="muted">{$cislo->casopis}</span>
+	{if $cislo->nazev}{*speciál*}
+		{$cislo->nazev}
+		<small>({!Casopisy\CasopisModel::$months[$cislo->mesic]} {$cislo->rok})</small>
+	{else}
+		{$cislo->mesicrok}
+		<small>(č.{$cislo->cislo}/{$cislo->rocnik})</small>
+	{/if}
+</h1>
 
 {if !$cislo->priloha}
 	<a href="{$cislo->page->getLink(1)}" class="lightbox pull-right">
@@ -31,7 +40,7 @@
 	<i class="icon-ban-circle"></i>
 	<strong>Toto číslo zatím není k dispozici online, lze zobrazit pouze náhledy.</strong>
 </div>
-<p n:if="$user->isInRole(admin)"><i>Vnitřní poznámka:</i> {$cislo->poznamka}</p>
+<p n:if="$user->isInRole(admin)"><i>Vnitřní poznámka (admin only):</i> {$cislo->poznamka}</p>
 
 {* -------------- tabulka OBSAH čísla ---------------- *}
 <table class="table table-condensed" style="width:auto">
@@ -40,7 +49,7 @@
 	{continueIf in_array('reklama', $tags)}
 
 <tr onclick="window.location.href='#p{!$r->strana}'" title="{$r->popis}" n:class="pointer, $r->strana==1 ? noborder">
-	<td><a href="#p{$r->strana}">{$r->stranaOdDo}</a>
+	<td class="nowrap"><a href="#p{$r->strana}">{$r->stranaOdDo}</a>
 	<td>{$r->nazev}
 	<td><span class="label label-info" n:foreach="$tags as $t">{$t}</span>
 </tr>
@@ -275,6 +284,10 @@
 		position: relative; top: 5px;
 		border: 0;
 		box-shadow: none;
+	}
+
+	td.nowrap {
+		white-space: nowrap;
 	}
 
 </style>

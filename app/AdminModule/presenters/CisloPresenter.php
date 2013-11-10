@@ -63,7 +63,8 @@ class CisloPresenter extends BasePresenter {
         $form->addSelect('mesic', '_Měsíc', CasopisModel::$months)
                 ->setPrompt("-vyberte-")->controlPrototype->accesskey('m');
         $form->addText('rok', 'Rok')->controlPrototype->class("input-mini");
-        $form->addText('popis', 'Popis');
+        $form->addText('nazev', 'Název');
+        $form->addTextArea('popis', 'Popis', 100, 3);
         $form->addRadioList('verejne', 'Zveřejněno', array('Skryté', 'Veřejné', 'Jen náhled'));
         $form->addCheckbox('priloha', 'Příloha k časopisu (přiřazuje se dle ročníku a čísla)');
         $form->addCheckbox('hotovo', 'Štítkování HOTOVO (nenabízet "ke štítkování")');

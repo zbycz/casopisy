@@ -1,11 +1,23 @@
 
 {block content}
 <a n:href=":Front:Cislo: $cislo[id]" class="btn pull-right margin1"><i class="icon-globe"></i> Zobrazit/editovat na webu</a>
-<h1 n:block=title><span class="muted">{$cislo->casopis}</span> {$cislo->mesicrok} <small>(č.{$cislo->cislo}/{$cislo->rocnik})</small></h1>
+<h1 n:block=title>
+	<span class="muted">{$cislo->casopis}</span>
+	{if $cislo->nazev}{*speciál*}
+		{$cislo->nazev}
+		<small>({!Casopisy\CasopisModel::$months[$cislo->mesic]} {$cislo->rok})</small>
+	{else}
+		{$cislo->mesicrok}
+		<small>(č.{$cislo->cislo}/{$cislo->rocnik})</small>
+	{/if}
+</h1>
 
 <p class="pull-right"><a n:href="purgeImgCache!"><small>smazat keš obrázků</small></a></p>
 
 {control editForm}
+
+<p>U časopisů: Název označuje SPECIÁLNÍ ČÍSLO. Pole Číslo má význam pouze pro řazení.<br>
+	U publikací: Název se píše bez autorů, ti se vloží nakonec do Popisu. Ročník/číslo zde nemají význam.</p>
 
 <button class="btn" onclick="var s=$('#frmeditForm-poznamka').val();
             if(m=s.match(/svetylko_(20\d\d)_(\d\d)(_)?/i)){
