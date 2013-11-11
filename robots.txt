@@ -3,3 +3,4 @@
 
 User-agent: *
 Disallow: /data/pdf/
+Disallow: /data/imgserver/

@@ -1,4 +1,6 @@
 
+{block fb_image}http://{$_SERVER['HTTP_HOST']}{$cislo->getCoverLink(800)}{/block}
+
 {block content}
 
 <p class="pull-right margin1">
@@ -32,6 +34,7 @@
 	</a>
 {/if}
 
+
 {* -------------- meta informace ---------------- *}
 <p>{$cislo->popis}</p>
 
@@ -42,36 +45,43 @@
 </div>
 <p n:if="$user->isInRole(admin)"><i>Vnitřní poznámka (admin only):</i> {$cislo->poznamka}</p>
 
-{* -------------- tabulka OBSAH čísla ---------------- *}
+
+
+{* -------------- TABULKA OBSAH čísla ---------------- *}
 <table class="table table-condensed" style="width:auto">
 {foreach $cislo->getObsah() as $r}
 	{var $tags = $r->getTags()}
 	{continueIf in_array('reklama', $tags)}
 
-<tr onclick="window.location.href='#p{!$r->strana}'" title="{$r->popis}" n:class="pointer, $r->strana==1 ? noborder">
-	<td class="nowrap"><a href="#p{$r->strana}">{$r->stranaOdDo}</a>
-	<td>{$r->nazev}
-	<td><span class="label label-info" n:foreach="$tags as $t">{$t}</span>
-</tr>
+	<tr onclick="window.location.href='#p{!$r->strana}'" title="{$r->popis}" n:class="pointer, $r->strana==1 ? noborder">
+		<td class="nowrap"><a href="#p{$r->strana}">{$r->stranaOdDo}</a></td>
+		<td>{$r->nazev}</td>
+		<td>{foreach $tags as $t}
+				<a n:href="Casopis: id=>$t" onclick="event.stopPropagation()"><span class="label label-info">{$t}</span></a>
+			{/foreach}
+		</td>
+	</tr>
 {/foreach}
 </table>
 
 
+
 {if $user->loggedIn}
-<div class="spacerb2">
-  <h4>Nápověda pro editaci:</h4>
-	- Můžeš libovolně editovat názvy a štítky níže - stačí kliknout napsat a kliknout pryč. <br>
-	- Pokud má článek více stránek, klikni na "Přibrat další stránku". <br>
-	- Pokud jsou dva články na stránce - píšou se názvy s lomítkem (časem to půjde lépe). <br>
-	- Celostránkovou reklamu označ štítkem <span class="label">reklama</span> - bude potom schovaná ve výpisech. <br>
-	- Pro lepší přehled stránek můžeš vybrat <a n:href="this id=>$cislo->id, zoom=>400">2× zoom</a>.
-</div>
+	<div class="spacerb2">
+	  <h4>Nápověda pro editaci:</h4>
+		- Můžeš libovolně editovat názvy a štítky níže - stačí kliknout napsat a kliknout pryč. <br>
+		- Pokud má článek více stránek, klikni na "Přibrat další stránku". <br>
+		- Pokud jsou dva články na stránce - píšou se názvy s lomítkem (časem to půjde lépe). <br>
+		- Celostránkovou reklamu označ štítkem <span class="label">reklama</span> - bude potom schovaná ve výpisech. <br>
+		- Pro lepší přehled stránek můžeš vybrat <a n:href="this id=>$cislo->id, zoom=>400">2× zoom</a>.
+	</div>
 {else}
-<div class="well callInAction">
-	Chybí ti tu <span>štítky</span>?
-	<p><small>Přihlaš se vpravo nahoře přes SkautIS a pomož nám!</small></p>
-</div>
+	<div class="well callInAction">
+		Chybí ti tu <span>štítky</span>?
+		<p><small>Přihlaš se vpravo nahoře přes SkautIS a pomož nám!</small></p>
+	</div>
 {/if}
+
 
 
 
