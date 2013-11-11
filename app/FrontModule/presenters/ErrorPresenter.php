@@ -19,7 +19,7 @@ class ErrorPresenter extends Nette\Application\UI\Presenter
 	 */
 	public function renderDefault($exception)
 	{
-		LogModel::add(0, 0, 'error404', $_SERVER['REQUEST_URI']);
+		LogModel::add(0, 0, 'error404', $_SERVER['REQUEST_URI'], $_SERVER['HTTP_REFERER']);
 
 		if ($this->isAjax()) { // AJAX request? Just note this error in payload.
 			$this->payload->error = TRUE;
