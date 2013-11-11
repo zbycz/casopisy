@@ -2,9 +2,10 @@
 
 namespace FrontModule;
 
-use Casopisy\CasopisModel,
-    Casopisy\CisloModel,
-    Casopisy\ObsahModel;
+use Casopisy\CasopisModel;
+use Casopisy\CisloModel;
+use Casopisy\ObsahModel;
+use Casopisy\LogModel;
 
 /**
  */
@@ -24,6 +25,8 @@ class CasopisPresenter extends BasePresenter {
         if($t = $this->getParam("id")){
             $this->template->tag = $this->tagy[$t];
         }
+
+	    LogModel::add(0, 0, 'casopis', $this->casopis);
     }
 
     public function actionDefault() {}

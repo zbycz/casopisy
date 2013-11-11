@@ -28,6 +28,7 @@ class LogModel
 			LEFT JOIN cislo c ON c.id = l.cislo_id
 			LEFT JOIN obsah o ON o.cislo_id = l.cislo_id AND o.strana = l.strana
 			WHERE [time] >= %s",$od,"
+				AND typ LIKE 'edit-%'
 			ORDER BY time ASC
 		");
 
@@ -41,10 +42,11 @@ class LogModel
 	}
 
 	/** @return ArrayHash */
-	static function add($cid, $p, $typ, $nova, $puvodni = NULL)
+	static function add($cid, $p, $typ, $nova = "", $puvodni = NULL)
 	{
+		$user = Nette\Environment::getContext()->user;
 		$data = array(
-			'user_id' => Nette\Environment::getContext()->user->id,
+			'user_id' => $user ? $user->id : 0,
 			'cislo_id' => $cid,
 			'strana' => $p,
 			'typ' => $typ,
@@ -62,7 +64,8 @@ class LogModel
 			SELECT name, sum(typ != 'removeTag' AND typ != 'pribrat') cnt
 			FROM log l
 			LEFT JOIN user u ON u.id = l.user_id
-			%if",$month," WHERE YEAR(time)=YEAR(%d",$month,") AND MONTH(time)=MONTH(%d",$month,")   %end
+			WHERE typ LIKE 'edit-%'
+				%if",$month," AND YEAR(time)=YEAR(%d",$month,") AND MONTH(time)=MONTH(%d",$month,")   %end
 			GROUP BY user_id
 			ORDER BY cnt DESC
 			");

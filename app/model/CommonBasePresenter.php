@@ -9,7 +9,7 @@ abstract class CommonBasePresenter extends Nette\Application\UI\Presenter {
 
     /**
      * @persistent
-     * @var int
+     * @var object(id,url,odkaz,nazev)
      */
     public $casopis;
 

@@ -3,6 +3,7 @@
 namespace FrontModule;
 
 use Casopisy\CisloModel;
+use Casopisy\LogModel;
 use Nette\Application\BadRequestException;
 use Nette\Application\ForbiddenRequestException;
 use Nette\Application\Responses\FileResponse;
@@ -28,7 +29,9 @@ class CisloPresenter extends BasePresenter {
 		//kanonická url - po action se volá $autoCanonicalize
 		$this->casopis = $this->cislo->casopis_id;
 
-		$this->template->zoom = ($zoom % 100 == 0 AND $zoom <= 1000) ? intval($zoom) : 200;
+	    LogModel::add($this->cislo->id, 0, 'zobrazeni', '');
+
+	    $this->template->zoom = ($zoom % 100 == 0 AND $zoom <= 1000) ? intval($zoom) : 200;
 		$this->template->cislo = $this->cislo;
     }
 
@@ -42,6 +45,8 @@ class CisloPresenter extends BasePresenter {
 
 		if (!file_exists($cislo->getPdfPath()))
 			throw new BadRequestException("PDF $id nenalezeno");
+
+		LogModel::add($this->cislo->id, 0, 'download', '');
 
 		$response = new FileResponse($cislo->getPdfPath(), $cislo->getPdfFilename(), 'application/pdf');
 		$this->sendResponse($response);
@@ -85,7 +90,7 @@ class CisloPresenter extends BasePresenter {
 			$obsah->strany_navic -= 1;
 			$obsah->save();
 			$this->flashMessage('Stránka odpojena.');
-			\Casopisy\LogModel::add($this->cislo->id, $p, "odebrat", $obsah->strany_navic, $puvodni);
+			LogModel::add($this->cislo->id, $p, "odebrat", $obsah->strany_navic, $puvodni);
 		}
 		else {
 			$this->flashMessage('CHYBA: Nelze odebrat stránku, již je jen jedna.');

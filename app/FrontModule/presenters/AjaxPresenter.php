@@ -31,7 +31,7 @@ class AjaxPresenter extends \Nette\Application\UI\Presenter
 			$obsah->save();
 		}
 
-		LogModel::add($cid, $p, "editField-$field", $value, $puvodni);
+		LogModel::add($cid, $p, "edit-$field", $value, $puvodni);
 		$this->terminate();
 	}
 
@@ -42,7 +42,7 @@ class AjaxPresenter extends \Nette\Application\UI\Presenter
 		$obsah = $cislo->getPage($p);
 		$obsah->addTag($tag);
 
-		LogModel::add($cid, $p, 'addTag', $tag);
+		LogModel::add($cid, $p, 'edit-addTag', $tag);
 		$this->terminate();
 	}
 
@@ -53,7 +53,7 @@ class AjaxPresenter extends \Nette\Application\UI\Presenter
 		$obsah = $cislo->getPage($p);
 		$obsah->removeTag($tag);
 
-		LogModel::add($cid, $p, 'removeTag', $tag);
+		LogModel::add($cid, $p, 'edit-removeTag', $tag);
 		$this->terminate();
 	}
 

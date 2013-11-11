@@ -132,7 +132,7 @@ class CasopisModel {
                 AND priloha=0
                 %if", !self::$showUnpublished, " AND verejne = 1 %end
             GROUP BY rocnik
-            ORDER BY rocnik DESC
+            ORDER BY CAST(rocnik AS unsigned) DESC
           ");
         if($rocnik)
             return new Rocnik($rocnik);
@@ -147,7 +147,7 @@ class CasopisModel {
                 AND priloha=0
                 %if", !self::$showUnpublished, " AND verejne != 0 %end
             GROUP BY rocnik
-            ORDER BY rocnik DESC
+            ORDER BY CAST(rocnik AS unsigned) DESC
           ");
         $result = array();
         foreach ($rocniky as $r)

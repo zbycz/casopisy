@@ -1,6 +1,7 @@
 <?php
 
 namespace FrontModule;
+use Casopisy\LogModel;
 use Nette\Diagnostics\Debugger;
 use Nette;
 
@@ -18,6 +19,8 @@ class ErrorPresenter extends Nette\Application\UI\Presenter
 	 */
 	public function renderDefault($exception)
 	{
+		LogModel::add(0, 0, 'error404', $_SERVER['REQUEST_URI']);
+
 		if ($this->isAjax()) { // AJAX request? Just note this error in payload.
 			$this->payload->error = TRUE;
 			$this->terminate();

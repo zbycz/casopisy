@@ -38,7 +38,7 @@ if(file_exists(__DIR__ . '/config-server.neon'))
 $container = $configurator->createContainer();
 
 // Connect to the database
-dibi::connect($container->params['database']);
+dibi::connect($container->parameters['database']);
 
 
 
@@ -99,5 +99,5 @@ Nette\Templating\FileTemplate::extensionMethod('linkify', function ($that, $s, $
 
 
 // Configure and run the application!
-//$container->application->catchExceptions = true;
+$container->application->catchExceptions = true;
 $container->application->run();

@@ -1,5 +1,6 @@
 <?php
 namespace FrontModule;
+use Casopisy\LogModel;
 use Nette;
 use \SkautIS;
 
@@ -69,6 +70,7 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 		// nette login
 		$this->user->login(new \Nette\Security\Identity($row->id, $role, $row));
 		$this->flashMessage("Přihlášení úspěšné");
+		LogModel::add(0, 0, 'login');
 
 		$url = $this->getParam('ReturnUrl');
 		if ($url AND $url != '/')
