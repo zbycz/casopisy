@@ -21,7 +21,7 @@
 	<span class="muted" n:if="!$casopis->knihovna">{$cislo->casopis}</span>
 	{if $cislo->nazev}{*speciál*}
 		{$cislo->nazev}
-		<small>({!Casopisy\CasopisModel::$months[$cislo->mesic]} {$cislo->rok})</small>
+		<small n:if="$cislo->rok && $cislo->mesic">({!Casopisy\CasopisModel::$months[$cislo->mesic]} {$cislo->rok})</small>
 	{else}
 		{$cislo->mesicrok}
 		<small>(č.{$cislo->cislo}/{$cislo->rocnik})</small>
@@ -48,12 +48,14 @@
 
 
 {* -------------- TABULKA OBSAH čísla ---------------- *}
-{if count($cislo->getObsah())}
+{var $vypsatToc = false}
+{capture $toc}
 <table class="table table-condensed" style="width:auto">
 	<tr class="noborder" title="Obsah je automaticky vypisovaný podle vyplněných stránek níže"><th colspan="3">Obsah:</th></tr>
 	{foreach $cislo->getObsah() as $r}
 		{var $tags = $r->getTags()}
 		{continueIf in_array('reklama', $tags) OR (!$r->nazev && !count($tags) && !$r->popis)}
+		{? $vypsatToc = true}
 
 		<tr onclick="window.location.href='#p{!$r->strana}'" title="{$r->popis}" class="pointer">
 			<td class="nowrap"><a href="#p{$r->strana}">{$r->stranaOdDo}</a></td>
@@ -65,7 +67,8 @@
 		</tr>
 	{/foreach}
 </table>
-{/if}
+{/capture}
+{if $vypsatToc}{$toc}{/if}
 
 
 {if $casopis->knihovna}
