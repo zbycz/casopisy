@@ -58,23 +58,27 @@ $container->router[] = $frontRouter = new RouteList('Front');
 $frontRouter[] = new Route('data/thumbs/<id>-<page>[-<hash>][.<opts>].png', 'File:preview');
 $frontRouter[] = new Route('[index.php]', 'Homepage:default');
 $frontRouter[] = new Route('login[/<action>]', "Login:default");
-foreach (\Casopisy\CasopisModel::getCasopisyURL() as $url=>$id) { //URL pro konkrétní časopisy
-	$frontRouter[] = new Route("$url/tagy/<id .*>", array(
-		'casopis' => $id,
-		'presenter' => 'Casopis',
-		'action' => 'default',
-	));
-	$frontRouter[] = new Route("$url/<id [0-9]+>[/<action>]", array(
-		'casopis' => $id,
-		'presenter' => 'Cislo',
-		'action' => 'default',
-	));
-	$frontRouter[] = new Route("$url/<presenter>[/<id [0-9]+>][/<action>]", array(
-		'casopis' => $id,
-		'presenter' => 'Casopis',
-		'action' => 'default',
-	));
-}
+$url = implode("|", array_keys(\Casopisy\CasopisModel::getCasopisyURL()));
+$frontRouter[] = new Route("<casopis $url>/tagy/<id .*>", array(
+	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
+	'presenter' => 'Casopis',
+	'action' => 'default',
+));
+$frontRouter[] = new Route("<casopis $url>/<id [0-9]+>[/<action>]", array(
+	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
+	'presenter' => 'Cislo',
+	'action' => 'default',
+));
+$frontRouter[] = new Route("<casopis $url>/r/<id>", array(
+	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
+	'presenter' => 'Rocnik',
+	'action' => 'default',
+));
+$frontRouter[] = new Route("<casopis $url>/<presenter>[/<id [0-9]+>][/<action>]", array(
+	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
+	'presenter' => 'Casopis',
+	'action' => 'default',
+));
 $frontRouter[] = new Route('<presenter>/<action>[.php][/<id>]', "Homepage:default");
 
 
