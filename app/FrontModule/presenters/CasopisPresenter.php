@@ -23,10 +23,10 @@ class CasopisPresenter extends BasePresenter {
 
         if($t = $this->getParameter("id") AND isset($this->tagy[$t])){
             $this->template->tag = $this->tagy[$t];
-	        LogModel::add(0, 0, 'stitek', $this->casopis, $t);
+	        LogModel::add(0, 0, 'stitek', CasopisModel::config($this->casopis)->url, $t);
         }
 	    else {
-		    LogModel::add(0, 0, 'casopis', $this->casopis);
+		    LogModel::add(0, 0, 'casopis', CasopisModel::config($this->casopis)->url);
 	    }
     }
 

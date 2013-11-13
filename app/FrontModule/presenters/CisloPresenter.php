@@ -19,7 +19,6 @@ class CisloPresenter extends BasePresenter {
 
     public function actionDefault($id, $zoom=200) {
         $this->cislo = CisloModel::getById($id);
-		$this->cislo->getObsah(); // cache
 
 		if (!$this->cislo)
 			throw new BadRequestException("Cislo '$id' neexistuje");
@@ -33,6 +32,7 @@ class CisloPresenter extends BasePresenter {
 
 	    $this->template->zoom = ($zoom % 100 == 0 AND $zoom <= 1000) ? intval($zoom) : 200;
 		$this->template->cislo = $this->cislo;
+	    $this->cislo->getObsah(); // cache
     }
 
 	public function actionDownload($id)
