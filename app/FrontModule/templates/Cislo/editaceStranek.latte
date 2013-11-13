@@ -1,0 +1,213 @@
+
+{if $user->loggedIn}
+	<div class="spacerb2">
+		<h4>Nápověda pro editaci:</h4>
+		- Můžeš libovolně editovat názvy a štítky níže - stačí kliknout napsat a kliknout pryč. <br>
+		- Pokud má článek více stránek, klikni na "Přibrat další stránku". <br>
+		- Pokud jsou dva články na stránce - píšou se názvy s lomítkem (časem to půjde lépe). <br>
+		- Celostránkovou reklamu označ štítkem <span class="label">reklama</span> - bude potom schovaná ve výpisech. <br>
+		- Pro lepší přehled stránek můžeš vybrat <a n:href="this id=>$cislo->id, zoom=>400">2× zoom</a>.
+	</div>
+{else}
+	<div class="well callInAction">
+		Chybí ti tu <span>štítky</span>?
+		<p><small>Přihlaš se vpravo nahoře přes SkautIS a pomož nám!</small></p>
+	</div>
+{/if}
+
+
+
+{* -------------- editace/prohlížení ---------------- *}
+{snippet komentare}
+	{includeblock blocks.latte}
+	<table class="stranky" id="strankyTable" data-cid="{$cislo->id}">
+		{foreach $cislo->getObsah() as $r}
+			{var $p = $r->strana}
+			{continueIf $p==1 AND !$cislo->priloha AND !$user->loggedIn}
+			<tr n:class="$iterator->odd ? odd" id="p{$p}">
+				<th>
+					{foreach $r->getStrany() as $s}
+						{include #rowThumbnails obsah=>$r, s=>$s, cislo=>$cislo}
+					{/foreach}
+				</th>
+				<td>
+					<div class="pribrat" n:if="$user->loggedIn">
+						<a n:href="pribrat! $p" n:if="$p!=$cislo->pocet_stran" class="addPage">Přibrat další stránku</a>
+						{if $r->strany_navic} / <a n:href="odebrat! $p">odebrat</a>{/if}
+					</div>
+
+					<h3 class="cedit" data-ph="# Pojmenuj článek">{$r->nazev}</h3>
+					<p class="cedit" data-ph="# přidej popis">{$r->popis}</p>
+					<p>
+						{foreach $r->getTags() as $t}
+							<span class="label label-info">{$t}</span>
+						{/foreach}
+						<input type="text" class="addTag" placeholder="přidat štítek [enter]" n:if="$user->loggedIn">
+					</p>
+
+					<div n:snippet="komentare-$p" class="spacer3" n:if="$p>1 AND $cislo->casopis != 'Skauting'">
+						{include #comments cislo=>$cislo, p=>$p}
+					</div>
+				</td>
+			</tr>
+		{/foreach}
+	</table>
+{/snippet}
+
+
+{if $user->loggedIn}
+
+	<script>
+		var cid = $('#strankyTable').attr('data-cid');
+
+		var tagsSource = {array_keys(\Casopisy\CasopisModel::getAllTags())};
+
+		// add next page
+		$('#strankyTable').on('click', '.addPage', function(){
+			var $tr = $(this).parents('tr');
+			var $a = $tr.next().find('th > a:first');
+			$.get($(this).attr('href'), function(payload){
+				$.nette.success(payload);
+				if (payload.result == 'ok') {
+					$tr.find('th').append($a);
+					$tr.next().remove();
+				}
+			});
+			return false;
+		});
+
+		// add tag
+		function addTag($obj) {
+			var page = $obj.parents('tr').attr('id').substr(1);
+			var tag = $obj.val();
+
+			//check duplicity
+			var duplicity = false;
+			$obj.siblings('.label').each(function(){
+				if ($(this).text() == tag)
+					duplicity = true;
+			});
+			if (duplicity || tag=="") return;
+
+			$obj.before('<span class="label hide">'+tag+'</span> '); //aby fungoval duplicty check
+			$obj.after('<small>ukládám...</small>')
+			$.get({link Ajax:addTag}, { cid: cid, p: page, tag: tag}, function(){
+				$obj.before('<span class="label label-info">'+tag+'</span> ');
+				$obj.next().hide(500);
+				$obj.val("");
+			});
+			$('.addTag').autocomplete("close");
+
+			if ($.grep( tagsSource, function(val){ return val==tag }).length == 0) {
+				tagsSource.push(tag);
+			}
+		}
+
+		$('.addTag').autocomplete({
+			minLength: 0,
+			select: function(){
+				var $obj = $(this);
+				setTimeout(function(){
+					addTag($obj);
+				}, 20);
+			},
+			source: function(request,response){
+				var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" ); // escape regex characters
+				response( $.grep( tagsSource, function(value) {
+					return matcher.test( value );
+				}) );
+			}
+		}).on('focus click', function(){
+					$(this).autocomplete("search", $(this).val());
+				}).keypress(function(e) {
+					if(e.which == 13) { // enter key
+						addTag($(this));
+					}
+				});
+
+		// remove tag
+		$('#strankyTable .label').attr('title', 'smazat štítek');
+		$('#strankyTable').on('click', '.label', function(){
+			var $obj = $(this);
+			var page = $obj.parents('tr').attr('id').substr(1);
+			var tag = $obj.text();
+
+			$.get({link Ajax:removeTag}, { cid: cid, p: page, tag: tag }, function(){
+				var undo = $('<a href="#">vzít zpět "'+tag+'"</a>').click(function(){
+					var $input = $(this).parents('td').find('input');
+					addTag($input.val(tag));
+					undo.remove();
+					return false;
+				});
+				$obj.replaceWith(undo);
+			});
+		});
+
+		// edit fields
+		$('.cedit').each(function(){
+			$(this).data('orig-value', $(this).text()).attr('contenteditable', 'true');
+		}).blur(function(){
+					var $obj = $(this);
+					var page = $obj.parents('tr').attr('id').substr(1);
+					var field = this.tagName == 'H3' ? 'nazev' : 'popis';
+					var origValue = $obj.data('orig-value');
+					var newValue = $obj.text();
+
+					if (newValue == "") {  // strip <br> after edit and delete chars
+						$obj.text("");
+					}
+
+					// sending changed data
+					if(origValue != newValue){
+						$obj.removeAttr('contenteditable').removeClass('cedit');
+						$obj.append(' <small>ukládám...</small>');
+
+						$.get({link Ajax:editField}, { cid: cid, p: page, field: field, value: newValue }, function(){
+							$obj.find('small').hide(400);
+							$obj.append('<small>ok (<a href=#>vzít zpět?</a>)</small>');
+
+							// undo link
+							$obj.find('a').click(function(){
+								$obj.append(' <small>chybami se člověk učí...</small>');
+								$.get({link Ajax:editField}, { cid: cid, p: page, field: field, value: origValue }, function(){
+									$obj.text(origValue);
+									$obj.attr('contenteditable', 'true').addClass('cedit');
+								});
+								return false;
+							});
+						});
+					}
+
+				});
+
+		$( document ).ajaxError(function() { alert("Nepovedlo se uložit poslední změnu - obnovte, prosím, stránku či zkontrolujte připojení.") });
+
+
+	</script>
+
+
+	<style n:syntax="off">
+		#strankyTable td .cedit:empty:not(:focus):before {
+			content:attr(data-ph);
+			color: #ddd;
+			font-style: italic;
+
+		}
+		.cedit { cursor: pointer; }
+		.cedit:hover:not(:focus):after { content: url(/static/images/inline-edit.png); }
+		p.cedit { min-height: 19px }
+
+		#strankyTable .label:hover {text-decoration: line-through; background: #aaa; cursor: pointer;}
+
+		#strankyTable .addTag {
+			font-size: 10.998px;
+			line-height: 14px;
+			color: #555;
+			cursor: pointer;
+			position: relative; top: 5px;
+			border: 0;
+			box-shadow: none;
+		}
+	</style>
+
+{/if}

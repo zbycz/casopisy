@@ -24,6 +24,7 @@ class CasopisModel {
 					'url' => $row[0],
 					'odkaz' => $row[1],
 					'nazev' => isset($row[2]) ? $row[2] : $row[1],
+					'knihovna' => ($row[0] == 'knihovna'),
 				);
 			}
 		}
@@ -128,7 +129,7 @@ class CasopisModel {
             SELECT rocnik, casopis_id, min(rok) od, max(rok) do, count(1) pocet
             FROM cislo
             WHERE casopis_id=%i", self::$casopis_id, "
-                AND rocnik = %i", $rocnik, "
+                AND rocnik = %s", $rocnik, "
                 AND priloha=0
                 %if", !self::$showUnpublished, " AND verejne = 1 %end
             GROUP BY rocnik

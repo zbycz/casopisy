@@ -21,7 +21,7 @@ class CasopisPresenter extends BasePresenter {
         unset($this->tagy['reklama']);
         $this->template->tagy = $this->tagy;
 
-        if($t = $this->getParam("id") AND isset($this->tagy[$t])){
+        if($t = $this->getParameter("id") AND isset($this->tagy[$t])){
             $this->template->tag = $this->tagy[$t];
 	        LogModel::add(0, 0, 'stitek', $this->casopis, $t);
         }

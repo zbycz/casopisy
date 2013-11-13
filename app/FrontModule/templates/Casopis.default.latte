@@ -1,6 +1,6 @@
 
 {block content}
-<h1 n:block=title>Časopis {$casopis->nazev}</h1>
+<h1 n:block=title>{if $casopis->knihovna}Skautská knihovna{else}Časopis {$casopis->nazev}{/if}</h1>
 
 <p class="tagy">
 {foreach $tagy as $t}

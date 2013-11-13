@@ -1,0 +1,19 @@
+
+
+
+{includeblock blocks.latte}
+
+{* -------------- editace/prohlížení ---------------- *}
+<div class="stranky">
+{foreach $cislo->getDvoustranky() as $dvoustranka}
+	{var $p = $dvoustranka[0]->strana}
+	{continueIf $p==1}
+
+	<div class="dvoustranka" id="p{$p}">
+	{foreach $dvoustranka as $obsah}
+		{include #rowThumbnails obsah=>$obsah, s=>$obsah->strana, cislo=>$cislo}
+	{/foreach}
+		<div class="clearfix"></div>
+	</div>
+{/foreach}
+</div>

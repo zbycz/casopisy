@@ -19,10 +19,18 @@ use \dibi;
   `poznamka` text COLLATE utf8_czech_ci NOT NULL,
   `popis` text COLLATE utf8_czech_ci NOT NULL,
   `pocet_stran` int(11) NOT NULL,
-  PRIMARY KEY (`id`) */
+  PRIMARY KEY (`id`)
+
+ * @property-read array $stranky
+ */
 class Cislo extends Entity {
 
 	private $obsah = array();
+	private $dvoustrankyCache = array();
+	private $strankyCache = array();
+
+
+
 
     /**
      * @return Obsah[]
@@ -31,21 +39,53 @@ class Cislo extends Entity {
 		if (count($this->obsah))
 			return $this->obsah;
 
-        $stranky = dibi::query("SELECT * FROM obsah WHERE cislo_id=%i", $this->id)->fetchAssoc('strana');
-		$this->setObsah($stranky);
+	    // set obsah
+	    for ($pagenum = 1; $pagenum <= $this->pocet_stran; $pagenum++) {
+		    if (isset($this->stranky[$pagenum]))
+			    $obsah = new Obsah($this->stranky[$pagenum]);
+		    else
+			    $obsah = new Obsah(array("cislo_id" => $this->id, "strana" => $pagenum));
+
+		    $this->obsah[$pagenum] = $obsah;
+		    $pagenum += $obsah->strany_navic;
+	    }
+
         return $this->obsah;
     }
 
-	function setObsah($stranky) {
-        for ($pagenum = 1; $pagenum <= $this->pocet_stran; $pagenum++) {
-            if (isset($stranky[$pagenum]))
-                $obsah = new Obsah($stranky[$pagenum]);
-            else
-                $obsah = new Obsah(array("cislo_id" => $this->id, "strana" => $pagenum));
+	/** @return array index [strana] */
+	function getStranky(){
+		if (count($this->strankyCache))
+			return $this->strankyCache;
 
-			$this->obsah[$pagenum] = $obsah;
-            $pagenum += $obsah->strany_navic;
-        }
+		$this->strankyCache = dibi::query("SELECT * FROM obsah WHERE cislo_id=%i", $this->id)->fetchAssoc('strana');
+		//todo: cache tags here
+
+		return $this->strankyCache;
+	}
+
+	/** @return Obsah[] */
+	function getDvoustranky(){
+		if (count($this->dvoustrankyCache))
+			return $this->dvoustrankyCache;
+
+		$dvoustranka = array();
+		for ($pagenum = 1; $pagenum <= $this->pocet_stran; $pagenum++)
+		{
+			if (isset($this->stranky[$pagenum]))
+				$obsah = new Obsah($this->stranky[$pagenum]);
+			else
+				$obsah = new Obsah(array("cislo_id" => $this->id, "strana" => $pagenum));
+			$dvoustranka[] = $obsah;
+
+			//každou lichou OR poslední stránku přidáme do pole
+			if ($pagenum % 2 == 1 OR $pagenum == $this->pocet_stran) {
+				$this->dvoustrankyCache[] = $dvoustranka;
+				$dvoustranka = array();
+			}
+		}
+
+		return $this->dvoustrankyCache;
 	}
 
 	function getPrilohy() {
@@ -121,6 +161,8 @@ class Cislo extends Entity {
 
 	/** @see Rocnik::getRocnikTxt() */
 	function getRocnikTxt() {
+		if (CasopisModel::config($this->casopis_id)->knihovna)
+			return ucfirst($this->rocnik);
 		return (strlen($this->rocnik) < 4) ? "$this->rocnik. ročník" : "ročník $this->rocnik";
 	}
 

@@ -15,7 +15,7 @@ class Rocnik extends Entity {
 					pocet_stran - IFNULL((SELECT SUM(o.strany_navic) FROM obsah o WHERE o.cislo_id = c.id),0) AS pocet_obsahu
 			FROM cislo c
             WHERE casopis_id=%i", $this->casopis_id, "
-                AND rocnik=%i", $this->rocnik, "
+                AND rocnik=%s", $this->rocnik, "
                 AND priloha=0
                 %if",!CasopisModel::$showUnpublished," AND verejne != 0 %end
             ORDER BY cislo");
@@ -40,6 +40,8 @@ class Rocnik extends Entity {
 
 	/** @see Cislo::getRocnikTxt() */
 	function getRocnikTxt(){
+		if (CasopisModel::config($this->casopis_id)->knihovna)
+			return ucfirst($this->rocnik);
 		return (strlen($this->rocnik) < 4) ? "$this->rocnik. ročník" : "ročník $this->rocnik";
 	}
 }

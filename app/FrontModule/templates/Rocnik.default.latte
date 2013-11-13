@@ -1,6 +1,6 @@
 
 {block content}
-<h1 n:block=title>{$rocnik->casopisLong} {$rocnik->rocnikTxt} <small>({$rocnik->roky})</small> </h1>
+<h1 n:block=title>{$rocnik->casopisLong} &ndash; {$rocnik->rocnikTxt} <small>({$rocnik->roky})</small> </h1>
 
 
 <ul class="thumbnails rocnik">
@@ -9,7 +9,7 @@
     <a n:href="Cislo: $c->id" class="thumbnail">
 	  <span class="percentDone" n:if="$c->percentDone < 100" title="názvů+tagů/obsahů: {$c->pocet_nazvu}+{$c->pocet_tagu} / {$c->pocet_obsahu}">{$c->percentDone}<small>%</small></span>
       <img src="{$c->getCoverLink(200)}">
-      {$c->mesicrok}
+      {$c->nazev?:$c->mesicrok}
     </a>
   </li>
 

@@ -38,7 +38,7 @@ common:
 			- [kp,       Kapitánská pošta]
 			- [mvz,      Mokré vlčata, Mokré stránky - vlčata]
 			- [mss,      Mokré skauti, Mokré stránky - skauti]
-			- [publikace, Publikace]
+			- [knihovna, Knihovna, Skautská knihovna]
 		staticDir: %wwwDir%/static
 		dataDir:   %wwwDir%/data
 		users:

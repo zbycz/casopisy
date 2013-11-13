@@ -99,5 +99,5 @@ Nette\Templating\FileTemplate::extensionMethod('linkify', function ($that, $s, $
 
 
 // Configure and run the application!
-$container->application->catchExceptions = true;
+//$container->application->catchExceptions = true;
 $container->application->run();

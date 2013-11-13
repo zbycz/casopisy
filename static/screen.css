@@ -175,6 +175,7 @@ label {display: inline}
 
 
 .stranky { width: 100%}
+.stranky .dvoustranka {float:left; border-bottom: 1px #ccc solid; border-right: 1px #ccc solid; padding: 2em}
 .stranky tr {
     border-bottom: 1em #fafafa solid;
 }
