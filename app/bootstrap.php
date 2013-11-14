@@ -43,8 +43,10 @@ dibi::connect($container->parameters['database']);
 
 
 // Setup router
+$list = implode("|", array_keys(\Casopisy\CasopisModel::getCasopisyURL()));
+
 $container->router[] = $adminRouter = new RouteList('Admin');
-$adminRouter[] = new Route('admin/<casopis>/<presenter>[/<action>][/<id>]', array(
+$adminRouter[] = new Route("admin/<casopis $list>/<presenter>[/<id>][/<action>]", array(
             'casopis' => array(
                 Route::VALUE => 0,
                 Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL(),
@@ -58,23 +60,22 @@ $container->router[] = $frontRouter = new RouteList('Front');
 $frontRouter[] = new Route('data/thumbs/<id>-<page>[-<hash>][.<opts>].png', 'File:preview');
 $frontRouter[] = new Route('[index.php]', 'Homepage:default');
 $frontRouter[] = new Route('login[/<action>]', "Login:default");
-$url = implode("|", array_keys(\Casopisy\CasopisModel::getCasopisyURL()));
-$frontRouter[] = new Route("<casopis $url>/tagy/<id .*>", array(
+$frontRouter[] = new Route("<casopis $list>/tagy/<id .*>", array(
 	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
 	'presenter' => 'Casopis',
 	'action' => 'default',
 ));
-$frontRouter[] = new Route("<casopis $url>/<id [0-9]+>[/<action>]", array(
+$frontRouter[] = new Route("<casopis $list>/<id [0-9]+>[/<action>]", array(
 	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
 	'presenter' => 'Cislo',
 	'action' => 'default',
 ));
-$frontRouter[] = new Route("<casopis $url>/r/<id>", array(
+$frontRouter[] = new Route("<casopis $list>/r/<id>", array(
 	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
 	'presenter' => 'Rocnik',
 	'action' => 'default',
 ));
-$frontRouter[] = new Route("<casopis $url>/<presenter>[/<id [0-9]+>][/<action>]", array(
+$frontRouter[] = new Route("<casopis $list>/<presenter>[/<id [0-9]+>][/<action>]", array(
 	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
 	'presenter' => 'Casopis',
 	'action' => 'default',

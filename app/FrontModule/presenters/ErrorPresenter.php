@@ -19,10 +19,6 @@ class ErrorPresenter extends Nette\Application\UI\Presenter
 	 */
 	public function renderDefault($exception)
 	{
-		if ($this->user->isLoggedIn){
-			LogModel::add(0, 0, 'error404', $_SERVER['REQUEST_URI'], $_SERVER['HTTP_REFERER']);
-		}
-
 		if ($this->isAjax()) { // AJAX request? Just note this error in payload.
 			$this->payload->error = TRUE;
 			$this->terminate();
@@ -33,6 +29,11 @@ class ErrorPresenter extends Nette\Application\UI\Presenter
 			$this->setView(in_array($code, array(403, 404, 405, 410, 500)) ? $code : '4xx');
 			// log to access.log
 			Debugger::log("HTTP code $code: {$exception->getMessage()} in {$exception->getFile()}:{$exception->getLine()}", 'access');
+
+			// casopisovy log
+			if ($this->user->isLoggedIn){
+				LogModel::add(0, 0, "error$code", $_SERVER['REQUEST_URI'], $_SERVER['HTTP_REFERER']);
+			}
 
 		} else {
 			$this->setView('500'); // load template 500.latte
