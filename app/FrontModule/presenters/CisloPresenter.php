@@ -46,7 +46,7 @@ class CisloPresenter extends BasePresenter {
 		if (!file_exists($cislo->getPdfPath()))
 			throw new BadRequestException("PDF $id nenalezeno");
 
-		LogModel::add($this->cislo->id, 0, 'download', '');
+		LogModel::add($id, 0, 'download', '');
 
 		$response = new FileResponse($cislo->getPdfPath(), $cislo->getPdfFilename(), 'application/pdf');
 		$this->sendResponse($response);
