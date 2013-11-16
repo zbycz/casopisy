@@ -48,11 +48,24 @@ class CisloPresenter extends BasePresenter {
 	    if (!$this['editForm']->submitted) {
             $this['editForm']->setValues($this->cislo);
 	    }
+
+	    $this->template->bookmarks = $this->cislo->getBookmarks();
     }
 
 	public function handlePurgeImgCache() {
 		$cnt = Casopisy\Obsah::purgeImgCache($this->cislo->id);
 		$this->flashMessage("Smazáno $cnt kešovaných náhledů");
+	}
+
+	public function handleWriteBookmarks() {
+		foreach($this->cislo->getBookmarks() as $bm){
+			if (!$bm->obsah->nazev) {
+				$bm->obsah->nazev = $bm->title;
+				$bm->obsah->save();
+			}
+		}
+		$this->flashMessage("Bookmarks zapsány.");
+		$this->redirect('this');
 	}
 
     protected function createComponentEditForm() {
@@ -64,11 +77,11 @@ class CisloPresenter extends BasePresenter {
                 ->setPrompt("-vyberte-")->controlPrototype->accesskey('m');
         $form->addText('rok', 'Rok')->controlPrototype->class("input-mini");
         $form->addText('nazev', 'Název');
-        $form->addTextArea('popis', 'Popis', 100, 3);
+        $form->addTextArea('popis', 'Popis')->controlPrototype->style("height:5em;width:300px");
         $form->addRadioList('verejne', 'Zveřejněno', array('Skryté', 'Veřejné', 'Jen náhled'));
         $form->addCheckbox('priloha', 'Příloha k časopisu (přiřazuje se dle ročníku a čísla)');
         $form->addCheckbox('hotovo', 'Štítkování HOTOVO (nenabízet "ke štítkování")');
-        $form->addText('poznamka', 'Vnitřní poznámka')->controlPrototype->class("input-xxlarge");
+        $form->addText('poznamka', 'Vnitřní poznámka')->controlPrototype->class("input-xlarge");
         $form->addSubmit('submit1', 'Uložit úpravy')->controlPrototype->class("btn btn-primary");
         $form->addSubmit('gonext', '_Uložit & přejít +1')->controlPrototype->class("btn")->accesskey('u');
         $form->onSuccess[] = $this->editFormSubmitted;

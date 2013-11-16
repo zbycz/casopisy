@@ -32,6 +32,7 @@ class CisloModel
 		$pdf = escapeshellarg($cislo->getPdfPath());
 		$img = escapeshellarg($cislo->getPage()->getPath(false));
 		$log = escapeshellarg($cislo->getLogFile());
+		$bm = escapeshellarg($cislo->getBookmarksFile());
 
 		//find out number of pages
 		$pages = exec("pdfinfo $pdf  | awk '/Pages/ {print \$2}'");
@@ -42,6 +43,9 @@ class CisloModel
 
 		//convert images - asynchronous
 		exec("nohup nice -n19 ionice -c3 convert -trim -scene 1 -verbose -density 100 $pdf $img >$log 2>&1 &");
+
+		//get bookmarks - asynchronous
+		exec("nohup pdftk $pdf dump_data >$bm 2>&1 &");
 
 		return $id;
 	}

@@ -1,7 +1,10 @@
+{* BLOCKS.LATTE
+	{includeblock ../ ... /blocks.latte}
+*}
 
 
-{*
-		{include #rowThumbnails obsah=>$obsah, s=>$obsah->strana, cislo=>$cislo}
+{* ROW THUMBNAILS
+		{include #rowThumbnails obsah=>$obsah, s=>$obsah->strana, cislo=>$cislo, zoom=>$zoom}
 *}
 {define #rowThumbnails |strip}
 	{var $fullView = ($user->isInRole(admin) OR $cislo->verejne == 1)} {* @see Cislo.editaceStranek.latte *}
@@ -13,7 +16,7 @@
 {/define}
 
 
-{*
+{* COMMENTS
 	{include #comments cislo=>$cislo, p=>$p}
 *}
 {define #comments}

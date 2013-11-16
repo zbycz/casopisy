@@ -19,7 +19,7 @@
 
 {* -------------- editace/prohlížení ---------------- *}
 {snippet komentare}
-	{includeblock blocks.latte}
+	{includeblock ../../../templates/blocks.latte}
 	<table class="stranky" id="strankyTable" data-cid="{$cislo->id}">
 		{foreach $cislo->getObsah() as $r}
 			{var $p = $r->strana}
@@ -27,7 +27,7 @@
 			<tr n:class="$iterator->odd ? odd" id="p{$p}">
 				<th>
 					{foreach $r->getStrany() as $s}
-						{include #rowThumbnails obsah=>$r, s=>$s, cislo=>$cislo}
+						{include #rowThumbnails obsah=>$r, s=>$s, cislo=>$cislo, zoom=>$zoom}
 					{/foreach}
 				</th>
 				<td>

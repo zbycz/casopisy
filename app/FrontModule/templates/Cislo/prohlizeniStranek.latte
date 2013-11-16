@@ -1,7 +1,7 @@
 
 
 
-{includeblock blocks.latte}
+{includeblock ../../../templates/blocks.latte}
 
 {* -------------- editace/prohlížení ---------------- *}
 <div class="stranky">
@@ -11,7 +11,7 @@
 
 	<div class="dvoustranka" id="p{$p}">
 	{foreach $dvoustranka as $obsah}
-		{include #rowThumbnails obsah=>$obsah, s=>$obsah->strana, cislo=>$cislo}
+		{include #rowThumbnails obsah=>$obsah, s=>$obsah->strana, cislo=>$cislo, zoom=>200}
 	{/foreach}
 		<div class="clearfix"></div>
 	</div>

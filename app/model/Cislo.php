@@ -33,7 +33,7 @@ class Cislo extends Entity {
 
 
     /**
-     * @return Obsah[]
+     * @return Obsah[] indexed by strana
      */
     function getObsah() {
 		if (count($this->obsah))
@@ -127,6 +127,10 @@ class Cislo extends Entity {
         return Environment::getVariable("dataDir") . "/pdf/$this->id.log";
     }
 
+	function getBookmarksFile() {
+		return Environment::getVariable("dataDir") . "/pdf/$this->id.pdf.bookmarks";
+	}
+
     function getPdfPath() {
         return Environment::getVariable("dataDir") . "/pdf/$this->id.pdf";
     }
@@ -209,4 +213,36 @@ class Cislo extends Entity {
 		dibi::query("UPDATE komentare SET del=1 WHERE id = %i",$id);
 	}
 
+	public function getBookmarks() {
+		$obsah = $this->getObsah();
+		$bookmarks = array();
+		$bookmark = new \stdClass;
+
+		if(!file_exists($this->getBookmarksFile()))
+			return array();
+
+		$toc = file($this->getBookmarksFile());
+		foreach ($toc as $row) {
+			list($key, $val) = explode(':', $row, 2);
+			$val = trim(html_entity_decode($val, NULL, 'UTF-8'));
+			if($key == 'BookmarkTitle') {
+				$bookmark->title = $val;
+			}
+			if($key == 'BookmarkLevel') {
+				$bookmark->level = $val;
+			}
+			if($key == 'BookmarkPageNumber') {
+				$p = $bookmark->page = $val;
+				$bookmark->obsah = @$obsah[$p];
+
+				if (isset($bookmarks[$p])) //more headings per page
+					$bookmarks[$p]->title .= " / " . $bookmark->title;
+				else
+					$bookmarks[$p] = $bookmark;
+
+				$bookmark = new \stdClass;
+			}
+		}
+		return $bookmarks;
+	}
 }

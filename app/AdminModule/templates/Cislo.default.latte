@@ -1,18 +1,13 @@
 
 {block content}
 <a n:href=":Front:Cislo: $cislo[id]" class="btn pull-right margin1"><i class="icon-globe"></i> Zobrazit/editovat na webu</a>
-<h1 n:block=title>
-	<span class="muted">{$cislo->casopis}</span>
-	{if $cislo->nazev}{*speciál*}
-		{$cislo->nazev}
-		<small>({$cislo->mesic|mesic} {$cislo->rok})</small>
-	{else}
-		{$cislo->mesicrok}
-		<small>(č.{$cislo->cislo}/{$cislo->rocnik})</small>
-	{/if}
+<h1 n:block=title><span class="muted">{$cislo->casopis}</span> {$cislo->nazev?:$cislo->mesicrok}
 </h1>
 
-<p class="pull-right"><a n:href="purgeImgCache!"><small>smazat keš obrázků</small></a></p>
+<p class="pull-right aright">
+	<a n:href="purgeImgCache!"><small>smazat keš obrázků</small></a><br>
+	<img src="{$cislo->getCoverLink()}" style="width:300px">
+</p>
 
 {control editForm}
 
@@ -20,39 +15,42 @@
 	U publikací:<br>
 	&nbsp; - Název se píše bez autorů, ti se vloží nakonec do Popisu. <br>
 	&nbsp; - Ročník = sekce, číslo=pořadí.</p>
-
-<button class="btn" onclick="var s=$('#frmeditForm-poznamka').val();
-            if(m=s.match(/svetylko_(20\d\d)_(\d\d)(_)?/i)){
-                $('#frmeditForm-rok').val(m[1]);
-                $('#frmeditForm-mesic').val(parseInt(m[2]));
-                x={ 9:1,12:2,2:3,4:4,6:5 };
-                $('#frmeditForm-cislo').val(x[parseInt(m[2])]);
-
-                if(m[3]) $('#frmeditForm-priloha').prop('checked',1);
-            }
-            else if(m=s.match(/svetylko_(\d+)_(\d+)(.pdf)?/i)){
-                $('#frmeditForm-rocnik').val(m[1]);
-                $('#frmeditForm-cislo').val(parseInt(m[2]));
-                if(m[2] <= 4){ //do prosince
-                  $('#frmeditForm-rok').val(parseInt(m[1])+1993);
-                  $('#frmeditForm-mesic').val(parseInt(m[2])+8);
-                }else { //od ledna
-                  $('#frmeditForm-rok').val(parseInt(m[1])+1994);
-                  $('#frmeditForm-mesic').val(parseInt(m[2])-4);
-                }
-                if(!m[3]) $('#frmeditForm-priloha').prop('checked',1);
-            }
-            $('#frmeditForm-verejne').prop('checked',1);
-                ">Načíst z vnitřní poznámky</button>
-    (další šablony v /data/bookmarklet.js)
+<p>Načítátka v  <a href="{$basePath}/data/bookmarklet.js">/data/bookmarklet.js</a></p>
 
 <p><br>
 
-<p><img src="{$cislo->getCoverLink()}">
+{if count($bookmarks)}
+	<h2>Bookmarks načtené z PDF dokumentu</h2>
+	<a n:href="writeBookmarks!" class="btn">Zapsat bookmarks jako obsah</a>
+	{includeblock ../../templates/blocks.latte}
+	<table class="stranky spacer">
+		{foreach $bookmarks as $bm}
+			{var $r = $bm->obsah}
+			{var $p = $r->strana}
+			{continueIf $r->nazev == $bm->title}
+			<tr {if $r->nazev} style="background:#ffffaa"{/if}>
+				<th>
+					{foreach $r->getStrany() as $s}
+						{include #rowThumbnails obsah=>$r, s=>$s, cislo=>$cislo, zoom=>200}
+					{/foreach}
+				</th>
+				<td>
+					<h3>{$bm->title}</h3>
 
-<p class="spacer">Záznam zpracování:
-<textarea>
-{if file_exists($cislo->getLogFile())}
-{file_get_contents($cislo->getLogFile())}
+					{if $r->nazev} Tato stránka nebude importována, již je vyplněn název lidmi ({$r->nazev}){/if}
+				</td>
+			</tr>
+		{/foreach}
+	</table>
+	<p>Nezobrazují se stránky, které již byly importovány (a jsou stále beze změny).</p>
 {/if}
-</textarea>
+
+
+<p class="spacer2" n:if="file_exists($cislo->getBookmarksFile())">Bookmarks (pdftk dump_data):<br>
+	<textarea style="width:90%; height: 10em">{file_get_contents($cislo->getBookmarksFile())}</textarea>
+</p>
+
+<p class="spacer2" n:if="file_exists($cislo->getLogFile())">Záznam zpracování:<br>
+	<textarea>{file_get_contents($cislo->getLogFile())}</textarea>
+</p>
+
