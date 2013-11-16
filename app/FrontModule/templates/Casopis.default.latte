@@ -4,10 +4,22 @@
 
 <p class="tagy">
 {foreach $tagy as $t}
-    <a n:href="Casopis: id=>$t" n:class="label,isset($tag)&&$t==$tag?label-info">{$t}</a> <small n:if="$t->pocet>1">({$t->pocet})</small>
+	{continueIf $t->pocet==1}
+    <a n:href="Casopis: id=>$t" n:class="label,isset($tag)&&$t==$tag?label-info">{$t}</a> <small>({$t->pocet})</small>
     <br>
 {/foreach}
 </p>
+<p><input type="button" value="Zobrazit štítky s jediným článkem" class="btn" onclick="$(this).parent().next().toggle(300)"></p>
+
+<p class="tagy hide">
+	{foreach $tagy as $t}
+		{continueIf $t->pocet!=1}
+		<a n:href="Casopis: id=>$t" n:class="label,isset($tag)&&$t==$tag?label-info">{$t}</a>
+		<br>
+	{/foreach}
+</p>
+
+
 
 
 {if !isset($tag)}
