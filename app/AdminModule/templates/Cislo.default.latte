@@ -5,7 +5,7 @@
 	<span class="muted">{$cislo->casopis}</span>
 	{if $cislo->nazev}{*speciál*}
 		{$cislo->nazev}
-		<small>({!Casopisy\CasopisModel::$months[$cislo->mesic]} {$cislo->rok})</small>
+		<small>({$cislo->mesic|mesic} {$cislo->rok})</small>
 	{else}
 		{$cislo->mesicrok}
 		<small>(č.{$cislo->cislo}/{$cislo->rocnik})</small>

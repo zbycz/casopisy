@@ -21,7 +21,7 @@
 	<span class="muted" n:if="!$casopis->knihovna">{$cislo->casopis}</span>
 	{if $cislo->nazev}{*speciál*}
 		{$cislo->nazev}
-		<small n:if="$cislo->rok && $cislo->mesic">({!Casopisy\CasopisModel::$months[$cislo->mesic]} {$cislo->rok})</small>
+		<small n:if="$cislo->rok && $cislo->mesic">({$cislo->mesic|mesic} {$cislo->rok})</small>
 	{else}
 		{$cislo->mesicrok}
 		<small>(č.{$cislo->cislo}/{$cislo->rocnik})</small>

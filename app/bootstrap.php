@@ -89,6 +89,12 @@ Presenter::extensionMethod('isAdminModule', function (Presenter $that) {
       return strpos($that->getName(), "Admin:") === 0;
     });
 
+Nette\Templating\FileTemplate::extensionMethod('mesic', function ($that, $s) {
+	if (isset(Casopisy\CasopisModel::$months[$s]))
+		return Casopisy\CasopisModel::$months[$s];
+	return $s;
+});
+
 Nette\Templating\FileTemplate::extensionMethod('modified', function ($that, $s) {
 			return $s . "?". dechex(filemtime(WWW_DIR.$s));
 		});
