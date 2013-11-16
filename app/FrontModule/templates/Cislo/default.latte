@@ -36,7 +36,7 @@
 
 
 {* -------------- meta informace ---------------- *}
-<p>{$cislo->popis}</p>
+<p>{!nl2br($cislo->popis)}</p>
 
 <div n:if="!$cislo->verejne" class="alert">POZOR: Toto číslo není zatím veřejné, vidí ho pouze administrátor!</div>
 <div n:if="$cislo->verejne == 2" class="alert alert-success">

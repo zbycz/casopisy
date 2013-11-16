@@ -46,7 +46,7 @@ dibi::connect($container->parameters['database']);
 $list = implode("|", array_keys(\Casopisy\CasopisModel::getCasopisyURL()));
 
 $container->router[] = $adminRouter = new RouteList('Admin');
-$adminRouter[] = new Route("admin/<casopis $list>/<presenter>[/<id>][/<action>]", array(
+$adminRouter[] = new Route("admin/<casopis $list>/<presenter>[/<action>][/<id>]", array(
             'casopis' => array(
                 Route::VALUE => 0,
                 Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL(),

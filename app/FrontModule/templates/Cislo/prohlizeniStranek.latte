@@ -9,11 +9,12 @@
 	{var $p = $dvoustranka[0]->strana}
 	{continueIf $p==1}
 
-	<div class="dvoustranka" id="p{$p}">
-	{foreach $dvoustranka as $obsah}
-		{include #rowThumbnails obsah=>$obsah, s=>$obsah->strana, cislo=>$cislo, zoom=>200}
-	{/foreach}
+	<div class="dvoustranka" id="p{$p}"><div id="p{$p+1}">
+		{foreach $dvoustranka as $obsah}
+			{include #rowThumbnails obsah=>$obsah, s=>$obsah->strana, cislo=>$cislo, zoom=>200}
+		{/foreach}
 		<div class="clearfix"></div>
+	</div>
 	</div>
 {/foreach}
 </div>
