@@ -30,9 +30,13 @@
 			{continueIf $r->nazev == $bm->title}
 			<tr {if $r->nazev} style="background:#ffffaa"{/if}>
 				<th>
-					{foreach $r->getStrany() as $s}
-						{include #rowThumbnails obsah=>$r, s=>$s, cislo=>$cislo, zoom=>200}
-					{/foreach}
+					{if $r}
+						{foreach $r->getStrany() as $s}
+							{include #rowThumbnails obsah=>$r, s=>$s, cislo=>$cislo, zoom=>200}
+						{/foreach}
+					{else}
+						Error: stránka {$p} neexistuje
+					{/if}
 				</th>
 				<td>
 					<h3>{$bm->title}</h3>
