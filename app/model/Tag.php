@@ -13,9 +13,9 @@ class Tag extends Entity {
     function getObsah() {
         $result = array();
         $stranky = dibi::query("
-            SELECT o.* -- TODO, c.*
+            SELECT t.cislo_id, t.strana, o.strany_navic, o.nazev, o.popis
             FROM tag t
-            LEFT JOIN obsah o USING(cislo_id, strana)
+            LEFT JOIN obsah o USING(cislo_id, strana)  -- může být NULL (neexistuje obsah, existuje tag)
             LEFT JOIN cislo c ON t.cislo_id = c.id
             WHERE tag = %s", $this->tag, " 
               AND casopis_id=%i", $this->casopis_id, " 

@@ -94,3 +94,22 @@ if(m[5]) $('#frmeditForm-priloha').prop('checked',1);
 
 void(0);
 
+
+///Roversky_kmen_00_01_rocnik_04/Roversky_kmen_00_01_rocnik_04_19.pdf
+javascript:var s=$('#frmeditForm-poznamka').val();
+
+m=s.match(/.+\/.+_(\d+)_(\d+)_rocnik_(\d+)_(\d+)(_seminka)?/i);
+
+$('#frmeditForm-verejne').prop('checked',1);
+$('#frmeditForm-rocnik').val(parseInt(m[3]));
+$('#frmeditForm-cislo').val(parseInt(m[4]));
+$('#frmeditForm-rok').val(parseInt("20" + m[1]));
+if(m[5]) $('#frmeditForm-priloha').prop('checked',1);
+
+void(0);
+
+
+
+//knihovna??
+javascript:var s=$('#frmeditForm-poznamka').val();            if(m=s.match(/\/([^\/]+)/i))  $('#frmeditForm-rocnik').val(m[1]);   $('#frmeditForm-nazev').focus();   $('#frmeditForm-verejne-1').click()
+
