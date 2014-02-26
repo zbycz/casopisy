@@ -1,4 +1,14 @@
 <?php
+/*
+	Handles requests for FULL IMAGES, checks permission and redirects read to /img/ folder - without hash.
+
+	## /data/imgserver/...hash.png
+	RewriteCond %{REQUEST_URI} /data/imgserver/([^.]+)(\.[^.]+)?\.(jpg|jpeg|png|gif)$
+	RewriteRule .* img-server.php [NE,L]
+
+	(The thumbs are handled separatly, see .htaccess)
+ */
+
 
 // absolute filesystem path to this web root
 define('WWW_DIR', dirname(__FILE__));

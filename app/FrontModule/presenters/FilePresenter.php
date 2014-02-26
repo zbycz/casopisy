@@ -19,6 +19,9 @@ class FilePresenter extends Nette\Application\UI\Presenter {
      */
     public function actionPreview($id, $page, $hash, $opts = null) {
         $cislo = CisloModel::getById($id);
+	    if(!$cislo)
+		    throw new Nette\Application\BadRequestException("Cislo '$id' pro zobrazení thumb image neexistuje");
+	    
         $obsah = $cislo->getPage($page);
 
 	    // špatný hash - může být starý či si někdo hrál s url OR chybí orig
