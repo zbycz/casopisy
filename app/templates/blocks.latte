@@ -29,7 +29,7 @@
 	<form action="{link addComment!}" method="post" n:if="$user->loggedIn" class="ajax">
 		<input type="hidden" name="strana" value="{$p}">
 		<div class="comment comment-form">
-			<a class="author">Pif</a>
+			<a class="author">{$presenter->user->identity->name}</a>
 			<span class="td"><textarea name="text" placeholder="Přidat vlastní zkušenost či doplnění..."></textarea></span>
 			<span class="submit-td"><button type="submit" value="S" class="btn"><i class="icon-comment"></i></button></span>
 		</div>
