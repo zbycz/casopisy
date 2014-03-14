@@ -93,7 +93,11 @@ class SkautisPresenter extends Nette\Application\UI\Presenter
 		$request->membershipAllPersonInput->ID_Person = $personid;
 		$request->membershipAllPersonInput->IsValid = true;
 		$response = $skautis->organizationUnit->MembershipAllPerson($request);
-		$clenstvi = $response->MembershipAllPersonResult->MembershipAllOutput;
+		if (isset($response->MembershipAllPersonResult) AND $response->MembershipAllPersonResult)
+			$clenstvi = $response->MembershipAllPersonResult->MembershipAllOutput;
+		else
+			$clenstvi = array();
+		
 		if (!is_array($clenstvi))
 			$clenstvi = array($clenstvi);
 
