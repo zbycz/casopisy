@@ -7,19 +7,21 @@ use Nette,
 use \dibi;
 
 /**
-  CREATE TABLE `cislo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `casopis_id` tinyint(2) NOT NULL,
-  `rocnik` tinyint(2) NOT NULL,
-  `cislo` tinyint(2) NOT NULL,
-  `rok` smallint(4) NOT NULL,
-  `mesic` tinyint(2) NOT NULL,
-  `verejne` tinyint(1) NOT NULL,
-  `priloha` tinyint(1) NOT NULL,
-  `poznamka` text COLLATE utf8_czech_ci NOT NULL,
-  `popis` text COLLATE utf8_czech_ci NOT NULL,
-  `pocet_stran` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+	CREATE TABLE `cislo` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`casopis_id` tinyint(2) NOT NULL,
+	`rocnik` varchar(10) COLLATE utf8_czech_ci NOT NULL,
+	`cislo` tinyint(2) NOT NULL,
+	`rok` smallint(4) NOT NULL,
+	`mesic` tinyint(2) NOT NULL,
+	`verejne` tinyint(1) NOT NULL,
+	`priloha` tinyint(1) NOT NULL,
+	`hotovo` tinyint(1) NOT NULL,
+	`poznamka` text COLLATE utf8_czech_ci NOT NULL,
+	`nazev` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+	`popis` text COLLATE utf8_czech_ci NOT NULL,
+	`pocet_stran` int(11) NOT NULL,
+	PRIMARY KEY (`id`)
 
  * @property-read array $stranky
  */
@@ -141,7 +143,11 @@ class Cislo extends Entity {
     }
 
 	function getPdfFilename() { //Roverský kmen 2004-05.pdf
-		return "$this->casopis $this->rok-$this->mesic.pdf";
+		if (CasopisModel::config($this->casopis_id)->knihovna)
+			return "$this->nazev ($this->rocnik).pdf";
+
+		$spec = $this->nazev ? " - $this->nazev" : '';
+		return "$this->casopis $this->rok-$this->mesic$spec.pdf";
 	}
 
     function getPdfSize(){
