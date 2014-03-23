@@ -39,12 +39,20 @@ class CisloPresenter extends BasePresenter {
 	{
         $cislo = CisloModel::getById($id);
 
-		//allow only logged in user
-		if (!($this->user->isInRole('admin') OR ($this->user->loggedIn AND $cislo->verejne == 1))) //TODO opravdu == ?
-			throw new ForbiddenRequestException("Číslo $id není veřejné");
+		if (!file_exists($cislo->getPdfPath())){
+			$this->template->chyba = "Omlouváme se, příslušné PDF je chybně nahrané. Prosím kontaktujte správce.";
+			$this->setView('error');
+			return;
+		}
 
-		if (!file_exists($cislo->getPdfPath()))
-			throw new BadRequestException("PDF $id nenalezeno");
+		if (!$this->user->loggedIn){
+			$this->template->chyba = "PDF lze stahovat až po přihlášení přes SkautIS - přihlašte se tlačítkem vpravo nahoře.";
+			$this->setView('error');
+			return;
+		}
+
+		if ($cislo->verejne != 1 AND !$this->user->isInRole('admin')) //verejne=0 OR verejne=2
+			throw new ForbiddenRequestException("Číslo $id není veřejné");
 
 		LogModel::add($id, 0, 'download', '');
 
