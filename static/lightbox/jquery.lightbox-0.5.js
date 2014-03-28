@@ -31,7 +31,7 @@
 //			imageBtnPrev:			'images/lightbox-btn-prev.gif',			// (string) Path and the name of the prev button image
 //			imageBtnNext:			'images/lightbox-btn-next.gif',			// (string) Path and the name of the next button image
 //			imageBtnClose:			'images/lightbox-btn-close.gif',		// (string) Path and the name of the close btn
-//			imageBlank:				'images/lightbox-blank.gif',			// (string) Path and the name of a blank image (one pixel)
+			imageBlank:				'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',			// (string) Path and the name of a blank image (one pixel)
 			imageLoading: basePath+'/static/lightbox/loading.gif',
 			imageBtnClose: basePath+'/static/lightbox/close.gif',
 			imageBtnPrev: basePath+'/static/lightbox/prev.gif',
