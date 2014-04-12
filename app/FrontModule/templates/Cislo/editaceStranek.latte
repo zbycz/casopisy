@@ -45,7 +45,7 @@
 						<input type="text" class="addTag" placeholder="přidat štítek [enter]" n:if="$user->loggedIn">
 					</p>
 
-					<div n:snippet="komentare-$p" class="spacer3" n:if="$p>1 AND $cislo->casopis != 'Skauting'">
+					<div n:snippet="komentare-$p" class="spacer3" n:if="$p>1 AND ($cislo->casopis != 'Skauting' OR $cislo->rocnik >= 52)">
 						{include #comments cislo=>$cislo, p=>$p}
 					</div>
 				</td>
