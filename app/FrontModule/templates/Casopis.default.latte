@@ -74,7 +74,6 @@
             {foreach $r->getStrany() as $s}<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, 200)}"></a>{/foreach}
         </th>
         <td>
-            <a n:href=":Admin:Cislo:#p$p $r->cislo->id" class="btn btn-mini pull-right margin1" n:if="$presenter->user->loggedIn"><i class="icon-pencil"></i></a>
             <h3>{$r->nazev?$r->nazev:"strana $r->stranaOdDo"} &mdash; <a n:href="Cislo:#p$r->strana $r->cislo->id">{$r->cislo->casopis} {$r->cislo->mesicrok}</a></h3>
             <p>{$r->popis}
             <p>{foreach $r->getTags() as $t} <span class="label label-info">{$t}</span> {/foreach}

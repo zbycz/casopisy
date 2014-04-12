@@ -36,7 +36,7 @@
 
 
 {* -------------- meta informace ---------------- *}
-<p>{!nl2br($cislo->popis)}</p>
+<p n:if="substr($cislo->popis,0,1) != '@'">{!nl2br($cislo->popis)}</p>
 
 <div n:if="!$cislo->verejne" class="alert">POZOR: Toto číslo není zatím veřejné, vidí ho pouze administrátor!</div>
 <div n:if="$cislo->verejne == 2" class="alert alert-success">
@@ -76,3 +76,6 @@
 {else}
 	{include "editaceStranek.latte"}
 {/if}
+
+
+<p n:if="substr($cislo->popis,0,1) == '@'">{!nl2br(substr($cislo->popis,1))}</p>
