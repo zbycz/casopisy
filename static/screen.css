@@ -35,7 +35,10 @@ td.nowrap {
 	white-space: nowrap;
 }
 
-
+.highlight {
+	background: #ffff66;
+	color: #000;
+}
 
 /* --------------  header -------------- */
 .npresslogo{color: #888 !important; font-variant: small-caps; font-size: 90%;}

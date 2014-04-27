@@ -6,6 +6,7 @@ use Nette\Image;
 use Nette\Environment;
 use \dibi;
 use Nette\Utils\Finder;
+use Nette\Utils\Strings;
 
 /* CREATE TABLE `obsah` (
   `cislo_id` int(11) NOT NULL,
@@ -124,7 +125,7 @@ class Obsah extends Entity {
 				AND tag=%s", $tag);
 	}
 
-    /** Response for Files:preview
+    /** Response for Files:preview (apache triggered cache)
      */
     public function getPreviewHttpResponse($opts = null) { //$opts obsahuje jen width[px]
         $p = $this->strana;
@@ -150,4 +151,41 @@ class Obsah extends Entity {
         //output it
         return new ImageResponse($image, 'image/png');
     }
+
+
+
+	// fulltext
+	public function getSearchedText($vyraz){
+		if (!isset($this->text))
+			return "";
+		return excerpt($this->text,$vyraz);
+	}
+
+
 }
+
+//vloženo sem: http://stackoverflow.com/questions/1292121/how-to-generate-the-snippet-like-generated-by-google-with-php-and-mysql
+function excerpt($text, $query)
+{
+	//words
+	$words = join('|', explode(' ', preg_quote($query)));
+
+	//lookahead/behind assertions ensures cut between words
+	$s = '\s\x00-/:-@\[-`{-~'; //character set for start/end of words
+	$matches = Strings::matchAll($text, '#(?<=['.$s.']).{1,30}(('.$words.').{1,30})+(?=['.$s.'])#uis');
+
+	//delimiter between occurences
+	$results = array();
+	foreach($matches as $line) {
+		$results[] = htmlspecialchars($line[0], 0, 'UTF-8');
+	}
+	$result = join(' <b>(...)</b> ', $results);
+
+	//highlight
+	$result = Strings::replace($result, '#'.$words.'#iu', "<span class=\"highlight\">\$0</span>");
+	return $result;
+}
+
+
+
+

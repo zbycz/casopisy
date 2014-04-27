@@ -169,6 +169,13 @@ class Cislo extends Entity {
         return "$this->mesicTxt $this->rok";
     }
 
+	function getCelynazev() {
+		if (CasopisModel::config($this->casopis_id)->knihovna)
+			return "$this->nazev ($this->rocnik)";
+		$spec = $this->nazev ? " - $this->nazev" : '';
+		return "$this->casopis $this->mesicrok$spec";
+	}
+
 	/** @see Rocnik::getRocnikTxt() */
 	function getRocnikTxt() {
 		if (CasopisModel::config($this->casopis_id)->knihovna)

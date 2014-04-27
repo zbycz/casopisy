@@ -31,6 +31,10 @@ class Entity extends \Nette\Object implements \IteratorAggregate, \ArrayAccess {
         return parent::__get($key);
     }
 
+	public function __isset($key) {
+		return (array_key_exists($key, $this->data));
+	}
+
     public function getIterator() {
         return new \ArrayIterator($this->data);
     }

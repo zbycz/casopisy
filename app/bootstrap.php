@@ -108,6 +108,12 @@ Nette\Templating\FileTemplate::extensionMethod('linkify', function ($that, $s, $
 	return $s;
 });
 
+Nette\Templating\FileTemplate::extensionMethod('highlight', function ($that, $s, $query) {
+	$words = join('|', explode(' ', preg_quote($query)));
+	$s = htmlspecialchars($s, 0, 'UTF-8');
+	return Nette\Utils\Strings::replace($s, '#'.$words.'#iu', "<span class=\"highlight\">\$0</span>");
+});
+
 
 // Configure and run the application!
 //$container->application->catchExceptions = true;
