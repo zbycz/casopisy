@@ -67,8 +67,11 @@ class SearchModel {
 	    ");
 		foreach($stranky as $r){
 			$index = $r['cislo_id'] . "-" . $r['strana'];
+
 			if(!isset($result[$index]))
 				$result[$index] = new Obsah($r);
+
+			// přidat text ikdyž se matchnul nadpis/popis
 			else
 				$result[$index]->text = $r['text'] . (isset($result[$index]->text) ? $result[$index]->text : '');
 		}

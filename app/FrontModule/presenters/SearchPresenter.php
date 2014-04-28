@@ -14,6 +14,7 @@ class SearchPresenter extends Nette\Application\UI\Presenter {
     public function actionDefault($vyraz, $casopis=NULL)
     {
 	    $this->template->vyraz = $vyraz;
+	    LogModel::add(0, 0, 'fulltext', $vyraz);
 
 	    $vysledky = SearchModel::search($vyraz, $casopis);
 	    $this->template->vysledky = $vysledky;
@@ -24,9 +25,8 @@ class SearchPresenter extends Nette\Application\UI\Presenter {
 	    arsort($pocetByCasopis);
 	    $this->template->pocetByCasopis = $pocetByCasopis;
 
-
-	    //přímo tagy
-	    //přímo speciální čísla / descriptiony
+		//TODO:
+	    //přímo názvy speciálních čísel / publikací
 
     }
 }

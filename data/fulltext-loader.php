@@ -47,6 +47,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 //------------------ do tricks: ------------
 
 set_time_limit(3600);
+Nette\Environment::setVariable('dataDir', '.');
 
 // could be 10 times quicker
 echo "Loading more data? ATTENTION: TEMPORARY DISABLE FULLTEXT INDEX!!! <br>\n\n";

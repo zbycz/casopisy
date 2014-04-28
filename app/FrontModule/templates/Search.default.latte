@@ -4,10 +4,10 @@
 
 {var $n = count($vysledky)}
 <p>{if $n == 0}Nic neodpovídá zadání :-(
-	{elseif $n==1}Nalezen 1 výsledek
-	{elseif $n<=4}Nalezeny {$n} výsledky
-	{else}Nalezeno {$n} výsledků{/if}
-	za několik vteřin.</p>
+	{elseif $n==1}Nalezen 1 výsledek za pidi chvilku.
+	{elseif $n<=4}Nalezeny {$n} výsledky za malou chviličku.
+	{else}Nalezeno {$n} výsledků za chvíli času.{/if}
+	</p>
 
 <p n:if="!is_null($search_casopis)">Zůženo pouze na {\Casopisy\CasopisModel::getCasopisLongById($search_casopis)} &mdash; <a n:href="this vyraz=>$vyraz, casopis=>NULL">hledat všude!</a></p>
 
@@ -17,7 +17,10 @@
 	{/foreach}
 </p>
 
+<p n:if="$n" class="muted"><i>Vyhledává se v označených článcích a štítcích (i části slov). Dále v textech PDFek - ovšem kvalita textů není 100%, některá slova jsou zkomolená či rozdělená a vyhledat tedy nepůjdou. </i></p>
+
 <table class="stranky spacer3">
+{var $num = 0;}
 {foreach $vysledky as $r}
     {var $p = $r->strana}
     <tr n:class="$iterator->odd ? odd" id="p{$r->cislo_id}-{$p}">
@@ -25,12 +28,23 @@
         {foreach $r->getStrany() as $s}<a href="{$r->getLink($s)}" class="lightbox"><span>{$s}</span><img src="{$r->getLink($s, 200)}"></a>{/foreach}
     </th>
     <td>
-	    <a n:href="Cislo:#p$r->strana $r->cislo->id">{$r->cislo->celynazev}</a>
+	    <a n:href="Cislo:#p$r->strana $r->cislo->id, casopis=>$r->cislo->casopis_id">{$r->cislo->celynazev}</a>
         <h3>{!$r->nazev?$r->nazev:"strana $r->stranaOdDo" |highlight:$vyraz}</h3>
         <p>{!$r->popis|highlight:$vyraz}
         <p>{foreach $r->getTags() as $t} <span class="label label-info">{!$t|highlight:$vyraz}</span> {/foreach}
 	    <p>{!$r->getSearchedText($vyraz)}</p>
     </td>
     </tr>
+
+
+	{if ++$num >= 60 AND !$presenter->getParameter('showAll')}
+		<tr><td colspan="2">Zobrazeno prvních 50 výsledků. <a n:href="this vyraz=>$vyraz, casopis=>$search_casopis, showAll=>1">Zobrazit všech {$n}</a></td></tr>
+		{?break}
+	{/if}
+	{if ++$num >= 500 AND $presenter->getParameter('showAll') != 2}
+		<tr><td colspan="2">Zobrazeno prvních 500 výsledků. <a n:href="this vyraz=>$vyraz, casopis=>$search_casopis, showAll=>2">Zobrazit všech {$n}</a></td></tr>
+		{?break}
+	{/if}
+	<!-- TODO: infinte scroll ;-) -->
 {/foreach}
 </table>
