@@ -258,4 +258,23 @@ class Cislo extends Entity {
 		}
 		return $bookmarks;
 	}
+
+	public function indexFulltext() {
+		$pdf = escapeshellarg($this->getPdfPath());
+		$len = 0;
+
+		for($p=1; $p<=$this->pocet_stran; $p++)
+		{
+			$outputarr = array();
+			exec("pdftotext -f $p -l $p $pdf  -", $outputarr, $returnval);
+			$output = implode("\n", $outputarr);
+
+			//save only meaningful content AND title page for note=already indexed
+			if(trim($output) OR $p==1){
+				dibi::query('REPLACE INTO `fulltext`', array('cislo_id' => $this->id, 'strana'=>$p, 'text'=>trim($output)));
+				$len += strlen($output);
+			}
+		}
+		return $len;
+	}
 }

@@ -46,28 +46,27 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 //------------------ do tricks: ------------
 
-
-
 set_time_limit(3600);
 
-$cisla = dibi::query('SELECT id,pocet_stran FROM cislo ORDER BY id')->fetchPairs('id', 'pocet_stran');
-foreach($cisla as $id => $pocet_stran)
+// could be 10 times quicker
+echo "Loading more data? ATTENTION: TEMPORARY DISABLE FULLTEXT INDEX!!! <br>\n\n";
+
+
+$cisla = dibi::query('
+	SELECT cislo.*
+	FROM cislo
+	LEFT JOIN `fulltext` ON cislo.id = cislo_id
+	WHERE cislo_id IS NULL
+	ORDER BY id
+	');
+
+foreach($cisla as $r)
 {
-	echo "Converting $id ($pocet_stran)...";
+	$cislo = new \Casopisy\Cislo($r);
 
-	$len = 0;
-	for($p=1; $p<=$pocet_stran; $p++)
-	{
-		$outputarr = array();
-		exec("pdftotext -f $p -l $p pdf/$id.pdf  -", $outputarr, $returnval);
-		$output = implode("\n", $outputarr);
-
-		$len += strlen($output);
-		dibi::query('REPLACE INTO `fulltext`', array('cislo_id' => $id, 'strana'=>$p, 'text'=>$output));
-	}
-
-	echo "$len bytes ($returnval)\n";
-
+	echo "Converting $cislo->id ($cislo->pocet_stran pages)...";
+	$len = $cislo->indexFulltext();
+	echo "$len bytes\n";
 }
 
 echo "\n\nDONE\n";

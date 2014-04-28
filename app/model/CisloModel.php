@@ -47,6 +47,9 @@ class CisloModel
 		//get bookmarks - asynchronous
 		exec("nohup pdftk $pdf dump_data >$bm 2>&1 &");
 
+		//index fulltext
+		$cislo->indexFulltext();
+
 		return $id;
 	}
 
@@ -84,6 +87,8 @@ class CisloModel
 				$log[] = "$file - pdf not readable - zero pages";
 			else
 				$cislo->save(array("pocet_stran" => $pages));
+
+			$cislo->indexFulltext();
 		}
 		return $log;
 	}
