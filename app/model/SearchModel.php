@@ -10,6 +10,9 @@ class SearchModel {
 
 	static function search($query, $casopis=NULL)
 	{
+		if($query == "")
+			return array();
+
 		$casopis_where = "AND verejne = 1";
 		if(isset($casopis))
 			$casopis_where .= " AND casopis_id = ".intval($casopis);

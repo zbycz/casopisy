@@ -50,6 +50,7 @@ td.nowrap {
     margin-top: -2px;
     vertical-align: middle;
 }
+.navbar-form .add-on {height: 28px; margin-left: -4px; }
 .dropdown-menu .inline {padding-left: 12px;}
 .dropdown-menu .inline a {display: inline;}
 input.xxl {font-size: 200%; height: 200%; width: 450px;}
