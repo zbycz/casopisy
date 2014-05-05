@@ -542,8 +542,18 @@ function formatXml(xml) {
 function highlight(elemId){
     if(this.nodeName == "A") elemId = '#' + $(this).attr('href').split('#')[1];
     else elemId = document.location.hash;
+
+    // neexistující page-id
+    var page = elemId.substr(2);
+    if (page >= 2) {
+        while ($(elemId).length == 0 && page > 0)
+            elemId = '#p' + (--page);
+        document.location.hash = elemId;
+    }
+
+
     $(elemId).css("backgroundColor", "#ffffff") // hack for Safari
-        .animate({ backgroundColor: '#ffffaa' }, 500) //needs jQuery UI
+        .animate({ backgroundColor: '#ffffaa' }, 500) //this command needs jQuery UI
         .delay(3000)
         .animate({ backgroundColor: "#ffffff" }, 5000)
 }
