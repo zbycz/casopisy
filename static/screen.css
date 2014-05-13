@@ -265,9 +265,12 @@ footer {
 footer img {vertical-align: bottom; padding:5px; border-radius: 4px}
 footer a:hover img {background: #ccc}
 .brand {
-	background: url(images/skaut-logo.png) no-repeat 8px 5px;
-  padding-left: 45px !important;
+	background: url(images/header-logo.png) no-repeat 9px 3px;
+	width: 110px;
+	height: 34px;
+	padding: 0 !important;
 }
+.brand span {position: absolute; left: -1000px;}
 .loginlink a {color: #777;}
 
 .tagy {
