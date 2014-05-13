@@ -29,4 +29,10 @@ class SearchPresenter extends Nette\Application\UI\Presenter {
 	    //přímo názvy speciálních čísel / publikací
 
     }
+
+	public function actionCount($vyraz)
+	{
+		echo count(SearchModel::search($vyraz));
+		$this->terminate();
+	}
 }
