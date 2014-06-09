@@ -11,7 +11,7 @@ use Nette;
  */
 class SearchPresenter extends Nette\Application\UI\Presenter {
 
-    public function actionDefault($vyraz, $casopis=NULL)
+    public function actionDefault($vyraz="", $casopis=NULL)
     {
 	    $this->template->vyraz = $vyraz;
 	    LogModel::add(0, 0, 'fulltext', $vyraz);
