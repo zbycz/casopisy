@@ -71,7 +71,7 @@ class SearchModel {
 			if(!isset($result[$index]))
 				$result[$index] = new Obsah($r);
 
-			// přidat text ikdyž se matchnul nadpis/popis
+			// přidat text (ze stránky) ikdyž se matchnul nadpis/popis (ze článku)
 			else
 				$result[$index]->text = $r['text'] . (isset($result[$index]->text) ? $result[$index]->text : '');
 		}

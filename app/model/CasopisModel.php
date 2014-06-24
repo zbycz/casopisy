@@ -104,6 +104,21 @@ class CasopisModel {
 		return $cisla;
 	}
 
+	/** @return Cislo[] index: $id casopisu*/
+	static function getCislaMesice($rok, $mesic){
+		$query = dibi::query("
+				SELECT *
+				FROM cislo
+				WHERE rok = %i",$rok," AND mesic = %i",$mesic," AND verejne=1 AND priloha=0
+					AND casopis_id <= 4 -- Skautsky svet
+				ORDER BY casopis_id");
+		$cisla = array();
+		foreach ($query as $r) {
+			$cisla[] = new Cislo($r);
+		}
+		return $cisla;
+	}
+
 	static function getCislaTodo()
 	{
 		$query = dibi::query("

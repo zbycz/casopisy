@@ -26,13 +26,7 @@ class SearchPresenter extends Nette\Application\UI\Presenter {
 	    $this->template->pocetByCasopis = $pocetByCasopis;
 
 		//TODO:
-	    //přímo názvy speciálních čísel / publikací
+	    //hledat přímo názvy speciálních čísel / publikací (nyní řešíme jen stránkově)
 
     }
-
-	public function actionCount($vyraz)
-	{
-		echo count(SearchModel::search($vyraz));
-		$this->terminate();
-	}
 }

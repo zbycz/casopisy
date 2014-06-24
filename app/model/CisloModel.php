@@ -10,16 +10,19 @@ use \dibi;
 class CisloModel
 {
 
+	static private $cisloCache = array();
+
 	/**
 	 * @return \Casopisy\Cislo|boolean
 	 */
 	static function getById($id)
 	{
-		$cislo = dibi::fetch("SELECT * FROM cislo WHERE id=%i", $id);
-		if ($cislo) {
-			return new Cislo($cislo);
+		if (!isset(self::$cisloCache[$id])) {
+			$cislo = dibi::fetch("SELECT * FROM cislo WHERE id=%i", $id);
+			self::$cisloCache[$id] = $cislo ? new Cislo($cislo) : false;
 		}
-		return false;
+
+		return self::$cisloCache[$id];
 	}
 
 	static function upload($casopis_id, $file)
