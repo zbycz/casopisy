@@ -53,7 +53,7 @@ class ApiPresenter extends Nette\Application\UI\Presenter
 				'popis' => "$r->popis",                                 //doplňkový popis od uživatele
 				'tagy' => implode(',', $r->getTags()),                  //tagy od uživatele
 				'text' => $r->getSearchedText($vyraz),                 //text z PDFka
-				'stranka' => $basePath . $r->getLink(1, 200),           //link na první stránku článku (PNG 200px)
+				'stranka' => $basePath . $r->getLink($r->strana, 200), //link na první stránku článku (PNG 200px)
 				'link' => $this->link('//Cislo:#p'.$r->strana, array('id'=>$cislo->id, 'casopis'=>$cislo->casopis_id)),
 			);
 		}
