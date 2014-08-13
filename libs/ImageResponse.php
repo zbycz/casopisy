@@ -29,8 +29,14 @@ class ImageResponse extends Nette\Object implements \Nette\Application\IResponse
 	{
 		if($this->mime)
 			$httpResponse->setContentType($this->mime);
-		echo $this->source;
+
+		if($this->source instanceof Nette\Image){
+			if($this->mime != 'image/png')
+				throw new Nette\NotImplementedException();
+			$this->source->save(NULL, NULL, Nette\Image::PNG);
+		}
+		else
+			echo $this->source;
 	}
 
 }
-?>
