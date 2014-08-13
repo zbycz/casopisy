@@ -125,12 +125,12 @@ class Obsah extends Entity {
 				AND tag=%s", $tag);
 	}
 
-    /** Response for Files:preview (apache triggered cache)
+    /** Response for Files:preview (apache triggered cache for /data/thumbs/*)
      */
     public function getPreviewHttpResponse($opts = null) { //$opts obsahuje jen width[px]
         $p = $this->strana;
 
-        //custom caching mechanism (dont use Nette\Cache!)
+        //custom caching mechanism (it doesn't use Nette\Cache!)
         $cachePath = $this->getPath($p, $opts);
         if (file_exists($cachePath))
             return new ImageResponse(file_get_contents($cachePath), 'image/png');
@@ -142,13 +142,11 @@ class Obsah extends Entity {
         //$image->savealpha(true);
         //$image->alphablending(false);
 
+	    //resample and cache it
         $image->resize($opts, $opts, Image::SHRINK_ONLY);
+        $image->save($cachePath, NULL, Image::PNG);
 
-        //cache
-        if (!isset($opts["nocache"]))
-            $image->save($cachePath, NULL, Image::PNG);
-
-        //output it
+        //output $image with ->save() method
         return new ImageResponse($image, 'image/png');
     }
 

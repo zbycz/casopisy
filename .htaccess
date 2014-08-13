@@ -1,9 +1,6 @@
 ##
-## nPress - opensource cms
-##
-## @copyright  (c) 2012 Pavel Zbytovský (pavel@zby.cz)
-## @link       http://npress.info/
-## @package    nPress
+## Skautske casopisy online 
+## http://github.com/zbycz/casopisy
 ##
 
 Options -Indexes
@@ -25,7 +22,7 @@ RewriteBase /
 
 
 ##
-## Main rewrite rule - nPress handles everything
+## Main rewrite rule - nette handles everything
 ## - uncomment following lines to allow parallel real-directories structure
 ##
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -41,7 +38,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* index.php [NE,L]
 
 ##
-## /data/img files handled by script (check permissions)
+## /data/img files handled by script (checks permissions)
 ##
 RewriteCond %{REQUEST_URI} /data/imgserver/([^.]+)(\.[^.]+)?\.(jpg|jpeg|png|gif)$
 RewriteRule .* img-server.php [NE,L]

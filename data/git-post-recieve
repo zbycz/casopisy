@@ -1,0 +1,14 @@
+#!/bin/bash
+WORK_TREE="/home/www/zbycz/skaut.cz/casopisy"
+while read oldrev newrev ref
+do
+  branch=`echo $ref | cut -d/ -f3`
+
+  if [ "master" == "$branch" ]; then
+    git --work-tree=$WORK_TREE checkout -f $branch
+    echo 'Changes pushed on demo.'
+  fi
+done
+cd $WORK_TREE
+# mysql -u jlkcz_nucto --password=asd jlkcz_nucto < database.sql
+

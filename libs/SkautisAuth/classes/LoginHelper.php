@@ -141,7 +141,7 @@ class LoginHelper{
          /*if(!$this->isLogged()){
             return null;
         }*/
-        if(key_exists(TOKEN, $_SESSION) && !empty($_SESSION[TOKEN])){
+        if(isset($_SESSION) && key_exists(TOKEN, $_SESSION) && !empty($_SESSION[TOKEN])){
             return $_SESSION[TOKEN];
         }else{
             return null;
