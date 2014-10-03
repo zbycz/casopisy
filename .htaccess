@@ -40,8 +40,11 @@ RewriteRule .* index.php [NE,L]
 ##
 ## /data/img files handled by script (checks permissions)
 ##
-RewriteCond %{REQUEST_URI} /data/imgserver/([^.]+)(\.[^.]+)?\.(jpg|jpeg|png|gif)$
+RewriteCond %{REQUEST_URI} /data/imgserver2/([^.]+)(\.[^.]+)?\.(jpg|jpeg|png|gif)$
 RewriteRule .* img-server.php [NE,L]
+
+RewriteCond %{REQUEST_URI} ^/data/imgserver/
+RewriteRule ^/?data/imgserver/(.+)$ /data/imgserver2/$1 [R=301]
 
 
 ##

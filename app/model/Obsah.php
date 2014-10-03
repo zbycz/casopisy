@@ -52,7 +52,7 @@ class Obsah extends Entity {
             return Environment::getApplication()->getPresenter()
                             ->link(':Front:File:preview', array($this->cislo_id, $p, $hash, $opts));
         return Environment::getHttpRequest()->getUrl()->getBasePath()
-                . "data/imgserver/$this->cislo_id-$p-$hash.png";
+                . "data/imgserver2/$this->cislo_id-$p-$hash.png";
     }
 
     function getPath($p, $opts = "") {
