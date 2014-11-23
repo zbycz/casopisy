@@ -1,0 +1,8 @@
+{snippet comments}                
+    <p class="comment" n:foreach="$comments as $comment">        
+        <a class="author">{$comment[name]}</a> {!$comment[text]|linkify}<br>
+        <small>{$comment[time]|date:'j.n. Y \v H:i'}</small>        
+        <small n:if="$user->isInRole(admin) || $user->id == $comment->user_id">&bullet; <a n:href="delete! $comment[id]" class="ajax">smazat</a></small>
+    </p>        
+{/snippet}
+

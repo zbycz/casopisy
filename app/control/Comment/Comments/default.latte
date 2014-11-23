@@ -1,0 +1,26 @@
+{snippet main}
+    {snippet post}
+        {control post}
+    {/snippet}
+    <div id="addCommentForm">
+        {control addForm}
+    </div>
+
+    <script type="text/javascript">
+        var commentPosition = 0;
+        var maxCount = $('#textCounter').attr('data-max-count');
+
+        $("#frm-comments-addForm-addForm-message").bind("keydown keypress keyup", function() {
+            commentPosition = $(this).caret();
+            checkMaxReached();
+        });        
+
+        function checkMaxReached() {
+            if (commentPosition > maxCount) {
+                $('#textCounter').addClass('maxReached');
+            } else {
+                $('#textCounter').removeClass('maxReached');
+            }
+        }
+    </script>
+{/snippet}

@@ -14,24 +14,3 @@
 		<img src="{$obsah->getLink($s, 200)}" alt="Strana {$s}">
 	{/if}
 {/define}
-
-
-{* COMMENTS
-	{include #comments cislo=>$cislo, p=>$p}
-*}
-{define #comments}
-	<p class="comment" n:foreach="$cislo->getKomentare($p) as $koment">
-		<a class="author">{$koment[name]}</a> {!$koment[text]|linkify}<br>
-		<small>{$koment[time]|date:'j.n. Y \v H:i'}</small>
-		<small n:if="$user->isInRole(admin)">&bullet; <a n:href="deleteComment! $koment[id]" class="ajax">smazat</a></small>
-	</p>
-
-	<form action="{link addComment!}" method="post" n:if="$user->loggedIn" class="ajax">
-		<input type="hidden" name="strana" value="{$p}">
-		<div class="comment comment-form">
-			<a class="author">{$presenter->user->identity->name}</a>
-			<span class="td"><textarea name="text" placeholder="Přidat vlastní zkušenost či doplnění..."></textarea></span>
-			<span class="submit-td"><button type="submit" value="S" class="btn"><i class="icon-comment"></i></button></span>
-		</div>
-	</form>
-{/define}
