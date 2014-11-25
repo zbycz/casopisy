@@ -66,7 +66,7 @@ foreach($cisla as $r)
 	$cislo = new \Casopisy\Cislo($r);
 
 	echo "Converting $cislo->id ($cislo->pocet_stran pages)...";
-	$len = $cislo->indexFulltext();
+	$len = $cislo->execIndexFulltext();
 	echo "$len bytes\n";
 }
 

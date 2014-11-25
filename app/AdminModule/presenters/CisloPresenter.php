@@ -53,9 +53,16 @@ class CisloPresenter extends BasePresenter {
     }
 
 	public function handlePurgeImgCache() {
-		$cnt = Casopisy\Obsah::purgeImgCache($this->cislo->id);
+		$cnt = $this->cislo->execPurgeImgCache();
 		$this->flashMessage("Smazáno $cnt kešovaných náhledů");
 	}
+
+	public function handleRegenerateImgs() {
+		$cnt = $this->cislo->execRegenerateImgs();
+		$this->flashMessage("Smazáno $cnt obrázků a spuštěno vytváření nových (cca do 5 min). Nutno potom smazat keš.");
+	}
+
+
 
 	public function handleWriteBookmarks() {
 		foreach($this->cislo->getBookmarks() as $bm){

@@ -32,26 +32,10 @@ class CisloModel
 		$cislo = CisloModel::getById($id);
 		$file->move($cislo->getPdfPath());
 
-		$pdf = escapeshellarg($cislo->getPdfPath());
-		$img = escapeshellarg($cislo->getPage()->getPath(false));
-		$log = escapeshellarg($cislo->getLogFile());
-		$bm = escapeshellarg($cislo->getBookmarksFile());
-
-		//find out number of pages
-		$pages = exec("pdfinfo $pdf  | awk '/Pages/ {print \$2}'");
-		if (!is_numeric($pages))
-			throw new \Exception("pdfinfo returned '$pages' on $pdf (maybe apt-get install poppler-utils?)");
-		else
-			$cislo->save(array("pocet_stran" => $pages));
-
-		//convert images - asynchronous
-		exec("nohup nice -n19 ionice -c3 convert -trim -scene 1 -verbose -density 100 $pdf $img >$log 2>&1 &");
-
-		//get bookmarks - asynchronous
-		exec("nohup pdftk $pdf dump_data >$bm 2>&1 &");
-
-		//index fulltext
-		$cislo->indexFulltext();
+		$cislo->execNumberOfPages();
+		$cislo->execConvertImages();
+		$cislo->execBookmarks();
+		$cislo->execIndexFulltext();
 
 		return $id;
 	}
@@ -83,15 +67,14 @@ class CisloModel
 			$cislo = CisloModel::getById($id);
 			rename($file, $cislo->getPdfPath());
 
-			//find out number of pages
-			$pdf = escapeshellarg($cislo->getPdfPath());
-			$pages = exec("pdfinfo $pdf  | awk '/Pages/ {print \$2}'");
-			if (!is_numeric($pages))
-				$log[] = "$file - pdf not readable - zero pages";
-			else
-				$cislo->save(array("pocet_stran" => $pages));
+			try {
+				$cislo->execNumberOfPages();
+				$cislo->execIndexFulltext();
 
-			$cislo->indexFulltext();
+			} catch (\Exception $e) {
+				$log[] = $e->getMessage();
+			}
+
 		}
 		return $log;
 	}

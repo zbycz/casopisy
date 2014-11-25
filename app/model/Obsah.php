@@ -5,7 +5,6 @@ namespace Casopisy;
 use Nette\Image;
 use Nette\Environment;
 use \dibi;
-use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 
 /* CREATE TABLE `obsah` (
@@ -55,6 +54,7 @@ class Obsah extends Entity {
                 . "data/imgserver2/$this->cislo_id-$p-$hash.png";
     }
 
+	/** if($p == false) return path without pagenumber for convert */
     function getPath($p, $opts = "") {
 		$hash = self::getFilesSecretHash($this->cislo_id, $p, $opts);
         if ($p)
@@ -69,19 +69,7 @@ class Obsah extends Entity {
 		return substr(md5("$id-$p-$opts" . Environment::getVariable("filesSecret")), -6);
 	}
 
-	// like /data/thumbs/351-1-ab3f1e.300.png
-	static function purgeImgCache($cislo_id) {
-		$cnt=0;
-		$dir = Environment::getVariable("dataDir") . '/thumbs/';
-		$files = Finder::findFiles("$cislo_id-*.png")->from($dir);
 
-		foreach ($files as $file => $info) {
-			unlink($file);
-			$cnt++;
-		}
-
-		return $cnt;
-	}
 
 	// ----------------------------------------------------------------
 

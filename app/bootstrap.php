@@ -114,6 +114,38 @@ Nette\Templating\FileTemplate::extensionMethod('highlight', function ($that, $s,
 	return Nette\Utils\Strings::replace($s, '#'.$words.'#iu', "<span class=\"highlight\">\$0</span>");
 });
 
+/*
+
+    public static function highlight($text, $phrase) {
+        if (trim($phrase) == '')
+            return $text;
+        $re = preg_split('~[\s,]+~', preg_quote(trim($phrase)));
+        foreach ($re as $idx => $srch) {
+            $re[$idx] = self::prepare_search_term($srch);
+        }
+        return preg_replace('#' . implode('|', $re) . '#iu', '<span class="highlight">$0</span>', $text);
+    }
+
+    private static function prepare_search_term($search, $delim = '#') {
+        //$search = preg_quote($search,$delim);
+        $search = preg_replace('/[aàáâãåäæ]/iu', '[aàáâãåäæ]', $search);
+        $search = preg_replace('/[cč]/iu', '[cč]', $search);
+        $search = preg_replace('/[dď]/iu', '[dď]', $search);
+        $search = preg_replace('/[eèéêëě]/iu', '[eèéêëě]', $search);
+        $search = preg_replace('/[iìíîïí]/iu', '[iìíîïí]', $search);
+        $search = preg_replace('/[nň]/iu', '[nň]', $search);
+        $search = preg_replace('/[oòóôõöø]/iu', '[oòóôõöø]', $search);
+        $search = preg_replace('/[rř]/iu', '[rř]', $search);
+        $search = preg_replace('/[sš]/iu', '[sš]', $search);
+        $search = preg_replace('/[tť]/iu', '[tť]', $search);
+        $search = preg_replace('/[uùúûüů]/iu', '[uùúûüů]', $search);
+        $search = preg_replace('/[yý]/iu', '[yý]', $search);
+        $search = preg_replace('/[zž]/iu', '[zž]', $search);
+
+        return $search;
+    }
+*/
+
 
 // Configure and run the application!
 //$container->application->catchExceptions = true;

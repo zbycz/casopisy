@@ -2,8 +2,9 @@
 
 namespace Casopisy;
 
-use Nette,
-    Nette\Environment;
+use Nette;
+use Nette\Environment;
+use Nette\Utils\Finder;
 use \dibi;
 
 /**
@@ -259,7 +260,40 @@ class Cislo extends Entity {
 		return $bookmarks;
 	}
 
-	public function indexFulltext() {
+
+	/** find out number of pages */
+	public function execNumberOfPages(){
+		$pdf = escapeshellarg($this->getPdfPath());
+
+		$pages = exec("pdfinfo $pdf  | awk '/Pages/ {print \$2}'");
+		if (!is_numeric($pages))
+			throw new \Exception("pdfinfo returned '$pages' on $pdf (maybe apt-get install poppler-utils?)");
+		else
+			$this->save(array("pocet_stran" => $pages));
+	}
+
+
+	/**  convert images - asynchronously */
+	public function execConvertImages(){
+		$pdf = escapeshellarg($this->getPdfPath());
+		$img = escapeshellarg($this->getPage()->getPath(false)); // path to image without pagenumber, convert adds automatically
+		$log = escapeshellarg($this->getLogFile());
+
+		exec("nohup nice -n19 ionice -c3 convert -trim -scene 1 -verbose -density 100 $pdf $img >$log 2>&1 &");
+	}
+
+
+	/** get bookmarks - asynchronously */
+	public function execBookmarks(){
+		$pdf = escapeshellarg($this->getPdfPath());
+		$bm = escapeshellarg($this->getBookmarksFile());
+
+		exec("nohup pdftk $pdf dump_data >$bm 2>&1 &");
+	}
+
+	
+	/** Outputs each page's content to database table 'fulltext' */
+	public function execIndexFulltext() {
 		$pdf = escapeshellarg($this->getPdfPath());
 		$len = 0;
 
@@ -276,5 +310,39 @@ class Cislo extends Entity {
 			}
 		}
 		return $len;
+	}
+
+
+	/** Deletes cache like /data/thumbs/351-1-ab3f1e.300.png - its created on access */
+	public function execPurgeImgCache() {
+		$cnt=0;
+		$dir = Environment::getVariable("dataDir") . '/thumbs/';
+		$files = Finder::findFiles($this->id . "-*.png")->from($dir);
+
+		foreach ($files as $file => $info) {
+			unlink($file);
+			$cnt++;
+		}
+
+		return $cnt;
+	}
+
+	/** Deletes real images - /data/img/12-*.png  + regenerates */
+	public function execRegenerateImgs(){
+		$cnt=0;
+		$dir = Environment::getVariable("dataDir") . '/img/';
+		$files = Finder::findFiles($this->id . "-*.png")->from($dir);
+
+		foreach ($files as $file => $info) {
+			unlink($file);
+			$cnt++;
+		}
+
+		$this->execNumberOfPages();
+		$this->execBookmarks();
+		$this->execIndexFulltext();
+		$this->execConvertImages();
+
+		return $cnt;
 	}
 }
