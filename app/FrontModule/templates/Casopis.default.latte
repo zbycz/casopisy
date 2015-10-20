@@ -38,7 +38,7 @@
 	</div>
 
 	<div class="spacer4" n:if="!$casopis->knihovna">
-		<h2>Čísla k oštíkování <small>{if $user->loggedIn}S chutí do toho!{else}Po přihlášení se do toho můžeš pustit{/if} :-)</small></h2>
+		<h2>Čísla k oštítkování <small>{if $user->loggedIn}S chutí do toho!{else}Po přihlášení se do toho můžeš pustit{/if} :-)</small></h2>
 		<ul class="thumbnails rocnik">
 		{foreach \Casopisy\CasopisModel::getCislaTodo() as $c}
 		  <li class="span3">
