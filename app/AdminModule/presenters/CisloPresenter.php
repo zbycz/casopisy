@@ -66,7 +66,7 @@ class CisloPresenter extends BasePresenter {
 
 	public function handleWriteBookmarks() {
 		foreach($this->cislo->getBookmarks() as $bm){
-			if (!$bm->obsah->nazev) {
+			if ($bm->obsah && !$bm->obsah->nazev) {  //$bm->obsah je FALSE pro nesmyslné stránky
 				$bm->obsah->nazev = $bm->title;
 				$bm->obsah->save();
 			}
