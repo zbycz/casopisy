@@ -237,7 +237,7 @@ class Cislo extends Entity {
 
 		$toc = file($this->getBookmarksFile());  // řádky ve stylu: BookmarkTitle: val\n BookmarkLevel: val\n BookmarkPageNumber: num\n\n
 		foreach ($toc as $row) {
-			list($key, $val) = explode(':', $row, 2);
+			list($key, $val) = array_pad(explode(':', $row, 2), 2, false);
 			$val = trim(html_entity_decode($val, NULL, 'UTF-8'));
 
             if($key == 'BookmarkTitle') {

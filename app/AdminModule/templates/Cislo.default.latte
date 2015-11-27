@@ -29,7 +29,7 @@
 		{foreach $bookmarks as $bm}
 			{var $r = $bm->obsah}
 			{var $p = $r->strana}
-			{continueIf $r->nazev == $bm->title}
+			{continueIf $r AND $r->nazev == $bm->title}
 			<tr {if $r->nazev} style="background:#ffffaa"{/if}>
 				<th>
 					{if $r}
