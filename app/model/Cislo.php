@@ -230,16 +230,22 @@ class Cislo extends Entity {
 	public function getBookmarks() {
 		$obsah = $this->getObsah();
 		$bookmarks = array();
-		$bookmark = new \stdClass;
+		$bookmark = new \stdClass; //dočasná třída do které ukládáme položky ->title ->level ->page
 
 		if(!file_exists($this->getBookmarksFile()))
 			return array();
 
-		$toc = file($this->getBookmarksFile());
+		$toc = file($this->getBookmarksFile());  // řádky ve stylu: BookmarkTitle: val\n BookmarkLevel: val\n BookmarkPageNumber: num\n\n
 		foreach ($toc as $row) {
 			list($key, $val) = explode(':', $row, 2);
 			$val = trim(html_entity_decode($val, NULL, 'UTF-8'));
-			if($key == 'BookmarkTitle') {
+
+            if($key == 'BookmarkTitle') {
+                if (!preg_match('/[a-z]/', $val)) { //není žádné malé písmenko
+                    $val = mb_substr($val, 0, 1) . mb_strtolower(mb_substr($val, 1)); // všechny zmenšíme až na první
+                    if(preg_match('/^([ivxIVX]+\.)(.*)$/', $val, $m)) $val = strtoupper($m[1]) . $m[2]; //fix, římská čísla na začátku
+                }
+
 				$bookmark->title = $val;
 			}
 			if($key == 'BookmarkLevel') {
