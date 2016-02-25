@@ -159,7 +159,8 @@
 
 
 {foreach \Casopisy\CasopisModel::config() as $id=>$r}
-	{breakIf $id == 5}
+	{continueIf ($id >= 5 && $id <= 8)}
+	{continueIf $id == 9 && !$presenter->isAdminModule()}
 	<div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis->id != $id">
 			<a n:href="Casopis: casopis=>$id" class="casopislink {$r->url}">{$r->odkaz|firstUpper}</a>
 	</div><!--/.well -->
@@ -167,8 +168,8 @@
 
 <div class="well sidebar-nav poutac">
 	<a n:href="Casopis: casopis=>5" class="casopislink mokre">Kapitánská pošta</a><br>
-	<a n:href="Casopis: casopis=>6" class="casopislink mokre">Mokré vlčata</a><br>
-	<a n:href="Casopis: casopis=>7" class="casopislink mokre">Mokré skauti</a>
+	<a n:href="Casopis: casopis=>6" class="casopislink mokre">Mokré stránky vlčat</a><br>
+	<a n:href="Casopis: casopis=>7" class="casopislink mokre">Mokré stránky skautů</a>
 </div><!--/.well -->
 
 <div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis->id != 8">

@@ -36,9 +36,10 @@ common:
 			- [kmen,     Kmen,          Roverský kmen]
 			- [svet,     Skautský svět]
 			- [kp,       Kapitánská pošta]
-			- [mvz,      Mokré vlčata, Mokré stránky - vlčata]
-			- [mss,      Mokré skauti, Mokré stránky - skauti]
+			- [mvz,      Mokré stránky vlčat, Mokré stránky - vlčata]
+			- [mss,      Mokré stránky skautů, Mokré stránky - skauti]
 			- [knihovna, Knihovna, Skautská knihovna]
+			- [magos,    Magoš]
 		staticDir: %wwwDir%/static
 		dataDir:   %wwwDir%/data
 		users:
