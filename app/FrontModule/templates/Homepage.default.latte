@@ -2,16 +2,19 @@
 
 {block content}
 
-{capture $cisla}
-<ul class="thumbnails poslednicisla">
-<li class="span6" n:foreach="\Casopisy\CasopisModel::getPosledniCisla() as $c">
-	<a n:href="Cislo: $c->id, casopis=>$c->casopis_id" class="thumbnail">
-		<img src="{$c->getCoverLink(200)}" alt="">
-		<span>{$c->mesicrok}</span>
-	</a>
-</li>
-</ul>
+{capture $POSLEDNICISLA}
+	<ul class="thumbnails poslednicisla">
+		{foreach \Casopisy\CasopisModel::getPosledniCisla() as $c}
+            {continueIf $c->casopis_id == 8} {* knihovna *}
+			<li class="span6" style="width: 170px" title="{$c->getCelynazev()}">
+				<a n:href="Cislo: $c->id, casopis=>$c->casopis_id" class="thumbnail">
+					<img src="{$c->getCoverLink(200)}" alt="">
+					<span>{$c->mesicrok}</span>
+				</a>
+			</li>
+		{/foreach}
+	</ul>
 {/capture}
 
 {var $text = dibi::fetchSingle('SELECT text FROM pages WHERE id="homepage"')}
-{!str_replace('__POSLEDNICISLA__', $cisla, $text)}
+{!str_replace('__POSLEDNICISLA__', $POSLEDNICISLA, $text)}

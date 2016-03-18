@@ -1,14 +1,22 @@
 
 {block content}
 <h1 n:block=title>Vítej v administraci</h1>
-<p class="pull-right"><a n:href="refreshImgHashes"><small>obnovit hashe souborů</small></a></p>
 <p>Zde můžeš nahrát nový časopis nebo prohlížet ještě NEVEŘEJNÉ.
 
+
+<h2>Návod na nahrání čísla pro šéfredaktory a DTP</h2>
+<p><a href="https://docs.google.com/document/d/1dWPARUB4q6o7g7qjMuNV0VGxRobaAaenjE2Y_qs---Q/edit#">Google Docs</a></p>
+<p>(Dokumentace api na casopisy.skaut.cz/api)</p>
+<p>&nbsp;</p>
+
+
+<hr>
 
 <h2>Záznam úprav <small>od {$od}</small>
 		<a n:href="logTime! date('Y-m-d H:i:s')" class="btn btn-mini">Nastavit teď</a>
 		<a n:href="logTime! date('Y-m-d', time()-3600*24*7)" class="btn btn-mini">před týdnem</a>
 </h2>
+<p>Zobrazuje se posledních 100.
 
 {foreach $log as $cislo}
 	<h3>{$cislo->casopis} <a n:href=":Front:Cislo: $cislo->id, casopis=>$cislo->casopis_id">{$cislo->mesicrok}</a></h3>

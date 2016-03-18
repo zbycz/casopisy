@@ -30,6 +30,7 @@ class LogModel
 			WHERE [time] >= %s",$od,"
 				AND typ LIKE 'edit-%'
 			ORDER BY time ASC
+			LIMIT 100
 		");
 
 		$result = array();
