@@ -91,7 +91,7 @@ class CasopisModel {
 	static function getPosledniCisla(){
 		$cisla = array();
 		foreach (self::getCasopisy() as $idx => $txt) {
-			if ($idx >= 6) break;
+			//if ($idx >= 6) break;
 			$data = dibi::fetch("
 				SELECT *
 				FROM cislo

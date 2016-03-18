@@ -9,6 +9,12 @@ use Nette;
 class ApiPresenter extends Nette\Application\UI\Presenter
 {
 
+	public function actionDefault()
+	{
+		$this->redirectUrl("https://docs.google.com/document/d/1loyA6WttcFn0pRBZ02mJaGjvrRvuRyPuU-iBktWQvrw/edit?usp=sharing");
+	}
+
+
 	public function actionCisla($mesic = NULL)
 	{
 		if (preg_match('~^([0-9]{4})([0-9]{2})$~', $mesic, $m)) {

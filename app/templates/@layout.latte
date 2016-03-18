@@ -160,7 +160,7 @@
 
 {foreach \Casopisy\CasopisModel::config() as $id=>$r}
 	{continueIf ($id >= 5 && $id <= 8)}
-	{continueIf $id == 9 && !$presenter->isAdminModule()}
+	{* continueIf $id == 9 && !$presenter->isAdminModule() *}
 	<div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis->id != $id">
 			<a n:href="Casopis: casopis=>$id" class="casopislink {$r->url}">{$r->odkaz|firstUpper}</a>
 	</div><!--/.well -->
