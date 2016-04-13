@@ -40,6 +40,7 @@ common:
 			- [mss,      Mokré stránky skautů, Mokré stránky - skauti]
 			- [knihovna, Knihovna, Skautská knihovna]
 			- [magos,    Magoš]
+			- [benjamina,    BenJáMina]
 		staticDir: %wwwDir%/static
 		dataDir:   %wwwDir%/data
 		users:
