@@ -39,6 +39,9 @@ class ApiPresenter extends Nette\Application\UI\Presenter
 				'link' => $this->link('//Cislo:default', array('id'=>$cislo->id, 'casopis'=>$cislo->casopis_id)),
 			);
 		}
+
+		$presun = array_splice($payload, 9);
+		array_splice($payload, 5, 0, $presun);
 		$this->sendResponse(new Nette\Application\Responses\JsonResponse($payload), 'application/json');
 	}
 
