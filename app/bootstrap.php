@@ -17,6 +17,7 @@ $configurator = new Nette\Config\Configurator;
 
 // Enable Nette Debugger for error visualisation & logging
 //Nette\Diagnostics\Debugger::$productionMode = true;
+$configurator->setDebugMode(array("78.45.163.71"));
 $configurator->enableDebugger(__DIR__ . '/log');
 //$configurator->setDebugMode(false);
 
@@ -44,6 +45,8 @@ dibi::connect($container->parameters['database']);
 
 // Setup router
 $list = implode("|", array_keys(\Casopisy\CasopisModel::getCasopisyURL()));
+
+Route::$defaultFlags = Route::SECURED;
 
 $container->router[] = $adminRouter = new RouteList('Admin');
 $adminRouter[] = new Route("admin/<casopis $list>/<presenter>[/<action>][/<id>]", array(
