@@ -17,7 +17,7 @@ $configurator = new Nette\Config\Configurator;
 
 // Enable Nette Debugger for error visualisation & logging
 //Nette\Diagnostics\Debugger::$productionMode = true;
-$configurator->setDebugMode(array("78.45.163.71"));
+//$configurator->setDebugMode(array("78.45.163.71"));
 $configurator->enableDebugger(__DIR__ . '/log');
 //$configurator->setDebugMode(false);
 
