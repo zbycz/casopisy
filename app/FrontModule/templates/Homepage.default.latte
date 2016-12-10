@@ -5,7 +5,7 @@
 {capture $POSLEDNICISLA}
 	<ul class="thumbnails poslednicisla">
 		{foreach \Casopisy\CasopisModel::getPosledniCisla() as $c}
-            {continueIf $c->casopis_id == 8} {* knihovna *}
+            {continueIf in_array($c->casopis_id, array(6,7,8))} {* mokre stranky + knihovna *}
 			<li class="span6" style="width: 170px" title="{$c->getCelynazev()}">
 				<a n:href="Cislo: $c->id, casopis=>$c->casopis_id" class="thumbnail">
 					<img src="{$c->getCoverLink(200)}" alt="">
