@@ -20,6 +20,10 @@ RewriteBase /
 #RewriteCond %{HTTP_HOST} ^www.casopisy.skaut.cz$
 #RewriteRule ^.*$ http://casopisy.skaut.cz/$0 [R=301,L]
 
+RewriteCond %{HTTP_HOST} ^casopisy.skauting.cz$
+RewriteRule ^.*$ https://casopisy.skaut.cz/$0 [R=301,L]
+
+
 
 ##
 ## Main rewrite rule - nette handles everything
