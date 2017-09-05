@@ -1,0 +1,15 @@
+
+{block content}
+<h1 n:block=title>Úprava statických stránek</h1>
+
+<p>POZOR: Pole je třeba uložit ihned po úpravě. (Nelze editovat najednou a pak uložit :) )</p>
+
+{foreach dibi::query('SELECT * FROM pages') as $r}
+<h2>{$r->id}</h2>
+
+<form action="{link save!}" method="POST">
+    <input type="hidden" name="id" value="{$r->id}">
+    <textarea name="text" style="width:100%; height: 250px;">{$r->text}</textarea>
+    <input type="submit" value="Uložit">
+</form>
+{/foreach}
