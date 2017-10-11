@@ -40,8 +40,8 @@ class ApiPresenter extends Nette\Application\UI\Presenter
 			);
 		}
 
-		$presun = array_splice($payload, 9);
-		array_splice($payload, 5, 0, $presun);
+		$presun = array_splice($payload, 10, 1); //benjamina
+		array_splice($payload, 5, 0, $presun); //za skautsky svet (id4)
 		$this->sendResponse(new Nette\Application\Responses\JsonResponse($payload), 'application/json');
 	}
 
