@@ -119,6 +119,21 @@ class CasopisModel {
 		return $cisla;
 	}
 
+    /** @return Cislo[] index: $id casopisu*/
+    static function getPosledniCislaCasopisu($casopis_id, $pocet){
+        $query = dibi::query("
+				SELECT *
+				FROM cislo
+				WHERE casopis_id = %i",$casopis_id," AND verejne=1 AND priloha=0
+				ORDER BY rok DESC, mesic DESC
+				LIMIT %i", $pocet);
+        $cisla = array();
+        foreach ($query as $r) {
+            $cisla[] = new Cislo($r);
+        }
+        return $cisla;
+    }
+
 	static function getCislaTodo()
 	{
 		$query = dibi::query("

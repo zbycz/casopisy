@@ -45,6 +45,33 @@ class ApiPresenter extends Nette\Application\UI\Presenter
 		$this->sendResponse(new Nette\Application\Responses\JsonResponse($payload), 'application/json');
 	}
 
+    public function actionPosledniCisla($casopis, $pocet = 3)
+    {
+        $stubToId = CasopisModel::getCasopisyURL();
+        if(!isset($stubToId[$casopis])) {
+            $this->sendResponse(new Nette\Application\Responses\JsonResponse(array("error"=>"Zadany casopis neexistuje. napr. ?casopis=skaut")), 'application/json');
+        }
+        $cisla = CasopisModel::getPosledniCislaCasopisu($stubToId[$casopis], $pocet);
+
+        $basePath = rtrim($this->getHttpRequest()->getUrl()->getBaseUrl(), '/');
+        $payload = array();
+
+        foreach ($cisla as $cislo) {
+            $payload[] = array(
+                'casopis' => CasopisModel::getCasopisLongById($cislo->casopis_id),
+                'casopis_id' => $cislo->casopis_id,
+                'rocnik' => $cislo->rocnik,
+                'cislo' => $cislo->cislo,
+                'rok' => $cislo->rok,
+                'mesic' => $cislo->mesic,
+                'obalka' => $basePath . $cislo->getCoverLink(200),
+                'link' => $this->link('//Cislo:default', array('id'=>$cislo->id, 'casopis'=>$cislo->casopis_id)),
+            );
+        }
+
+        $this->sendResponse(new Nette\Application\Responses\JsonResponse($payload), 'application/json');
+    }
+
 	public function actionSearch($vyraz, $casopis = NULL)
 	{
 		$vysledky = SearchModel::search($vyraz, $casopis); //returns Casopisy\Obsah[]
