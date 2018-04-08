@@ -11,8 +11,9 @@ Instalace
 2. Editujte /app/config-server.neon a vyplňte správné údaje
 3. Importovat databázi z /data/data.sql
 4. Přihlásit se přes /login/ či /skautis/token.php?token=...  ([dokumentace](http://is.skaut.cz/napoveda/programatori.MainPage.ashx))
-5. Nahrát číslo časopisu, pokud nefunguje automatická konverze pomocí příkazu convert, možno nahrát příslušné soubory /data/img/id-strana.png, náhledy se vytvoří samy.
-6. Napsat mi maila, abych měl radost :-)
+5. Nastavit si admina v databázi v tabulce users - do sloupečku `role` vyplnit `junak,admin`
+6. Nahrát číslo časopisu, pokud nefunguje automatická konverze pomocí příkazu convert, možno nahrát příslušné soubory /data/img/id-strana.png, náhledy se vytvoří samy.
+7. Napsat mi maila, abych měl radost :-)
 
 
 ## O projektu
