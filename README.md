@@ -15,6 +15,7 @@ Instalace
 6. Nahrát číslo časopisu, pokud nefunguje automatická konverze pomocí příkazu convert, možno nahrát příslušné soubory /data/img/id-strana.png, náhledy se vytvoří samy.
 7. Napsat mi maila, abych měl radost :-)
 
+Aby fungovalo generování náhledů po uploadu, je třeba umožnit PHP shell exec, viz: [1](https://github.com/zbycz/casopisy/blob/master/app/model/Cislo.php#L274), [2](https://github.com/zbycz/casopisy/blob/master/app/model/Cislo.php#L288), [3](https://github.com/zbycz/casopisy/blob/master/app/model/Cislo.php#L297), [4](https://github.com/zbycz/casopisy/blob/master/app/model/Cislo.php#L309).
 
 ## O projektu
 
