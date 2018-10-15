@@ -349,7 +349,7 @@ footer a:hover img {background: #ccc}
 .magos {color: #236ea0 !important;}
 
 .poutac .casopislink.svet {font-size: 310%}
-.poutac .casopislink.mokre {font-size: 170%; line-height: 0.5;}
+.poutac .casopislink.mokre {font-size: 170%; line-height: 0.5; padding-top: 8px;}
 
 
 

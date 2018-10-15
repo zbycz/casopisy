@@ -5,7 +5,6 @@
  * @param string   $robots   tell robots how to index the content of a page (optional)
  * @param array    $flashes  flash messages
  *}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -157,24 +156,58 @@
 </div><!--/.well -->
 {/ifset}
 
+{*
+    {foreach \Casopisy\CasopisModel::config() as $id=>$r}
+        {continueIf ($id >= 5 && $id <= 8)}
+        {* continueIf $id == 9 && !$presenter->isAdminModule() * }
+        <div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis->id != $id">
+                <a n:href="Casopis: casopis=>$id" class="casopislink {$r->url}">{$r->odkaz|firstUpper}</a>
+        </div><!--/.well -->
+    {/foreach}
 
-{foreach \Casopisy\CasopisModel::config() as $id=>$r}
-	{continueIf ($id >= 5 && $id <= 8)}
-	{* continueIf $id == 9 && !$presenter->isAdminModule() *}
-	<div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis->id != $id">
-			<a n:href="Casopis: casopis=>$id" class="casopislink {$r->url}">{$r->odkaz|firstUpper}</a>
-	</div><!--/.well -->
-{/foreach}
+    <div class="well sidebar-nav poutac">
+        <a n:href="Casopis: casopis=>5" class="casopislink mokre">Kapitánská pošta</a><br>
+        <a n:href="Casopis: casopis=>6" class="casopislink mokre">Mokré stránky vlčat</a><br>
+        <a n:href="Casopis: casopis=>7" class="casopislink mokre">Mokré stránky skautů</a>
+    </div><!--/.well -->
+
+    <div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis->id != 8">
+        <a n:href="Casopis: casopis=>8" class="casopislink knihovna">Knihovna</a>
+    </div><!--/.well -->
+*}
 
 <div class="well sidebar-nav poutac">
-	<a n:href="Casopis: casopis=>5" class="casopislink mokre">Kapitánská pošta</a><br>
-	<a n:href="Casopis: casopis=>6" class="casopislink mokre">Mokré stránky vlčat</a><br>
-	<a n:href="Casopis: casopis=>7" class="casopislink mokre">Mokré stránky skautů</a>
-</div><!--/.well -->
+    <a class="casopislink svetylko" href="/svetylko/">Světýlko</a>
+    <a class="casopislink mokre" href="/mvz/">Mokré stránky vlčat</a>
+</div>
+<div class="well sidebar-nav poutac">
+    <a class="casopislink skaut" href="/skaut/">Skaut</a>
+    <a class="casopislink mokre" href="/mss/">Mokré stránky skautů</a>
+</div>
+<div class="well sidebar-nav poutac">
+    <a class="casopislink skauting" href="/skauting/">Skauting</a>
+</div>
+<div class="well sidebar-nav poutac">
+    <a class="casopislink kmen" href="/kmen/">Kmen</a>
+</div>
+<div class="well sidebar-nav poutac">
+    <a class="casopislink svet" href="/svet/">Skautský svět</a>
+</div>
+<div class="well sidebar-nav poutac">
+    <a class="casopislink magos" href="/magos/">Magoš</a>
+</div>
+<div class="well sidebar-nav poutac">
+    <a class="casopislink benjamina" href="/benjamina/">Ben Já Mína</a>
+</div>
 
-<div class="well sidebar-nav poutac" n:if="!isset($casopis) OR $casopis->id != 8">
-	<a n:href="Casopis: casopis=>8" class="casopislink knihovna">Knihovna</a>
-</div><!--/.well -->
+<div class="well sidebar-nav poutac">
+    <a class="casopislink kp" href="/kp/">Kapitánská pošta</a>
+</div>
+
+<div class="well sidebar-nav poutac">
+    <a class="casopislink knihovna" href="/knihovna/">Knihovna</a>
+</div>
+
 
 
 
@@ -193,9 +226,13 @@
 
 	<p><a href="#" onclick="$(this).parent().next().toggle(200);return false">Celkový žebříček</a>
 	<ul class="aleft hide">
-	{foreach \Casopisy\LogModel::getZebricek() as $r}
+        Zobrazení žebříčku je pozastaveno kvůli zrychlení webu, ale nebojte, body se ukládájí dál. :)
+        <br>
+        <a href="https://docs.google.com/spreadsheets/d/1hPX1tVuUDjYnNaDOw7ZO3ti05wy7dJz5JEtcfe92l_A/edit?usp=sharing">Archiv zde</a>
+
+	{* foreach \Casopisy\LogModel::getZebricek() as $r}
 		<li>{$r->name} <i class="icon-star"></i>{$r->cnt}</li>
-	{/foreach}
+	{/foreach *}
 	</ul>
 </div><!--/.well -->
 
@@ -209,9 +246,9 @@
 <hr>
 
 <footer>
-    <p class="pull-right"><small>Zaštiťuje <a href="http://skaut.cz/ovas" title="Odbor vlčat a světlušek"><img src="{$basePath}/static/images/ovas-logo.png" alt="OVAS"></a>
+    <p class="pull-right"><small>Vznik zaštítil <a href="http://skaut.cz/ovas" title="Odbor vlčat a světlušek"><img src="{$basePath}/static/images/ovas-logo.png" alt="OVAS"></a>
             jako absolventskou práci
-            na <a href="http://vls.skauting.cz">Vlčáckou lesní školu</a></small>
+            na <a href="https://krizovatka.skaut.cz/vzdelavaci-akce/153-vlcacka-lesni-skola-a-lesni-skola-svetluska">Vlčáckou lesní školu</a></small>
     </p>
     <p>&copy; 2013 &mdash; Projekt zpřístupnění skautských
         časopisů, <abbr title="Verze 29.dubna 2014 fulltext">v1.6</abbr>

@@ -96,4 +96,12 @@ class ApiPresenter extends Nette\Application\UI\Presenter
 		$this->sendResponse(new Nette\Application\Responses\JsonResponse($payload), 'application/json');
 	}
 
+	public function actionVersions()
+    {
+        $payload = array(
+            'gs --version' => exec('gs --version'),
+            'convert -version' => exec('convert -version | head -n 1'),
+        );
+		$this->sendResponse(new Nette\Application\Responses\JsonResponse($payload), 'application/json');
+    }
 }
