@@ -23,6 +23,14 @@ RewriteBase /
 RewriteCond %{HTTP_HOST} ^casopisy.skauting.cz$
 RewriteRule ^.*$ https://casopisy.skaut.cz/$0 [R=301,L]
 
+# Presmerovani z nepouzivanych domena na hlavni domenu
+RewriteCond %{HTTP_HOST} ^www\.casopisy\.skaut\.cz$
+RewriteRule ^(.*)$ https://casopisy.skaut.cz%{REQUEST_URI} [R,L]
+# Vynuceni HTTPS pro cely webu
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+
+
 
 
 ##
