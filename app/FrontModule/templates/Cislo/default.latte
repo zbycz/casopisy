@@ -8,8 +8,8 @@
 
 	{if $cislo->verejne == 2 AND !$user->isInRole(admin)}
 		<span class="btn disabled" title="Číslo zatím není publikováno"><i class="icon-download-alt icon-white"></i> Stáhnout kompletní PDF</span>
-	{elseif !$user->loggedIn}
-		<span class="btn disabled" title="Pro stažení se přihlaš"><i class="icon-download-alt icon-white"></i> Stáhnout kompletní PDF</span>
+	{elseif !$user->loggedIn AND $cislo->casopis_id != 6 AND $cislo->casopis_id != 7}
+		<span class="btn disabled" title="Pro stažení se přihlaš"><i class="icon-download-alt icon-white"></i> Kompletní PDF po přihlášení</span>
 	{else}
 		<a n:href="download $cislo->id" class="btn btn-primary"><i class="icon-download-alt icon-white"></i> Stáhnout kompletní PDF</a>
 	{/if}
