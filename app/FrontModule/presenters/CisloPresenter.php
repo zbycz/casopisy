@@ -45,7 +45,7 @@ class CisloPresenter extends BasePresenter {
 			return;
 		}
 
-		if (!$this->user->loggedIn){
+		if (!$this->user->loggedIn AND $cislo->casopis_id != 6 AND $cislo->casopis_id != 7){
 			$this->template->chyba = "PDF lze stahovat až po přihlášení přes SkautIS - přihlašte se tlačítkem vpravo nahoře.";
 			$this->setView('error');
 			return;
