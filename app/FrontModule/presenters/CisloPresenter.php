@@ -32,10 +32,26 @@ class CisloPresenter extends BasePresenter {
 
 	    $this->template->zoom = ($zoom % 100 == 0 AND $zoom <= 1000) ? intval($zoom) : 200;
 		$this->template->cislo = $this->cislo;
-	    $this->cislo->getObsah(); // cache
+        $this->cislo->getObsah(); // cache
+        
+        $this->template->comments = array();
+        $commentModel = new \CommentModel($this->context);
+        $comments = $commentModel->getCommentsByNumber($id);               
+        foreach ($this->cislo->stranky as $strankaId =>$stranka){
+            $control = new \CommentsControl($this,'commentPage_'.$strankaId);  
+            $control->setPageId($strankaId);
+            if (isset($comments[$strankaId])){
+                $control->setComments($comments[$strankaId]);
+            } else {
+                $control->setComments(array());
+            }
+            $this->template->comments[$strankaId] = $control;         
+            
+            
+        }
     }
-
-	public function actionDownload($id)
+        
+    public function actionDownload($id)
 	{
         $cislo = CisloModel::getById($id);
 
@@ -59,7 +75,7 @@ class CisloPresenter extends BasePresenter {
 		$response = new FileResponse($cislo->getPdfPath(), $cislo->getPdfFilename(), 'application/pdf');
 		$this->sendResponse($response);
 	}
-
+     
 	public function handlePribrat($p)
 	{
 		if (!$this->user->loggedIn)
@@ -106,36 +122,4 @@ class CisloPresenter extends BasePresenter {
 		$this->redirect("this#p$p");
 	}
 
-	public function handleAddComment()
-	{
-		if (!$this->user->loggedIn) {
-			throw new ForbiddenRequestException("Komentovat mohou přihlášení");
-		}
-
-		$p = $this->request->post['strana'];
-		$text = $this->request->post['text'];
-		if($text) {
-			$this->cislo->addKomentar($p, $this->user->id, trim($text));
-			$this->flashMessage('Komentář úspěšně přidán.');
-		}
-
-		$this->invalidateControl("komentare");
-		$this->invalidateControl("flashes");
-
-		if (!$this->isAjax())
-			$this->redirect("this#p$p");
-	}
-
-	public function handleDeleteComment($kid)
-	{
-		if (!$this->user->isInRole('admin')) {
-			throw new ForbiddenRequestException("Mazat komenty mohou jen admini");
-		}
-		$this->cislo->deleteKomentar($kid);
-		$this->flashMessage('Komentář je skrytý.');
-		$this->invalidateControl("komentare");
-		$this->invalidateControl("flashes");
-		if (!$this->isAjax())
-			$this->redirect("this");
-	}
 }

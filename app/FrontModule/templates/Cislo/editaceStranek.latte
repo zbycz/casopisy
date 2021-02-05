@@ -46,7 +46,9 @@
 					</p>
 
 					<div n:snippet="komentare-$p" class="spacer3" n:if="$p>1 AND ($cislo->casopis != 'Skauting' OR $cislo->rocnik >= 52)">
-						{include #comments cislo=>$cislo, p=>$p}
+                        {ifset $comments[$p]}
+                            {$comments[$p]->render()}
+                        {/ifset}
 					</div>
 				</td>
 			</tr>
