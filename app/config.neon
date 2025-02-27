@@ -39,7 +39,7 @@ common:
 			- [mvz,      Mokré stránky vlčat, Mokré stránky - vlčata]
 			- [mss,      Mokré stránky skautů, Mokré stránky - skauti]
 			- [knihovna, Knihovna, Skautská knihovna]
-			- [magos,    Magoš]
+			- [magos,    Oldskauting]
 			- [benjamina, Ben Já Mína]
 		staticDir: %wwwDir%/static
 		dataDir:   %wwwDir%/data

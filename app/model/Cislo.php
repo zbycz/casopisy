@@ -335,19 +335,21 @@ class Cislo extends Entity {
 
 	/** Deletes real images - /data/img/12-*.png  + regenerates */
 	public function execRegenerateImgs(){
-		$cnt=0;
-		$dir = Environment::getVariable("dataDir") . '/img/';
-		$files = Finder::findFiles($this->id . "-*.png")->from($dir);
+// Změna 2025 - na ceskyhosting již není k dispozici shell exec
 
-		foreach ($files as $file => $info) {
-			unlink($file);
-			$cnt++;
-		}
-
-		$this->execNumberOfPages();
-		$this->execBookmarks();
-		$this->execIndexFulltext();
-		$this->execConvertImages();
+// 		$cnt=0;
+// 		$dir = Environment::getVariable("dataDir") . '/img/';
+// 		$files = Finder::findFiles($this->id . "-*.png")->from($dir);
+//
+// 		foreach ($files as $file => $info) {
+// 			unlink($file);
+// 			$cnt++;
+// 		}
+//
+// 		$this->execNumberOfPages();
+// 		$this->execBookmarks();
+// 		$this->execIndexFulltext();
+// 		$this->execConvertImages();
 
 		return $cnt;
 	}

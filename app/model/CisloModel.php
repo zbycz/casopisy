@@ -32,10 +32,12 @@ class CisloModel
 		$cislo = CisloModel::getById($id);
 		$file->move($cislo->getPdfPath());
 
-		$cislo->execNumberOfPages();
-		$cislo->execConvertImages();
-		$cislo->execBookmarks();
-		$cislo->execIndexFulltext();
+// Změna 2025 - na ceskyhosting již není k dispozici shell exec
+
+// 		$cislo->execNumberOfPages();
+// 		$cislo->execConvertImages();
+// 		$cislo->execBookmarks();
+// 		$cislo->execIndexFulltext();
 
 		return $id;
 	}

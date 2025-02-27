@@ -85,6 +85,7 @@ class CisloPresenter extends BasePresenter {
         $form->addText('rok', 'Rok')->controlPrototype->class("input-mini");
         $form->addText('nazev', 'Název');
         $form->addTextArea('popis', 'Popis')->controlPrototype->style("height:5em;width:300px");
+        $form->addText('pocet_stran', 'Počet stran (!)');
         $form->addRadioList('verejne', 'Zveřejněno', array('Skryté', 'Veřejné', 'Jen malé náhledy stránek - uživatelé nemohou číst'));
         $form->addCheckbox('priloha', 'Příloha k časopisu (přiřazuje se dle ročníku a čísla) [TODO zatím není nikde vidět]');
         $form->addCheckbox('hotovo', 'Štítkování HOTOVO (nenabízet "ke štítkování")');

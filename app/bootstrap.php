@@ -46,7 +46,10 @@ dibi::connect($container->parameters['database']);
 // Setup router
 $list = implode("|", array_keys(\Casopisy\CasopisModel::getCasopisyURL()));
 
-Route::$defaultFlags = Route::SECURED;
+
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+    Route::$defaultFlags = Route::SECURED;
+}
 
 $container->router[] = $adminRouter = new RouteList('Admin');
 $adminRouter[] = new Route("admin/<casopis $list>/<presenter>[/<action>][/<id>]", array(
@@ -107,7 +110,7 @@ Nette\Templating\FileTemplate::extensionMethod('linkify', function ($that, $s, $
 	$s = nl2br($s);
 	$s = preg_replace('~==([^=]+)==[\r\n]+~is', '<h2>\\1</h2>', $s); //... ==h2==
 	$s = preg_replace('~\*([^*]+)\*~iU', '<b>\\1</b>', $s);	         //... **bold**
-	$s = preg_replace('~(https?://)([^ \n\r\t]+)~is', '<a href="\\1\\2" target="_blank">\\2</a>', $s); //http[s]://...
+	$s = preg_replace('~(https?://)([^ \n\r\t<]+)~is', '<a href="\\1\\2" target="_blank">\\2</a>', $s); //http[s]://...
 	return $s;
 });
 
