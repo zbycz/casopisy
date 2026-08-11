@@ -71,7 +71,7 @@ $frontRouter[] = new Route("<casopis $list>/tagy/<id .*>", array(
 	'presenter' => 'Casopis',
 	'action' => 'default',
 ));
-$frontRouter[] = new Route("<casopis $list>/<id [0-9]+>[/<action>]", array(
+$frontRouter[] = new Route("<casopis $list>/<id [0-9]+(-[0-9]+)?>[/<action>]", array(
 	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
 	'presenter' => 'Cislo',
 	'action' => 'default',
@@ -81,7 +81,7 @@ $frontRouter[] = new Route("<casopis $list>/r/<id>", array(
 	'presenter' => 'Rocnik',
 	'action' => 'default',
 ));
-$frontRouter[] = new Route("<casopis $list>/<presenter>[/<id [0-9]+>][/<action>]", array(
+$frontRouter[] = new Route("<casopis $list>/<presenter>[/<id [0-9]+(-[0-9]+)?>][/<action>]", array(
 	'casopis' => array(Route::FILTER_TABLE => \Casopisy\CasopisModel::getCasopisyURL()),
 	'presenter' => 'Casopis',
 	'action' => 'default',
