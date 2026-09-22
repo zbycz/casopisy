@@ -27,6 +27,7 @@ common:
 
 
 	services:
+		helperFactory: HelperFactory
 	factories:
 	parameters:
 		casopisy: #url, odkaz, plný-název

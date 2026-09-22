@@ -1,0 +1,15 @@
+{if $user->isLoggedIn()}
+    {snippet addForm}    
+        {form addForm}
+		
+		<div class="comment comment-form">
+            <ul class="errors" n:if="$form->hasErrors()">
+                <li n:foreach="$form->errors as $error">{!$error}</li>
+            </ul>                                              
+			<a class="author">{$presenter->user->identity->name}</a>
+			<span class="td">{input message}</span>
+            <span class="submit-td"><button type="submit" value="S" name="save" class="btn" id='frmaddForm-save'><i class="icon-comment"></i></button></span>
+		</div>                              
+        {/form}
+    {/snippet}
+{/if}                    

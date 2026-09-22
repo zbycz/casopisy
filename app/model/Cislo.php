@@ -199,34 +199,6 @@ class Cislo extends Entity {
         return dibi::query("UPDATE cislo SET ", $this->getData(), " WHERE id=%i", $this->id);
     }
 
-	public function addKomentar($strana, $user, $text) {
-		dibi::query("INSERT komentare",array(
-			"cislo_id" => $this->id,
-			"strana" => $strana,
-			"user_id" => $user,
-			"time%sql" => "now()",
-			"text" => $text,
-		));
-	}
-
-	private $komentCache = false;
-	public function getKomentare($p) {
-		if (!$this->komentCache) {
-			$this->komentCache = dibi::query("
-				SELECT k.*, u.name
-				FROM komentare k
-				LEFT JOIN user u ON user_id = u.id
-				WHERE k.cislo_id = %i",$this->id," AND del=0
-				ORDER BY time
-				")->fetchAssoc('strana[]');
-		}
-		return isset($this->komentCache[$p]) ? $this->komentCache[$p] : array();
-	}
-
-	public function deleteKomentar($id)	{
-		dibi::query("UPDATE komentare SET del=1 WHERE id = %i",$id);
-	}
-
 	public function getBookmarks() {
 		$obsah = $this->getObsah();
 		$bookmarks = array();
